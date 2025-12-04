@@ -70,5 +70,18 @@ public class ClienteDAOtest {
         assertEquals("CPF inválido: O cpf deve ter 11 digitos.", e.getMessage());
     }
 
+    @Test
+    void deveRetornarClienteById() {
+        ClienteDAO dao = new ClienteDAO();
+        dao.iniciaTabela();
+
+        Cliente cliente = dao.getById(1);
+
+        assertEquals(1L, cliente.getId());
+        assertEquals("Flavão", cliente.getNome());
+        assertEquals("80758585472", cliente.getCpf());
+        assertEquals(LocalDate.of(2004, 9, 15), cliente.getDataNascimento());
+    }
+
 
 }

@@ -24,9 +24,9 @@ public class ClienteDAO {
 
     public void popularRegistros(){
         try{
-            Cliente cliente1 = new Cliente("Flavão", "80758585472", LocalDate.of(2004, 9, 15));
+            Cliente cliente1 = new Cliente(1L, "Flavão", "80758585472", LocalDate.of(2004, 9, 15));
 
-            Cliente cliente2 = new Cliente("Eduardo", "58142587954", LocalDate.of(2000, 1, 25));
+            Cliente cliente2 = new Cliente(1L, "Eduardo", "58142587954", LocalDate.of(2000, 1, 25));
 
             this.save(cliente1);
             this.save(cliente2);
@@ -50,6 +50,28 @@ public class ClienteDAO {
             stmt.execute(sql);
         }catch(Exception e){
             throw new EstruturaBancoException("Erro ao criar tabela de clientes");
+        }
+    }
+
+    public List<Cliente> getAll() {
+        try {
+            Statement stmt = con.createStatement();
+            ResultSet result = stmt.executeQuery("SELECT * FROM clientes c order by c.id");
+
+            List<Cliente> clientes = new ArrayList<>();
+            while (result.next()) {
+                clientes.add(new Cliente(
+                        result.getLong("id"),
+                        result.getString("nome"),
+                        result.getString("cpf"),
+                        result.getDate("data_nascimento").toLocalDate()));
+            }
+            if (clientes.isEmpty()) {
+                throw new EstruturaBancoException("Nenhum cliente encontrado");
+            }
+            return clientes;
+        } catch (Exception e) {
+            throw new EstruturaBancoException("Erro ao listar clientes no banco de dados");
         }
     }
 
@@ -81,28 +103,6 @@ public class ClienteDAO {
 
         } catch (SQLException e) {
             throw new DadosInvalidosException("Erro ao salvar Cliente no banco de dados");
-        }
-    }
-
-    public List<Cliente> getAll() {
-        try {
-            Statement stmt = con.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT * FROM clientes c order by c.id");
-
-            List<Cliente> clientes = new ArrayList<>();
-            while (result.next()) {
-                clientes.add(new Cliente(
-                        result.getLong("id"),
-                        result.getString("nome"),
-                        result.getString("cpf"),
-                        result.getDate("data_nascimento").toLocalDate()));
-            }
-            if (clientes.isEmpty()) {
-                throw new EstruturaBancoException("Nenhum cliente encontrado");
-            }
-            return clientes;
-        } catch (Exception e) {
-            throw new EstruturaBancoException("Erro ao listar clientes no banco de dados");
         }
     }
 
