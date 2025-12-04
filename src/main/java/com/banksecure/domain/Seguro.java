@@ -18,6 +18,15 @@ public class Seguro {
         this.valorBase = valorBase;
     }
 
+    public Seguro() {
+        this.id = id;
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.cobertura = cobertura;
+        this.valorBase = valorBase;
+    }
+
+
     @Override
     public String toString() {
         return "Seguro{" +
