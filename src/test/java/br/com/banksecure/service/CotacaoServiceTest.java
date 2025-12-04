@@ -1,6 +1,7 @@
-package com.banksecure.service;
+package br.com.banksecure.service;
 
 import com.banksecure.domain.Seguro;
+import com.banksecure.service.CotacaoService;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

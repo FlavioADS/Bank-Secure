@@ -26,7 +26,6 @@ public class FuncionarioDAOtest {
     }
 
     @Test
-
     void deveAlterarOUsuarioDoFuncionario(){
         Funcionario real = new Funcionario(2L, "usuarioOriginal", "senha123");
         Funcionario spyFuncionario = spy(real);
