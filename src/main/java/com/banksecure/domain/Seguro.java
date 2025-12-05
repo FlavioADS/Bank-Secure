@@ -18,6 +18,13 @@ public class Seguro {
         this.valorBase = valorBase;
     }
 
+    public Seguro(String titulo, String descricao, BigDecimal cobertura, BigDecimal valorBase) {
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.cobertura = cobertura;
+        this.valorBase = valorBase;
+    }
+
     public Seguro() {
         this.id = id;
         this.titulo = titulo;

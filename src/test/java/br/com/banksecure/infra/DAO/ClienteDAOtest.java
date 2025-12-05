@@ -1,34 +1,42 @@
 package br.com.banksecure.infra.DAO;
 
 import com.banksecure.domain.Cliente;
+import com.banksecure.exception.BancoVazioException;
 import com.banksecure.exception.DadosInvalidosException;
 import com.banksecure.infra.DAO.ClienteDAO;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ClienteDAOtest {
 
+    @Mock
     private ClienteDAO clienteDAO;
 
     @BeforeEach
-    public void setup(){
+    public void setup() {
         clienteDAO = new ClienteDAO();
         clienteDAO.iniciaTabela();
     }
 
     @Test
-    void deveInicializarCliente(){
+    void deveInicializarCliente() {
         ClienteDAO dao = new ClienteDAO();
         dao.iniciaTabela();
     }
 
     @Test
-    void deveSalvarUmCliente(){
-        Cliente novoCliente = new Cliente(1L,"Flavão","08758569578", LocalDate.of(2004, 5, 25));
+    void deveSalvarUmCliente() {
         ClienteDAO dao = new ClienteDAO();
+        dao.iniciaTabela();
+
+        Cliente novoCliente = new Cliente("Flavão", "08758569578", LocalDate.of(2004, 5, 25));
+
         dao.save(novoCliente);
     }
 
@@ -37,18 +45,17 @@ public class ClienteDAOtest {
         System.out.println(clienteDAO.getAll());
     }
 
-
     @Test
-    void deveRetornarQuantidadeDeClientesSalvos(){
+    void deveRetornarQuantidadeDeClientesSalvos() {
         assertEquals(2, clienteDAO.getAll().size());
     }
-
 
     @Test
     void deveRetornarErroDadosInvalidos() {
         ClienteDAO dao = new ClienteDAO();
+        dao.iniciaTabela();
 
-        Cliente clienteInvalido = new Cliente(null,"", "", LocalDate.now());
+        Cliente clienteInvalido = new Cliente(null, "", "", LocalDate.now());
 
         DadosInvalidosException e = assertThrows(DadosInvalidosException.class, () -> {
             dao.save(clienteInvalido);
@@ -60,8 +67,9 @@ public class ClienteDAOtest {
     @Test
     void deveRetornarCpfInvalido() {
         ClienteDAO dao = new ClienteDAO();
+        dao.iniciaTabela();
 
-        Cliente cpfInvalido = new Cliente(1L,"Flavão", "04geg18ewgg", LocalDate.of(2004, 5, 25));
+        Cliente cpfInvalido = new Cliente("Sla mano", "04geg18ewgg", LocalDate.of(2004, 5, 25));
 
         DadosInvalidosException e = assertThrows(DadosInvalidosException.class, () -> {
             dao.save(cpfInvalido);
@@ -83,5 +91,41 @@ public class ClienteDAOtest {
         assertEquals(LocalDate.of(2004, 9, 15), cliente.getDataNascimento());
     }
 
+    @Test
+    void deveDeletarClienteComSucesso() {
+        ClienteDAO dao = new ClienteDAO();
+        dao.iniciaTabela();
 
+        Cliente cliente = new Cliente("Teste", "12345678910", LocalDate.of(1990, 1, 1));
+        dao.save(cliente);
+
+        int tamanhoAntes = dao.getAll().size();
+
+        dao.delete(cliente);
+
+        int tamanhoDepois = dao.getAll().size();
+
+        assertEquals(tamanhoAntes - 1, tamanhoDepois);
+    }
+
+    @Test
+    void deveFalharAoDeletarClienteSemId() {
+        ClienteDAO dao = new ClienteDAO();
+        dao.iniciaTabela();
+
+        Cliente cliente = new Cliente("Teste", "12345678910", LocalDate.of(1990, 1, 1));
+
+        assertThrows(DadosInvalidosException.class, () -> dao.delete(cliente));
+    }
+
+    @Test
+    void deveFalharAoDeletarClienteInexistente() {
+        ClienteDAO dao = new ClienteDAO();
+        dao.iniciaTabela();
+
+        Cliente cliente = new Cliente("Teste", "12345678910", LocalDate.of(1990, 1, 1));
+        cliente.setId(9999L);
+
+        assertThrows(DadosInvalidosException.class, () -> dao.delete(cliente));
+    }
 }
