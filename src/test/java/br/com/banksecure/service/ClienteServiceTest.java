@@ -4,6 +4,7 @@ import com.banksecure.domain.Cliente;
 import com.banksecure.exception.DadosInvalidosException;
 import com.banksecure.infra.DAO.ClienteDAO;
 import com.banksecure.service.ClienteService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -134,6 +135,35 @@ public class ClienteServiceTest {
                 () -> clienteService.validarDeleteCliente(cliente));
 
         verifyNoInteractions(clienteDAO);
+    }
+
+    @Test
+    void deveLancarExcecaoQuandoIdadeMenorQue18() {
+        Cliente cliente = new Cliente();
+        cliente.setNome("João");
+        cliente.setCpf("12345678901");
+        cliente.setDataNascimento(LocalDate.now().minusYears(17));
+
+        ClienteService service = new ClienteService();
+
+        Assertions.assertThrows(
+                DadosInvalidosException.class,
+                () -> service.validarClienteDAO(cliente)
+        );
+    }
+
+    @Test
+    void naoDeveLancarExcecaoQuandoIdadeMaiorOuIgual18() {
+        Cliente cliente = new Cliente();
+        cliente.setNome("Maria");
+        cliente.setCpf("12345678901");
+        cliente.setDataNascimento(LocalDate.now().minusYears(18));
+
+        ClienteService service = new ClienteService();
+
+        Assertions.assertDoesNotThrow(
+                () -> service.validarClienteDAO(cliente)
+        );
     }
 }
 
