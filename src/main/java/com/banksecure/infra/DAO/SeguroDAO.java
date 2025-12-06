@@ -13,7 +13,6 @@ import java.util.List;
 
 public class SeguroDAO {
 
-    private Connection con = new ConnectionFactory().getConnection();
     private SeguroService seguroService = new SeguroService();
 
     public void iniciaTabelas(){
@@ -63,7 +62,8 @@ public class SeguroDAO {
             );
             """;
 
-        try (Statement stmt = con.createStatement()) {
+        try (Connection con = new ConnectionFactory().getConnection();
+             Statement stmt = con.createStatement()) {
 
             stmt.execute(sqlTabelaSeguro);
 
@@ -75,7 +75,8 @@ public class SeguroDAO {
     public List<Seguro> getAll() {
         String sql = "SELECT * FROM seguro";
 
-        try (Statement stmt = con.createStatement();
+        try (Connection con = new ConnectionFactory().getConnection();
+             Statement stmt = con.createStatement();
              ResultSet result = stmt.executeQuery(sql)) {
 
             List<Seguro> seguros = new ArrayList<>();
@@ -104,7 +105,8 @@ public class SeguroDAO {
 
         String sqlInsert = "INSERT INTO seguro (titulo, descricao, cobertura, valorBase) VALUES (?, ?, ?, ?)";
 
-        try (PreparedStatement prepared = con.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection con = new ConnectionFactory().getConnection();
+             PreparedStatement prepared = con.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
 
             prepared.setString(1, seguro.getTitulo());
             prepared.setString(2, seguro.getDescricao());
@@ -126,7 +128,8 @@ public class SeguroDAO {
 
     public Seguro getById(Long id) {
 
-        try (Statement stmt = con.createStatement();
+        try (Connection con = new ConnectionFactory().getConnection();
+             Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM seguro WHERE id = " + id)) {
 
             List<Seguro> seguros = new ArrayList<>();
@@ -156,7 +159,8 @@ public class SeguroDAO {
 
         String sql = "DELETE FROM seguro WHERE id = ? AND titulo = ? AND valorBase = ?";
 
-        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+        try (Connection con = new ConnectionFactory().getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
 
             stmt.setLong(1, seguro.getId());
             stmt.setString(2, seguro.getTitulo());

@@ -15,35 +15,10 @@ import java.util.List;
 public class ApoliceDAO {
 
     private ApoliceService apoliceService;
-    private Connection con = new ConnectionFactory().getConnection();
 
     public ApoliceDAO() {
         this.apoliceService = new ApoliceService();
         this.createTable();
-    }
-
-    public void createTable() {
-        try{
-            String sqlTabela = """
-                    CREATE TABLE IF NOT EXISTS apolice(
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    cliente_id INT NOT NULL,
-                    seguro_id INT NOT NULL,
-                    funcionario_id INT NOT NULL,
-                    valorFinal DECIMAL(10,2) NOT NULL,
-                    dataInicio DATE NOT NULL,
-                    dataFim DATE NOT NULL,
-                    CONSTRAINT fk_idCliente FOREIGN KEY (cliente_id) REFERENCES clientes(id),
-                    CONSTRAINT fk_idSeguro FOREIGN KEY (seguro_id)  REFERENCES seguro(id),
-                    CONSTRAINT fk_idFuncionario FOREIGN KEY (funcionario_id)  REFERENCES funcionarios(id)
-                    );
-                    """;
-
-            Statement smtm = con.createStatement();
-            smtm.execute(sqlTabela);
-        }catch (SQLException e){
-            throw new EstruturaBancoException("Erro ao criar tabela apolice");
-        }
     }
 
     public void popularRegistro() {
@@ -60,14 +35,39 @@ public class ApoliceDAO {
         }
     }
 
+    public void createTable() {
+            String sqlTabela = """
+                    CREATE TABLE IF NOT EXISTS apolice(
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    cliente_id INT NOT NULL,
+                    seguro_id INT NOT NULL,
+                    funcionario_id INT NOT NULL,
+                    valorFinal DECIMAL(10,2) NOT NULL,
+                    dataInicio DATE NOT NULL,
+                    dataFim DATE NOT NULL,
+                    CONSTRAINT fk_idCliente FOREIGN KEY (cliente_id) REFERENCES clientes(id),
+                    CONSTRAINT fk_idSeguro FOREIGN KEY (seguro_id)  REFERENCES seguro(id),
+                    CONSTRAINT fk_idFuncionario FOREIGN KEY (funcionario_id)  REFERENCES funcionarios(id)
+                    );
+                    """;
+
+        try(Connection con = new ConnectionFactory().getConnection();
+            Statement smtm = con.createStatement()){
+            smtm.execute(sqlTabela);
+        }catch (SQLException e){
+            throw new EstruturaBancoException("Erro ao criar tabela apolice");
+        }
+    }
+
     public void save(Apolice apolice) {
 
         apoliceService.validarApoliceDAO(apolice);
 
-        try{
-            String sqlInsert = "INSERT INTO apolice (cliente_id, seguro_id, funcionario_id, valorFinal, dataInicio, dataFim) VALUES (?, ?, ?, ?, ?, ?)";
+        String sqlInsert = "INSERT INTO apolice (cliente_id, seguro_id, funcionario_id, valorFinal, dataInicio, dataFim) VALUES (?, ?, ?, ?, ?, ?)";
 
-            PreparedStatement prepared = con.prepareStatement(sqlInsert);
+        try(Connection con = new ConnectionFactory().getConnection();
+            PreparedStatement prepared = con.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)){
+
             prepared.setLong(1, apolice.getCliente_id());
             prepared.setLong(2, apolice.getSeguro_id());
             prepared.setLong(3, apolice.getFuncionario_id());
@@ -75,6 +75,11 @@ public class ApoliceDAO {
             prepared.setDate(5, Date.valueOf(apolice.getDataInicio()));
             prepared.setDate(6, Date.valueOf(apolice.getDataFim()));
             prepared.execute();
+            try (ResultSet rs = prepared.getGeneratedKeys()) {
+                if (rs.next()) {
+                    apolice.setId(rs.getLong(1));
+                }
+            }
 
         }catch (SQLException e){
             throw new DadosInvalidosException("Erro ao salvar apolice no banco de dados");
@@ -82,9 +87,12 @@ public class ApoliceDAO {
     }
 
     public List<Apolice> getAll(){
-        try {
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM apolice");
+
+        String sqlSelect = "SELECT * FROM apolice";
+
+        try (Connection con = new ConnectionFactory().getConnection();
+             Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(sqlSelect)){
             List<Apolice> apolices = new ArrayList<>();
 
             while (rs.next()) {

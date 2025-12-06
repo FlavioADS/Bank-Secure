@@ -4,7 +4,6 @@ com\banksecure\infra\db\ConnectionFactory.class
 com\banksecure\service\ApoliceService.class
 com\banksecure\domain\Cliente.class
 com\banksecure\infra\DAO\ApoliceDAO.class
-com\banksecure\app\App.class
 com\banksecure\exception\BancoVazioException.class
 com\banksecure\exception\EstruturaBancoException.class
 com\banksecure\infra\DAO\SeguroDAO.class

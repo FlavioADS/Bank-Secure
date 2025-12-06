@@ -10,7 +10,6 @@ import java.util.List;
 
 public class FuncionarioDAO {
 
-    private Connection con = new ConnectionFactory().getConnection();
 
         public void inicializaTabelas () {
         this.createTable();
@@ -39,7 +38,8 @@ public class FuncionarioDAO {
                     senha VARCHAR(50) NOT NULL
                     );
                         """;
-            try (Statement stmt = con.createStatement()) {
+            try (Connection con = new ConnectionFactory().getConnection();
+                 Statement stmt = con.createStatement()) {
                 stmt.execute(sqlDaTabela);
             }
         } catch (Exception e) {
@@ -49,7 +49,8 @@ public class FuncionarioDAO {
 
         public List<Funcionario> getAll () {
         try {
-            try (Statement stmt = con.createStatement();
+            try (Connection con = new ConnectionFactory().getConnection();
+                 Statement stmt = con.createStatement();
                  ResultSet result = stmt.executeQuery("SELECT * FROM funcionarios f ORDER BY f.id")) {
                 List<Funcionario> funcionarios = new ArrayList<>();
                 while (result.next()) {
@@ -72,11 +73,14 @@ public class FuncionarioDAO {
         if (funcionario == null) return;
         try {
             String sql = "MERGE INTO funcionarios (id, usuario, senha) KEY(id) VALUES (?, ?, ?)";
-            try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+            try (Connection con = new ConnectionFactory().getConnection();
+                 PreparedStatement pstmt = con.prepareStatement(sql)) {
+
                 pstmt.setLong(1, funcionario.getId());
                 pstmt.setString(2, funcionario.getUsuario());
                 pstmt.setString(3, funcionario.getSenha());
                 pstmt.executeUpdate();
+
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -85,7 +89,8 @@ public class FuncionarioDAO {
         public Funcionario getById (Long funcionarioId){
         try {
             String sql = "SELECT * FROM funcionarios f WHERE f.id = ?";
-            try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+            try (Connection con = new ConnectionFactory().getConnection();
+                 PreparedStatement pstmt = con.prepareStatement(sql)) {
                 pstmt.setLong(1, funcionarioId);
                 try (ResultSet result = pstmt.executeQuery()) {
                     if (result.next()) {
@@ -103,7 +108,8 @@ public class FuncionarioDAO {
     }
         public boolean validaLogin (String usuario, String senha){
         String sql = "SELECT * FROM funcionarios f WHERE f.usuario = ? AND f.senha = ?";
-        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+        try (Connection con = new ConnectionFactory().getConnection();
+             PreparedStatement pstmt = con.prepareStatement(sql)) {
             pstmt.setString(1, usuario);
             pstmt.setString(2, senha);
             try (ResultSet result = pstmt.executeQuery()) {

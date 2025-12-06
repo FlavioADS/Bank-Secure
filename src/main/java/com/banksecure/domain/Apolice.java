@@ -39,6 +39,10 @@ public class Apolice {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Long getCliente_id() {
         return cliente_id;
     }

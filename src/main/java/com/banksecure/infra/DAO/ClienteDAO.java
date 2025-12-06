@@ -12,7 +12,6 @@ import java.util.List;
 
 public class ClienteDAO {
 
-    private Connection con = new ConnectionFactory().getConnection();
     private ClienteService clienteService = new ClienteService();
 
     public void iniciaTabela(){
@@ -44,7 +43,8 @@ public class ClienteDAO {
                     data_nascimento DATE NOT NULL
                 );
             """;
-        try (Statement stmt = con.createStatement()) {
+        try (Connection con = new ConnectionFactory().getConnection();
+             Statement stmt = con.createStatement()) {
             stmt.execute(sql);
         } catch (SQLException e) {
             throw new EstruturaBancoException("Erro ao criar tabela de clientes");
@@ -55,7 +55,8 @@ public class ClienteDAO {
     public List<Cliente> getAll() {
         String sql = "SELECT * FROM clientes c ORDER BY c.id";
 
-        try (Statement stmt = con.createStatement();
+        try (Connection con = new ConnectionFactory().getConnection();
+             Statement stmt = con.createStatement();
              ResultSet result = stmt.executeQuery(sql)) {
 
             List<Cliente> clientes = new ArrayList<>();
@@ -82,7 +83,8 @@ public class ClienteDAO {
 
         String sql = "INSERT INTO clientes(nome, cpf, data_nascimento) VALUES (?, ?, ?)";
 
-        try (PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection con = new ConnectionFactory().getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, cliente.getNome());
             stmt.setString(2, cliente.getCpf());
@@ -103,7 +105,7 @@ public class ClienteDAO {
 
     public Cliente getById(int clienteId) {
 
-        try (
+        try (   Connection con = new ConnectionFactory().getConnection();
                 Statement stmt = con.createStatement();
                 ResultSet result = stmt.executeQuery("SELECT * FROM clientes c WHERE c.id = " + clienteId)
         ) {
@@ -131,7 +133,8 @@ public class ClienteDAO {
 
         String sql = "DELETE FROM clientes WHERE id = ? AND cpf = ?";
 
-        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+        try (Connection con = new ConnectionFactory().getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
 
             stmt.setLong(1, cliente.getId());
             stmt.setString(2, cliente.getCpf());
