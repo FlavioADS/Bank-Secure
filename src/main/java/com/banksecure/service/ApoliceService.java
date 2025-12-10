@@ -28,7 +28,8 @@ public class ApoliceService {
             throw new DadosInvalidosException("Valor final da apólice inválido");
         }
 
-        if (apolice.getDataInicio().isBefore(LocalDate.now()) || apolice.getDataFim().isAfter(LocalDate.now())) {
+        if (apolice.getDataInicio().isBefore(LocalDate.now()) ||
+                apolice.getDataFim().isAfter(apolice.getDataFim())) {
             throw new DadosInvalidosException("Data da apólice inválida");
         }
     }

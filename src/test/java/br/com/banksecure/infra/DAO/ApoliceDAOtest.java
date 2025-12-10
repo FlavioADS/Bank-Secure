@@ -30,7 +30,6 @@ public class ApoliceDAOtest {
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
         funcionarioDAO.inicializaTabelas();
         apoliceDAO = new ApoliceDAO();
-        apoliceDAO.popularRegistro();
     }
 
     @Test
@@ -63,9 +62,6 @@ public class ApoliceDAOtest {
 
     @Test
     void deveRetornarApolicesParaRenovar(){
-        Apolice apoliceRenovar = new Apolice(1L, 1L, 1L, new BigDecimal("200000"), LocalDate.now(), LocalDate.now().plusDays(30),false);
-        apoliceDAO.save(apoliceRenovar);
-
         System.out.println(apoliceDAO.getByDueDate());
 
     }
