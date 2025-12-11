@@ -81,7 +81,7 @@ public class ClienteDAOtest {
         ClienteDAO dao = new ClienteDAO();
         dao.iniciaTabela();
 
-        Cliente cliente = dao.getById(1);
+        Cliente cliente = dao.getById(1L);
 
         assertEquals(1L, cliente.getId());
         assertEquals("Flavão", cliente.getNome());

@@ -1,12 +1,22 @@
 package com.banksecure.service;
 
 import com.banksecure.domain.Apolice;
+import com.banksecure.domain.Cliente;
+import com.banksecure.domain.Funcionario;
+import com.banksecure.domain.Seguro;
 import com.banksecure.exception.DadosInvalidosException;
+import com.banksecure.infra.DAO.ApoliceDAO;
+import com.banksecure.infra.DAO.ClienteDAO;
+import com.banksecure.infra.DAO.FuncionarioDAO;
+import com.banksecure.infra.DAO.SeguroDAO;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 public class ApoliceService {
+
+    private ApoliceDAO apoliceDAO;
 
     public void validarApoliceDAO(Apolice apolice) {
 
@@ -31,6 +41,79 @@ public class ApoliceService {
         if (apolice.getDataInicio().isBefore(LocalDate.now()) ||
                 apolice.getDataFim().isAfter(apolice.getDataFim())) {
             throw new DadosInvalidosException("Data da apólice inválida");
+        }
+    }
+
+    public void registrarVenda(Long idSeguro, Long idCliente, Long idFuncionario){
+        if (idSeguro == null ||  idCliente == null || idFuncionario == null) {
+            throw new DadosInvalidosException("Dados incompletos para registrar venda!");
+        }
+
+        if (idSeguro <= 0 ||  idCliente <= 0 || idFuncionario <= 0) {
+            throw new DadosInvalidosException("IDs invalidos para registrar venda!");
+        }
+
+        apoliceDAO = new ApoliceDAO();
+        SeguroDAO seguroDAO = new SeguroDAO();
+        ClienteDAO clienteDAO = new ClienteDAO();
+        CotacaoService  cotacaoService = new CotacaoService();
+
+        Seguro seguro = seguroDAO.getById(idSeguro);
+        Cliente cliente = clienteDAO.getById(idCliente);
+
+        BigDecimal valorBase = seguro.getValorBase();
+
+        BigDecimal valorComTaxa = valorBase.add(cotacaoService.setTaxaPadrao());
+        if (cotacaoService.bonusIdade(cliente.getDataNascimento())){
+            valorComTaxa = valorComTaxa.add(BigDecimal.valueOf(100));
+        }
+
+        BigDecimal valorFinal = cotacaoService.taxaRisco(valorComTaxa);
+
+        Apolice apolice = new Apolice(idCliente, idSeguro, idFuncionario, valorFinal,LocalDate.now(),LocalDate.now().plusYears(1), false);
+        apoliceDAO.save(apolice);
+    }
+
+    public void renovarApolice(Long idApolice){
+        if (idApolice == null) {
+            throw new DadosInvalidosException("Apolice não encontrada para renovação!");
+        }
+
+        apoliceDAO = new ApoliceDAO();
+        Apolice apolice = apoliceDAO.getById(idApolice);
+
+        if (apolice.isRenovada()){
+            throw new DadosInvalidosException("Apolice já foi renovada!");
+        }
+
+        LocalDate novaDataFim = LocalDate.now().plusYears(1);
+        apoliceDAO.renovarApolice(apolice, apolice.getValorFinal(), novaDataFim);
+    }
+
+    public void apolicesParaRenovar(){
+        apoliceDAO = new ApoliceDAO();
+        List<Apolice> apolices = apoliceDAO.getByDueDate();
+
+        if (apolices.isEmpty()){
+            throw new DadosInvalidosException("Não existe apolice para renovar!");
+        }
+
+        System.out.println("Apolices a vencer nos próximos 30 dias");
+        for (Apolice ap:apolices){
+            System.out.println(ap.mostrarDadosDaApolice());
+        }
+    }
+
+    public void mostrarApolices(){
+        apoliceDAO = new ApoliceDAO();
+        List<Apolice> apolices = apoliceDAO.getAll();
+
+        if (apolices.isEmpty()){
+            throw new DadosInvalidosException("Nenhuma apólice encontrada");
+        }
+
+        for (Apolice ap:apolices){
+            System.out.println(ap.mostrarDadosDaApolice());
         }
     }
 }

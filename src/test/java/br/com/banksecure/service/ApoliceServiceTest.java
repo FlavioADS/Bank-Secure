@@ -6,13 +6,21 @@ import com.banksecure.infra.DAO.ApoliceDAO;
 import com.banksecure.service.ApoliceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class ApoliceServiceTest {
 
     private ApoliceDAO apoliceDAO;
@@ -66,6 +74,24 @@ public class ApoliceServiceTest {
 
         assertThrows(DadosInvalidosException.class, () -> service.validarApoliceDAO(apoliceInvalida));
 
+        verifyNoInteractions(apoliceDAO);
+    }
+
+    @Test
+    void deveLancarErroAoRegistrarVendaComCamposNull(){
+        assertThrows(DadosInvalidosException.class, () -> service.registrarVenda(null, 1L,1L));
+        verifyNoInteractions(apoliceDAO);
+    }
+
+    @Test
+    void deveLancarErroAoRegistrarVendaComCamposNegativos(){
+        assertThrows(DadosInvalidosException.class, () -> service.registrarVenda(-3L, 1L,1L));
+        verifyNoInteractions(apoliceDAO);
+    }
+
+    @Test
+    void deveLancarErroAoRenovarApoliceComIdNulo(){
+        assertThrows(DadosInvalidosException.class, () -> service.renovarApolice(null));
         verifyNoInteractions(apoliceDAO);
     }
 }

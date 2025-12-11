@@ -121,7 +121,7 @@ public class ApoliceDAO {
                                 rs.getBoolean("renovada")));
 
                         apolices.get(apolices.size() -1).setNomeCliente(rs.getString("clientes.nome"));
-                        apolices.get(apolices.size() -1).setNomeSeguro(TipoDeSeguroEnum.valueOf(rs.getString("seguros.tipo")));
+                        apolices.get(apolices.size() -1).setNomeSeguro(TipoDeSeguroEnum.valueOf(rs.getString("seguro.tipo")));
                         apolices.get(apolices.size() -1).setNomeFuncionario(rs.getString("funcionarios.usuario"));
             }
 
@@ -172,7 +172,7 @@ public class ApoliceDAO {
                     ));
 
                     apolices.get(apolices.size() -1).setNomeCliente(rs.getString("clientes.nome"));
-                    apolices.get(apolices.size() -1).setNomeSeguro(TipoDeSeguroEnum.valueOf(rs.getString("seguros.tipo")));
+                    apolices.get(apolices.size() -1).setNomeSeguro(TipoDeSeguroEnum.valueOf(rs.getString("seguro.tipo")));
                     apolices.get(apolices.size() -1).setNomeFuncionario(rs.getString("funcionarios.usuario"));
                 }
                 return apolices;

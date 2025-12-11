@@ -121,11 +121,11 @@ public class Apolice {
 
     public String mostrarDadosDaApolice(){
         StringBuilder dados = new StringBuilder();
-        dados.append("================== Dados da apolice ===================");
+        dados.append("================== Dados da apolice ===================\n");
         dados.append("Apolice ID: " + id + "\n");
         dados.append("Cliente: " + getNomeCliente() + "\n");
         dados.append("Seguro: " + getNomeSeguro() + "\n");
-        dados.append("Funcionario ID: " + getNomeFuncionario()+ "\n");
+        dados.append("Funcionario: " + getNomeFuncionario()+ "\n");
         dados.append("Valor Final: " + valorFinal + "\n");
         dados.append("Data de Inicio da apolice: " + dataInicio + "\n");
         dados.append("Data de fim da apolice: " + dataFim + "\n");

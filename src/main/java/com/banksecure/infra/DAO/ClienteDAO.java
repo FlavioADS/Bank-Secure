@@ -103,7 +103,7 @@ public class ClienteDAO {
 
 
 
-    public Cliente getById(int clienteId) {
+    public Cliente getById(Long clienteId) {
 
         try (   Connection con = new ConnectionFactory().getConnection();
                 Statement stmt = con.createStatement();
