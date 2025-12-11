@@ -1,6 +1,7 @@
 package com.banksecure.infra.DAO;
 
 import com.banksecure.domain.Apolice;
+import com.banksecure.enums.TipoDeSeguroEnum;
 import com.banksecure.exception.DadosInvalidosException;
 import com.banksecure.exception.EstruturaBancoException;
 import com.banksecure.infra.db.ConnectionFactory;
@@ -100,7 +101,7 @@ public class ApoliceDAO {
 
     public List<Apolice> getAll(){
 
-        String sqlSelect = "SELECT * FROM apolice";
+        String sqlSelect = "SELECT * FROM apolice INNER JOIN clientes ON apolice.cliente_id = clientes.id INNER JOIN seguro ON apolice.seguro_id=seguro.id INNER JOIN funcionarios ON apolice.funcionario_id = funcionarios.id";
 
         try (Connection con = new ConnectionFactory().getConnection();
              Statement stmt = con.createStatement();
@@ -118,6 +119,10 @@ public class ApoliceDAO {
                                 rs.getDate("dataInicio").toLocalDate(),
                                 rs.getDate("dataFim").toLocalDate(),
                                 rs.getBoolean("renovada")));
+
+                        apolices.get(apolices.size() -1).setNomeCliente(rs.getString("clientes.nome"));
+                        apolices.get(apolices.size() -1).setNomeSeguro(TipoDeSeguroEnum.valueOf(rs.getString("seguros.tipo")));
+                        apolices.get(apolices.size() -1).setNomeFuncionario(rs.getString("funcionarios.usuario"));
             }
 
             return apolices;
@@ -143,7 +148,7 @@ public class ApoliceDAO {
     }
 
     public List<Apolice> getByDueDate(){
-        String sql = "SELECT * FROM apolice WHERE dataFim = ? AND renovada = FALSE";
+        String sql = "SELECT * FROM apolice INNER JOIN clientes ON apolice.cliente_id = clientes.id INNER JOIN seguro ON apolice.seguro_id=seguro.id INNER JOIN funcionarios ON apolice.funcionario_id = funcionarios.id WHERE dataFim = ? AND renovada = FALSE";
         LocalDate dataVencimento = LocalDate.now().plusDays(30);
 
         try(
@@ -165,6 +170,10 @@ public class ApoliceDAO {
                             rs.getDate("dataFim").toLocalDate(),
                             rs.getBoolean("renovada")
                     ));
+
+                    apolices.get(apolices.size() -1).setNomeCliente(rs.getString("clientes.nome"));
+                    apolices.get(apolices.size() -1).setNomeSeguro(TipoDeSeguroEnum.valueOf(rs.getString("seguros.tipo")));
+                    apolices.get(apolices.size() -1).setNomeFuncionario(rs.getString("funcionarios.usuario"));
                 }
                 return apolices;
             }

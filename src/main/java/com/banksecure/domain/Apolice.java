@@ -1,5 +1,7 @@
 package com.banksecure.domain;
 
+import com.banksecure.enums.TipoDeSeguroEnum;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -13,6 +15,9 @@ public class Apolice {
     private LocalDate dataInicio;
     private LocalDate dataFim;
     private boolean renovada;
+    private String nomeCliente;
+    private TipoDeSeguroEnum nomeSeguro;
+    private String nomeFuncionario;
 
     public Apolice(Long id, Long cliente_id, Long seguro_id, Long funcionario_id, BigDecimal valorFinal, LocalDate dataInicio, LocalDate dataFim, boolean renovada) {
         this.id = id;
@@ -74,14 +79,38 @@ public class Apolice {
         return dataFim;
     }
 
+    public String getNomeFuncionario() {
+        return nomeFuncionario;
+    }
+
+    public void setNomeFuncionario(String nomeFuncionario) {
+        this.nomeFuncionario = nomeFuncionario;
+    }
+
+    public TipoDeSeguroEnum getNomeSeguro() {
+        return nomeSeguro;
+    }
+
+    public void setNomeSeguro(TipoDeSeguroEnum nomeSeguro) {
+        this.nomeSeguro = nomeSeguro;
+    }
+
+    public String getNomeCliente() {
+        return nomeCliente;
+    }
+
+    public void setNomeCliente(String nomeCliente) {
+        this.nomeCliente = nomeCliente;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("----------------------------\n");
         sb.append("ID: ").append(id).append("\n");
-        sb.append("Cliente ID: ").append(cliente_id).append("\n");
-        sb.append("Seguro ID: ").append(seguro_id).append("\n");
-        sb.append("Funcionario ID: ").append(funcionario_id).append("\n");
+        sb.append("Cliente: ").append(getNomeCliente()).append("\n");
+        sb.append("Seguro: ").append(getNomeSeguro()).append("\n");
+        sb.append("Funcionario: ").append(getNomeFuncionario()).append("\n");
         sb.append("Valor: ").append(valorFinal).append("\n");
         sb.append("Data inicio: ").append(dataInicio).append("\n");
         sb.append("Data fim: ").append(dataFim).append("\n");
@@ -94,9 +123,9 @@ public class Apolice {
         StringBuilder dados = new StringBuilder();
         dados.append("================== Dados da apolice ===================");
         dados.append("Apolice ID: " + id + "\n");
-        dados.append("Cliente ID: " + cliente_id + "\n");
-        dados.append("Seguro ID: " + seguro_id + "\n");
-        dados.append("Funcionario ID: " + funcionario_id + "\n");
+        dados.append("Cliente: " + getNomeCliente() + "\n");
+        dados.append("Seguro: " + getNomeSeguro() + "\n");
+        dados.append("Funcionario ID: " + getNomeFuncionario()+ "\n");
         dados.append("Valor Final: " + valorFinal + "\n");
         dados.append("Data de Inicio da apolice: " + dataInicio + "\n");
         dados.append("Data de fim da apolice: " + dataFim + "\n");
