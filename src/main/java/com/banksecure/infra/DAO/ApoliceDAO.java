@@ -15,9 +15,9 @@ import java.util.List;
 
 public class ApoliceDAO {
 
-    private ApoliceService apoliceService;
+    private ApoliceService apoliceService = new ApoliceService();
 
-    public ApoliceDAO() {
+    public void iniciaTabela() {
         this.createTable();
         this.apoliceService = new ApoliceService();
 
@@ -43,6 +43,7 @@ public class ApoliceDAO {
             this.save(apolice7);
 
         } catch (Exception e) {
+            e.printStackTrace();
             throw new EstruturaBancoException("Erro ao popular tabela apolice");
         }
     }
@@ -68,7 +69,8 @@ public class ApoliceDAO {
             Statement smtm = con.createStatement()){
             smtm.execute(sqlTabela);
         }catch (Exception e){
-            throw new RuntimeException("Erro ao criar tabela apolice");
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao criar tabela apolice", e);
         }
     }
 

@@ -13,8 +13,6 @@ public class CotacaoService {
 
 
     public BigDecimal setTaxaPadrao(BigDecimal valorIncial){
-
-        valorIncial = seguro.getValorBase();
         return (valorIncial.multiply(BigDecimal.valueOf(0.05))).add(valorIncial);
     }
 

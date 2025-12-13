@@ -39,7 +39,7 @@ public class ApoliceService {
         }
 
         if (apolice.getDataInicio().isBefore(LocalDate.now()) ||
-                apolice.getDataFim().isAfter(apolice.getDataFim())) {
+                apolice.getDataFim().isBefore(apolice.getDataInicio())) {
             throw new DadosInvalidosException("Data da apólice inválida");
         }
     }
@@ -61,9 +61,9 @@ public class ApoliceService {
         Seguro seguro = seguroDAO.getById(idSeguro);
         Cliente cliente = clienteDAO.getById(idCliente);
 
-        BigDecimal valorBase = seguro.getValorBase();
 
-        BigDecimal valorComTaxa = valorBase.add(cotacaoService.setTaxaPadrao(seguro.getValorBase()));
+
+        BigDecimal valorComTaxa = cotacaoService.setTaxaPadrao(seguro.getValorBase());
         if (cotacaoService.bonusIdade(cliente.getDataNascimento())){
             valorComTaxa = valorComTaxa.add(BigDecimal.valueOf(100));
         }

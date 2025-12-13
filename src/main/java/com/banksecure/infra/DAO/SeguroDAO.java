@@ -179,6 +179,21 @@ public class SeguroDAO {
             throw new EstruturaBancoException("Erro ao deletar seguro no banco de dados");
         }
     }
+    public void update(Seguro seguro){
+
+
+        String sqlUpdate = "UPDATE seguro SET tipo = ?, descricao = ? WHERE id = ?";
+        try (Connection con = new ConnectionFactory().getConnection();
+             PreparedStatement stmt = con.prepareStatement(sqlUpdate)){
+
+            stmt.setString(1, seguro.getTipo().name());
+            stmt.setString(2, seguro.getDescricao());
+            stmt.setLong(3, seguro.getId());
+            stmt.executeUpdate();
+        }catch (SQLException e){
+            throw new DadosInvalidosException("Erro ao atualizar seguro no banco de dados");
+        }
+    }
 
 
 }

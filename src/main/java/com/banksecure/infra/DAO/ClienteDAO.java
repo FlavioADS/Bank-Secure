@@ -98,7 +98,8 @@ public class ClienteDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new DadosInvalidosException("Erro ao salvar Cliente no banco de dados");
+            e.printStackTrace();
+            throw new DadosInvalidosException("Erro ao salvar Cliente no banco de dados",e);
 
         }
     }
