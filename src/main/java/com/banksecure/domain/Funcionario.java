@@ -11,6 +11,10 @@ public class Funcionario {
         this.usuario = usuario;
         this.senha = senha;
     }
+    public Funcionario() {
+
+    }
+
 
     public Long getId(){
         return id;

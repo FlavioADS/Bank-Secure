@@ -103,6 +103,26 @@ public class Apolice {
         this.nomeCliente = nomeCliente;
     }
 
+    public void setCliente_id(Long cliente_id) {
+        this.cliente_id = cliente_id;
+    }
+    public void setSeguro_id(Long seguro_id) {
+        this.seguro_id = seguro_id;
+    }
+    public void setFuncionario_id(Long funcionario_id) {
+        this.funcionario_id = funcionario_id;
+    }
+    public void setValorFinal(BigDecimal valorFinal) {
+        this.valorFinal = valorFinal;
+    }
+    public void setDataInicio(LocalDate dataInicio) {
+        this.dataInicio = dataInicio;
+    }
+    public void setDataFim(LocalDate dataFim) {
+        this.dataFim = dataFim;
+    }
+
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

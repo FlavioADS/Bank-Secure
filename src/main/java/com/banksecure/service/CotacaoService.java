@@ -10,13 +10,12 @@ import java.time.Period;
 public class CotacaoService {
 
     Seguro seguro = new Seguro();
-    BigDecimal valorIncial = BigDecimal.valueOf(100);
 
-    public BigDecimal setTaxaPadrao(){
 
-        BigDecimal taxaPadrao = (valorIncial.multiply(BigDecimal.valueOf(0.05))).add(valorIncial);
+    public BigDecimal setTaxaPadrao(BigDecimal valorIncial){
 
-        return taxaPadrao;
+        valorIncial = seguro.getValorBase();
+        return (valorIncial.multiply(BigDecimal.valueOf(0.05))).add(valorIncial);
     }
 
     public boolean bonusIdade(LocalDate anoNasc){

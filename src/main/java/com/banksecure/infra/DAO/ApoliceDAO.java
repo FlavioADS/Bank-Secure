@@ -18,8 +18,9 @@ public class ApoliceDAO {
     private ApoliceService apoliceService;
 
     public ApoliceDAO() {
-        this.apoliceService = new ApoliceService();
         this.createTable();
+        this.apoliceService = new ApoliceService();
+
     }
 
     public void popularRegistro() {
@@ -66,8 +67,8 @@ public class ApoliceDAO {
         try(Connection con = new ConnectionFactory().getConnection();
             Statement smtm = con.createStatement()){
             smtm.execute(sqlTabela);
-        }catch (SQLException e){
-            throw new EstruturaBancoException("Erro ao criar tabela apolice");
+        }catch (Exception e){
+            throw new RuntimeException("Erro ao criar tabela apolice");
         }
     }
 

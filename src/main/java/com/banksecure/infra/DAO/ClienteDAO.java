@@ -16,7 +16,7 @@ public class ClienteDAO {
 
     public void iniciaTabela(){
         this.createTable();
-        this.popularRegistros();
+
 
     }
 
@@ -81,6 +81,7 @@ public class ClienteDAO {
     public void save(Cliente cliente) {
         clienteService.validarClienteDAO(cliente);
 
+
         String sql = "INSERT INTO clientes(nome, cpf, data_nascimento) VALUES (?, ?, ?)";
 
         try (Connection con = new ConnectionFactory().getConnection();
@@ -98,6 +99,7 @@ public class ClienteDAO {
             }
         } catch (SQLException e) {
             throw new DadosInvalidosException("Erro ao salvar Cliente no banco de dados");
+
         }
     }
 

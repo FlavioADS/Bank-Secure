@@ -63,7 +63,7 @@ public class ApoliceService {
 
         BigDecimal valorBase = seguro.getValorBase();
 
-        BigDecimal valorComTaxa = valorBase.add(cotacaoService.setTaxaPadrao());
+        BigDecimal valorComTaxa = valorBase.add(cotacaoService.setTaxaPadrao(seguro.getValorBase()));
         if (cotacaoService.bonusIdade(cliente.getDataNascimento())){
             valorComTaxa = valorComTaxa.add(BigDecimal.valueOf(100));
         }
