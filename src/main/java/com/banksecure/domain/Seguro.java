@@ -36,19 +36,11 @@ public class Seguro {
 
 
     @Override
-    public String toString() {
-        return "Seguro{" +
-                "id=" + id +
-                ", Título='" + tipo + '\'' +
-                ", Descricao='" + descricao + '\'' +
-                ", Cobertura=" + cobertura +
-                ", Valor Prêmio base=" + valorBase +
-                '}';
-    }
+    public String toString() { return mostrarDadosDoSeguro();}
 
     public String mostrarDadosDoSeguro() {
         StringBuilder dados = new StringBuilder();
-        dados.append("================== Dados do Seguro ===================");
+        dados.append("================== Dados do Seguro ===================\n");
         dados.append("Id: " + id + "\n");
         dados.append("Tipo: " + tipo + "\n");
         dados.append("Descrição: " + descricao + "\n");

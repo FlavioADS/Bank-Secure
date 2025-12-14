@@ -26,18 +26,11 @@ public class Cliente {
     }
 
     @Override
-    public String toString() {
-        return "Cliente{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", cpf='" + cpf + '\'' +
-                ", dataNascimento=" + dataNascimento +
-                '}';
-    }
+    public String toString() {return mostrarDadosDoCliente();}
 
     public String mostrarDadosDoCliente(){
         StringBuilder dados = new StringBuilder();
-        dados.append("================== Dados do cliente ===================");
+        dados.append("================== Dados do cliente ===================\n");
         dados.append("id: " + id + "\n");
         dados.append("Nome: " + nome + "\n");
         dados.append("CPF: " + cpf + "\n");
