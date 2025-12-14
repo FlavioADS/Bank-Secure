@@ -5,6 +5,7 @@ import com.banksecure.domain.Cliente;
 import com.banksecure.domain.Funcionario;
 import com.banksecure.domain.Seguro;
 import com.banksecure.enums.TipoDeSeguroEnum;
+import com.banksecure.exception.DadosInvalidosException;
 import com.banksecure.infra.DAO.ApoliceDAO;
 import com.banksecure.infra.DAO.ClienteDAO;
 import com.banksecure.infra.DAO.FuncionarioDAO;
@@ -16,6 +17,7 @@ import com.banksecure.service.SeguroService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class App {
@@ -93,55 +95,62 @@ public class App {
 
                                 switch (opcFunc){
                                     case 1:
-                                        System.out.println(" ----Digite os dados do cliente a ser cadastrado-----");
-                                        System.out.println("Nome: ");
-                                       String nome = sc.next();
-                                       sc.next();
-                                        System.out.println("CPF:");
-                                        String cpf = sc.next();
-                                        System.out.println("Data de nascimento (DD-MM-AAAA):");
-                                        LocalDate dtNasc = LocalDate.parse(sc.next());
-                                        LocalDate dataAtual = LocalDate.now();
-                                        int idade = Period.between(dtNasc, dataAtual).getYears();
-                                        if(idade < 18){
-                                            System.out.println("Cliente deve ter 18 anos ou mais para ser cadastrado.");
-                                            break;
-                                        }
 
-                                        cliente.setNome(nome);
-                                        cliente.setCpf(cpf);
-                                        cliente.setDataNascimento(dtNasc);
+                                    try {
+                                         System.out.println(" ----Digite os dados do cliente a ser cadastrado-----");
+                                         System.out.println("Nome: ");
+                                         String nome = sc.next();
+                                         System.out.println("CPF:");
+                                         String cpf = sc.next();
+                                         System.out.println("Data de nascimento (DD-MM-AAAA):");
+                                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                                         LocalDate dtNasc = LocalDate.parse(sc.next(), formatter);
 
-                                        clienteDAO.save(cliente);
+                                         cliente.setNome(nome);
+                                         cliente.setCpf(cpf);
+                                         cliente.setDataNascimento(dtNasc);
 
-                                        System.out.println("Cliente cadastrado com sucesso!");
+                                         clienteDAO.save(cliente);
 
+                                         System.out.println("Cliente cadastrado com sucesso!");
 
-
+                                    } catch (DadosInvalidosException e) {
+                                        System.out.println("Erro ao cadastrar cliente: " + e.getMessage());
+                                    } catch (Exception e) {
+                                        System.out.println("Erro inesperado. Tente novamente.");
+                                    }
                                         break;
+
                                     case 2:
                                         System.out.println("----Cadastrar apolice----\n" );
                                         System.out.println("----Clientes disponiveis----\n" );
-                                        System.out.println(clienteDAO.getAll());
+                                        clienteDAO.getAll().forEach(System.out::println);
+
                                         System.out.println("ID do cliente: ");
                                         Long clienteId = sc.nextLong();
+
                                         System.out.println("----Seguros disponiveis----\n" );
-                                        System.out.println(seguroDAO.getAll());
+                                        seguroDAO.getAll().forEach(System.out::println);
+
                                         System.out.println("ID do seguro: ");
                                         Long seguroId = sc.nextLong();
+
                                         System.out.println("----Funcionarios Disponiveis----\n" );
-                                        System.out.println(funcionarioDAO.getAll());
+                                        funcionarioDAO.getAll().forEach(System.out::println);
+
                                         System.out.println("ID do funcionario: ");
                                         Long funcionarioId = sc.nextLong();
+
+                                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                                         System.out.println("Data de inicio da apolice (DD-MM-AAAA): ");
-                                        LocalDate dataInicio = LocalDate.parse(sc.next());
+                                        LocalDate dataInicio = LocalDate.parse(sc.next(), formatter);
+
                                         System.out.println("Data de fim da apolice (DD-MM-AAAA): ");
-                                        LocalDate dataFim = LocalDate.parse(sc.next());
+                                        LocalDate dataFim = LocalDate.parse(sc.next(), formatter);
 
-
-                                       apolice.setCliente_id(clienteId);
+                                        apolice.setCliente_id(clienteId);
                                         apolice.setFuncionario_id(funcionarioId);
-;                                      apolice.setSeguro_id(seguroId);
+;                                       apolice.setSeguro_id(seguroId);
                                         apolice.setDataInicio(dataInicio);
                                         apolice.setDataFim(dataFim);
 
@@ -206,7 +215,7 @@ public class App {
                                                 case 1:
                                                     System.out.println("----Deletar seguro----\n" );
                                                     System.out.println("----Seguros disponiveis----\n" );
-                                                    System.out.println(seguroDAO.getAll());
+                                                    seguroDAO.getAll().forEach(System.out::println);
                                                     System.out.println("ID do seguro a ser deletado: ");
                                                     Long idSeguroDel = sc.nextLong();
 
@@ -218,7 +227,7 @@ public class App {
                                                 case 2:
                                                     System.out.println("----Alterar seguro----\n" );
                                                     System.out.println("----Seguros disponiveis----\n" );
-                                                    System.out.println(seguroDAO.getAll());
+                                                    seguroDAO.getAll().forEach(System.out::println);
                                                     System.out.println("ID do seguro a ser alterado: ");
                                                     Long idSeguroAlt = sc.nextLong();
                                                     seguro.setId(idSeguroAlt);
@@ -245,11 +254,11 @@ public class App {
                                         break;
                                     case 6:
                                         System.out.println("----Lista de Apólices----\n" );
-                                        System.out.println(apoliceDAO.getAll());
+                                        apoliceDAO.getAll().forEach(System.out::println);
                                         break;
                                     case 7:
                                         System.out.println("----Lista de Clientes----\n" );
-                                        System.out.println(clienteDAO.getAll());
+                                        clienteDAO.getAll().forEach(System.out::println);
                                         break;
                                 }
                             }while(opcFunc != 8);

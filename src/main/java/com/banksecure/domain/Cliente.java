@@ -1,6 +1,7 @@
 package com.banksecure.domain;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Cliente {
 
@@ -29,12 +30,16 @@ public class Cliente {
     public String toString() {return mostrarDadosDoCliente();}
 
     public String mostrarDadosDoCliente(){
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         StringBuilder dados = new StringBuilder();
         dados.append("================== Dados do cliente ===================\n");
         dados.append("id: " + id + "\n");
         dados.append("Nome: " + nome + "\n");
         dados.append("CPF: " + cpf + "\n");
-        dados.append("Data de Nascimento: " + dataNascimento + "\n");
+        dados.append("Data de Nascimento: ")
+                .append(dataNascimento.format(formatter))
+                .append("\n");
 
         return dados.toString();
     }
