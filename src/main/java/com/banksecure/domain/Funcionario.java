@@ -41,7 +41,7 @@ public class Funcionario {
     }
 
     public String toString(){
-        return "Funcionario{id=" + id + ", usuario='" + usuario + "', senha='" + senha + "'}";
+        return mostrarDadosDoFuncionario();
     }
 
     public String mostrarDadosDoFuncionario(){

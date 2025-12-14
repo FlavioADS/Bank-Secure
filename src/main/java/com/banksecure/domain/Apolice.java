@@ -126,7 +126,7 @@ public class Apolice {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("----------------------------\n");
+        sb.append("=========================\n");
         sb.append("ID: ").append(id).append("\n");
         sb.append("Cliente: ").append(getNomeCliente()).append("\n");
         sb.append("Seguro: ").append(getNomeSeguro()).append("\n");
@@ -135,7 +135,7 @@ public class Apolice {
         sb.append("Data inicio: ").append(dataInicio).append("\n");
         sb.append("Data fim: ").append(dataFim).append("\n");
         sb.append("Renovada: ").append(renovada).append("\n");
-        sb.append("----------------------------\n");
+        sb.append("=========================\n");
         return sb.toString();
     }
 
