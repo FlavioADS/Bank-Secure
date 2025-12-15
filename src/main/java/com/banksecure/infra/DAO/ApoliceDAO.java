@@ -16,17 +16,15 @@ import java.util.List;
 public class ApoliceDAO {
 
     private ApoliceService apoliceService = new ApoliceService();
-    private Apolice apolice = new Apolice();
 
     public void iniciaTabela() {
         this.createTable();
-        this.apoliceService = new ApoliceService();
     }
 
     public void popularRegistro() {
         try {
-            Apolice apolice7 = new Apolice(1L,1L,1L,new BigDecimal("17000"), LocalDate.now(), LocalDate.now().plusDays(30),false);
-            this.save(apolice7);
+            Apolice apolice = new Apolice(1L,1L,1L,new BigDecimal("17000"), LocalDate.now(), LocalDate.now().plusDays(30),false);
+            this.save(apolice);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -137,17 +135,28 @@ public class ApoliceDAO {
     }
 
     public List<Apolice> getByDueDate(){
-        String sql = "SELECT * FROM apolice INNER JOIN clientes ON apolice.cliente_id = clientes.id INNER JOIN seguro ON apolice.seguro_id=seguro.id INNER JOIN funcionarios ON apolice.funcionario_id = funcionarios.id WHERE dataFim = ? AND renovada = FALSE";
-        LocalDate dataVencimento = LocalDate.now().plusDays(30);
 
-        try(
-            Connection con = new ConnectionFactory().getConnection();
-            PreparedStatement stmt = con.prepareStatement(sql)){
+        String sql =
+                "SELECT * FROM apolice " +
+                        "INNER JOIN clientes ON apolice.cliente_id = clientes.id " +
+                        "INNER JOIN seguro ON apolice.seguro_id = seguro.id " +
+                        "INNER JOIN funcionarios ON apolice.funcionario_id = funcionarios.id " +
+                        "WHERE dataFim BETWEEN ? AND ? AND renovada = FALSE";
 
-            stmt.setDate(1,Date.valueOf(dataVencimento));
+        LocalDate hoje = LocalDate.now();
+        LocalDate dataVencimento = hoje.plusDays(30);
 
-            try(ResultSet rs = stmt.executeQuery()) {
+        try (
+                Connection con = new ConnectionFactory().getConnection();
+                PreparedStatement stmt = con.prepareStatement(sql)
+        ) {
+
+            stmt.setDate(1, Date.valueOf(hoje));
+            stmt.setDate(2, Date.valueOf(dataVencimento));
+
+            try (ResultSet rs = stmt.executeQuery()) {
                 List<Apolice> apolices = new ArrayList<>();
+
                 while (rs.next()) {
                     apolices.add(new Apolice(
                             rs.getLong("id"),
@@ -160,15 +169,24 @@ public class ApoliceDAO {
                             rs.getBoolean("renovada")
                     ));
 
-                    apolices.get(apolices.size() -1).setNomeCliente(rs.getString("clientes.nome"));
-                    apolices.get(apolices.size() -1).setNomeSeguro(TipoDeSeguroEnum.valueOf(rs.getString("seguro.tipo")));
-                    apolices.get(apolices.size() -1).setNomeFuncionario(rs.getString("funcionarios.usuario"));
+                    apolices.get(apolices.size() - 1)
+                            .setNomeCliente(rs.getString("clientes.nome"));
+                    apolices.get(apolices.size() - 1)
+                            .setNomeSeguro(
+                                    TipoDeSeguroEnum.valueOf(rs.getString("seguro.tipo"))
+                            );
+                    apolices.get(apolices.size() - 1)
+                            .setNomeFuncionario(
+                                    rs.getString("funcionarios.usuario")
+                            );
                 }
                 return apolices;
             }
 
         } catch (SQLException e) {
-            throw new EstruturaBancoException("Erro ao buscar apolices com vencimento em 30 dias no banco de dados");
+            throw new EstruturaBancoException(
+                    "Erro ao buscar apolices com vencimento em 30 dias no banco de dados"
+            );
         }
     }
 

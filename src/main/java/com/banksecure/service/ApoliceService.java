@@ -44,7 +44,7 @@ public class ApoliceService {
         }
     }
 
-    public void registrarVenda(Long idSeguro, Long idCliente, Long idFuncionario){
+    public void registrarVenda(Long idSeguro, Long idCliente, Long idFuncionario, LocalDate dataInicio, LocalDate dataFim) {
         if (idSeguro == null ||  idCliente == null || idFuncionario == null) {
             throw new DadosInvalidosException("Dados incompletos para registrar venda!");
         }
@@ -69,7 +69,7 @@ public class ApoliceService {
 
         BigDecimal valorFinal = cotacaoService.taxaRisco(valorComTaxa);
 
-        Apolice apolice = new Apolice(idCliente, idSeguro, idFuncionario, valorFinal,LocalDate.now(),LocalDate.now().plusYears(1), false);
+        Apolice apolice = new Apolice(idCliente, idSeguro, idFuncionario, valorFinal, dataInicio, dataFim, false);
         apoliceDAO.save(apolice);
     }
 

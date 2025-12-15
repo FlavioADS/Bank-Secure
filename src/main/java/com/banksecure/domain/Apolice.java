@@ -125,20 +125,7 @@ public class Apolice {
 
 
     @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("=========================\n");
-        sb.append("ID: ").append(id).append("\n");
-        sb.append("Cliente: ").append(getNomeCliente()).append("\n");
-        sb.append("Seguro: ").append(getNomeSeguro()).append("\n");
-        sb.append("Funcionario: ").append(getNomeFuncionario()).append("\n");
-        sb.append("Valor: ").append(valorFinal).append("\n");
-        sb.append("Data inicio: ").append(dataInicio).append("\n");
-        sb.append("Data fim: ").append(dataFim).append("\n");
-        sb.append("Renovada: ").append(renovada).append("\n");
-        sb.append("=========================\n");
-        return sb.toString();
-    }
+    public String toString() {return mostrarDadosDaApolice();}
 
     public String mostrarDadosDaApolice(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");

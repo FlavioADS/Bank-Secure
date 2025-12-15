@@ -20,12 +20,8 @@ public class ClienteDAO {
 
     public void popularRegistros(){
         try{
-            Cliente cliente1 = new Cliente("Flavão", "80758585472", LocalDate.of(2004, 9, 15));
-
-            Cliente cliente2 = new Cliente("Eduardo", "58142587954", LocalDate.of(2000, 1, 25));
-
+            Cliente cliente1 = new Cliente("Flavio", "80758585472", LocalDate.of(2004, 9, 15));
             this.save(cliente1);
-            this.save(cliente2);
 
         } catch (Exception e) {
             throw new EstruturaBancoException("Erro ao popular tabela de clientes");

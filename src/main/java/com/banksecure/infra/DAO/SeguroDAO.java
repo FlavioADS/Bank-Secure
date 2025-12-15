@@ -15,7 +15,6 @@ import java.util.List;
 public class SeguroDAO {
 
     private SeguroService seguroService = new SeguroService();
-    private Seguro seguro = new Seguro();
 
     public void iniciaTabelas(){
          this.createTable();

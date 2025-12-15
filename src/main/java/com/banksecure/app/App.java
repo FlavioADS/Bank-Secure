@@ -2,7 +2,6 @@ package com.banksecure.app;
 
 import com.banksecure.domain.Apolice;
 import com.banksecure.domain.Cliente;
-import com.banksecure.domain.Funcionario;
 import com.banksecure.domain.Seguro;
 import com.banksecure.enums.TipoDeSeguroEnum;
 import com.banksecure.exception.DadosInvalidosException;
@@ -16,7 +15,6 @@ import com.banksecure.service.SeguroService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class App {
@@ -29,7 +27,6 @@ public class App {
         SeguroDAO seguroDAO = new SeguroDAO();
         ApoliceDAO apoliceDAO = new ApoliceDAO();
 
-        Seguro seguro = new Seguro();
         Cliente cliente = new Cliente();
         SeguroService seguroService = new SeguroService();
         Apolice apolice = new Apolice();
@@ -43,7 +40,6 @@ public class App {
         seguroDAO.iniciaTabelas();
         clienteDAO.iniciaTabela();
         apoliceDAO.iniciaTabela();
-
 
         int opc = 0;
 
@@ -173,7 +169,7 @@ public class App {
                                                 apolice.setDataInicio(dataInicio);
                                                 apolice.setDataFim(dataFim);
 
-                                                apoliceService.registrarVenda(seguroId, clienteId, funcionarioId);
+                                                apoliceService.registrarVenda(seguroId, clienteId, funcionarioId, dataInicio, dataFim);
 
                                                 System.out.println("Apólice cadastrada com sucesso!");
                                                 apoliceDAO.getAll().forEach(System.out::println);
@@ -188,7 +184,6 @@ public class App {
 
                                         case 3:
                                             try {
-                                                int opcDash;
                                                 do {
                                                     System.out.println("Visualização das cotações");
 
@@ -294,7 +289,7 @@ public class App {
 
                                                                 System.out.println("ID do seguro a ser alterado: ");
                                                                 Long idSeguroAlt = sc.nextLong();
-                                                                sc.nextLine(); // limpa buffer
+                                                                sc.nextLine();
 
                                                                 Seguro seguroAlt = seguroDAO.getById(idSeguroAlt);
 
@@ -329,7 +324,7 @@ public class App {
 
                                                                 System.out.println("Valor prêmio base (somente números): ");
                                                                 BigDecimal valorBase = sc.nextBigDecimal();
-                                                                sc.nextLine(); // limpa buffer
+                                                                sc.nextLine();
 
                                                                 Seguro novoSeguro = new Seguro(tipo, descSeguro, cobertura, valorBase);
                                                                 seguroDAO.save(novoSeguro);
@@ -338,12 +333,12 @@ public class App {
 
                                                             } catch (IllegalArgumentException e) {
                                                                 System.out.println("Tipo de seguro inválido.");
-                                                                sc.nextLine(); // limpa buffer
+                                                                sc.nextLine();
                                                             } catch (DadosInvalidosException e) {
                                                                 System.out.println("Erro ao cadastrar seguro: " + e.getMessage());
                                                             } catch (Exception e) {
                                                                 System.out.println("Erro inesperado ao cadastrar seguro.");
-                                                                sc.nextLine(); // limpa buffer
+                                                                sc.nextLine();
                                                             }
                                                             break;
                                                     }
@@ -372,6 +367,7 @@ public class App {
                                             break;
                                         case 8:
                                             try {
+
                                                 apoliceService.apolicesParaRenovar();
 
                                                 System.out.println("\nDeseja renovar alguma apólice? (1 - Sim / 2 - Não)");
@@ -435,16 +431,6 @@ public class App {
             }
 
         } while (opc != 3);
-
-
-    }
-    private static String readLine(Scanner sc) {
-        String line = "";
-        while (line.isBlank()) {
-            if (!sc.hasNextLine()) return "";
-            line = sc.nextLine();
-        }
-        return line.trim();
     }
 }
 
