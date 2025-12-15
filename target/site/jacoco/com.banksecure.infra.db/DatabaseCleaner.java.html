@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DatabaseCleaner.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">banksecure</a> &gt; <a href="index.source.html" class="el_package">com.banksecure.infra.db</a> &gt; <span class="el_source">DatabaseCleaner.java</span></div><h1>DatabaseCleaner.java</h1><pre class="source lang-java linenums">package com.banksecure.infra.db;
+
+import com.banksecure.exception.EstruturaBancoException;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+<span class="nc" id="L9">public class DatabaseCleaner {</span>
+    public static void limparTabelas(){
+<span class="fc" id="L11">        try(Connection con = new ConnectionFactory().getConnection();</span>
+<span class="fc" id="L12">            Statement stmt = con.createStatement()) {</span>
+
+<span class="fc" id="L14">            stmt.execute(&quot;SET REFERENTIAL_INTEGRITY FALSE&quot;);</span>
+
+<span class="fc" id="L16">            stmt.execute(&quot;TRUNCATE TABLE apolice&quot;);</span>
+<span class="fc" id="L17">            stmt.execute(&quot;TRUNCATE TABLE seguro&quot;);</span>
+<span class="fc" id="L18">            stmt.execute(&quot;TRUNCATE TABLE clientes&quot;);</span>
+<span class="fc" id="L19">            stmt.execute(&quot;TRUNCATE TABLE funcionarios&quot;);</span>
+
+<span class="fc" id="L21">            stmt.execute(&quot;ALTER TABLE apolice ALTER COLUMN ID RESTART WITH 1&quot;);</span>
+<span class="fc" id="L22">            stmt.execute(&quot;ALTER TABLE seguro ALTER COLUMN ID RESTART WITH 1&quot;);</span>
+<span class="fc" id="L23">            stmt.execute(&quot;ALTER TABLE clientes ALTER COLUMN ID RESTART WITH 1&quot;);</span>
+<span class="fc" id="L24">            stmt.execute(&quot;ALTER TABLE funcionarios ALTER COLUMN ID RESTART WITH 1&quot;);</span>
+
+<span class="fc" id="L26">            stmt.execute(&quot;SET REFERENTIAL_INTEGRITY TRUE&quot;);</span>
+
+<span class="fc" id="L28">        }catch (SQLException e){</span>
+<span class="fc" id="L29">            throw new EstruturaBancoException(&quot;Erro ao limpar tabelas: &quot;  + e.getMessage());</span>
+<span class="fc" id="L30">        }</span>
+<span class="fc" id="L31">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

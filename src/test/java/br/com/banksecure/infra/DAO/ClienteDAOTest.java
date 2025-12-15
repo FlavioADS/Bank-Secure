@@ -3,6 +3,8 @@ package br.com.banksecure.infra.DAO;
 import com.banksecure.domain.Cliente;
 import com.banksecure.exception.DadosInvalidosException;
 import com.banksecure.infra.DAO.ClienteDAO;
+import com.banksecure.infra.db.DatabaseCleaner;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -11,7 +13,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ClienteDAOtest {
+public class ClienteDAOTest {
 
     @Mock
     private ClienteDAO clienteDAO;
@@ -20,6 +22,11 @@ public class ClienteDAOtest {
     public void setup() {
         clienteDAO = new ClienteDAO();
         clienteDAO.iniciaTabela();
+    }
+
+    @AfterAll
+    public static void limparBanco(){
+        DatabaseCleaner.limparTabelas();
     }
 
     @Test
@@ -45,7 +52,7 @@ public class ClienteDAOtest {
 
     @Test
     void deveRetornarQuantidadeDeClientesSalvos() {
-        assertEquals(2, clienteDAO.getAll().size());
+        assertEquals(6, clienteDAO.getAll().size());
     }
 
     @Test
@@ -84,9 +91,9 @@ public class ClienteDAOtest {
         Cliente cliente = dao.getById(1L);
 
         assertEquals(1L, cliente.getId());
-        assertEquals("Flavão", cliente.getNome());
+        assertEquals("Flavio", cliente.getNome());
         assertEquals("80758585472", cliente.getCpf());
-        assertEquals(LocalDate.of(2004, 9, 15), cliente.getDataNascimento());
+        assertEquals(LocalDate.of(2004, 9, 10), cliente.getDataNascimento());
     }
 
     @Test

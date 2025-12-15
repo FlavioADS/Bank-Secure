@@ -16,15 +16,47 @@ public class ClienteDAO {
 
     public void iniciaTabela(){
         this.createTable();
+        if (tabelaVazia()) {
+            popularRegistros();
+        }
     }
 
     public void popularRegistros(){
         try{
-            Cliente cliente1 = new Cliente("Flavio", "80758585472", LocalDate.of(2004, 9, 15));
+            Cliente cliente1 = new Cliente("Flavio", "80758585472", LocalDate.of(2004, 9, 10));
             this.save(cliente1);
+
+            Cliente cliente2 = new Cliente("Jennifer", "89593956093", LocalDate.of(2003, 9, 9));
+            this.save(cliente2);
+
+            Cliente cliente3 = new Cliente("Diego", "03369337037", LocalDate.of(2000, 10, 9));
+            this.save(cliente3);
+
+            Cliente cliente4 = new Cliente("Roy", "49434572070", LocalDate.of(2002, 9, 18));
+            this.save(cliente4);
+
+            Cliente cliente5 = new Cliente("Leticia", "34517791025", LocalDate.of(2001, 9, 1));
+            this.save(cliente5);
+
+            Cliente cliente6 = new Cliente("Jaine", "42067877003", LocalDate.of(2003, 9, 7));
+            this.save(cliente6);
 
         } catch (Exception e) {
             throw new EstruturaBancoException("Erro ao popular tabela de clientes");
+        }
+    }
+
+    private boolean tabelaVazia() {
+        String sql = "SELECT COUNT(*) FROM clientes";
+        try (Connection con = new ConnectionFactory().getConnection();
+             Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            rs.next();
+            return rs.getInt(1) == 0;
+
+        } catch (Exception e) {
+            throw new EstruturaBancoException("Erro ao verificar tabela de clientes");
         }
     }
 

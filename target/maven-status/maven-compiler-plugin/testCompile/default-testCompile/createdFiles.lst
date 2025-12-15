@@ -1,1 +1,6 @@
-br\com\banksecure\infra\DAO\ClienteDAOtest.class
+br\com\banksecure\infra\DAO\ClienteDAOTest.class
+br\com\banksecure\infra\DAO\FuncionarioDAOTest.class
+br\com\banksecure\infra\DAO\SeguroDAOTest.class
+br\com\banksecure\domain\SeguroTest.class
+br\com\banksecure\infra\DAO\ApoliceDAOTest.class
+br\com\banksecure\domain\FuncionarioTest.class

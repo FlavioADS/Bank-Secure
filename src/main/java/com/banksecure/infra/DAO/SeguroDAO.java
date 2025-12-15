@@ -23,35 +23,50 @@ public class SeguroDAO {
         }
     }
 
-    public void popularRegistros(){
-        try{
-            Seguro seguro1 = new Seguro(
-                    TipoDeSeguroEnum.SEGURO_VIDA,
-              "Garante proteção financeira aos beneficiários.",
-              new BigDecimal("200000"),
-              new BigDecimal("70")
-        );
-            Seguro seguro2 = new Seguro(
-                    TipoDeSeguroEnum.SEGURO_RESIDENCIAL,
-              "Assegura o imóvel e seus bens contra riscos cobertos",
-              new BigDecimal("300000"),
-              new BigDecimal("55")
-        );
-            Seguro seguro3 = new Seguro(
-                    TipoDeSeguroEnum.SEGURO_AUTO,
-              "Protege o veículo contra riscos previstos em contrato.",
-              new BigDecimal("20000"),
-              new BigDecimal("100")
-        );
+        public void popularRegistros(){
+            try{
+                Seguro seguro1 = new Seguro(
+                        TipoDeSeguroEnum.SEGURO_VIDA,
+                  "Garante proteção financeira aos beneficiários.",
+                  new BigDecimal("200000"),
+                  new BigDecimal("70")
+            );
+                Seguro seguro2 = new Seguro(
+                        TipoDeSeguroEnum.SEGURO_RESIDENCIAL,
+                  "Assegura o imóvel e seus bens contra riscos cobertos",
+                  new BigDecimal("300000"),
+                  new BigDecimal("55")
+            );
+                Seguro seguro3 = new Seguro(
+                        TipoDeSeguroEnum.SEGURO_AUTO,
+                  "Protege o veículo contra riscos previstos em contrato.",
+                  new BigDecimal("20000"),
+                  new BigDecimal("100")
+            );
 
-        this.save(seguro1);
-        this.save(seguro2);
-        this.save(seguro3);
+            this.save(seguro1);
+            this.save(seguro2);
+            this.save(seguro3);
+
+            } catch (Exception e) {
+                throw new EstruturaBancoException("Erro ao popular tabela de seguros");
+        }
+    }
+
+    private boolean tabelaVazia() {
+        String sql = "SELECT COUNT(*) FROM seguro";
+        try (Connection con = new ConnectionFactory().getConnection();
+             Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            rs.next();
+            return rs.getInt(1) == 0;
 
         } catch (Exception e) {
-            throw new EstruturaBancoException("Erro ao popular tabela de seguros");
+            throw new EstruturaBancoException("Erro ao verificar tabela de seguros");
+        }
     }
-}
+
     public void createTable() {
 
         String sqlTabelaSeguro = """
@@ -98,20 +113,6 @@ public class SeguroDAO {
             return seguros;
         } catch (SQLException e) {
             throw new EstruturaBancoException("Erro ao buscar registros na tabela de seguros");
-        }
-    }
-
-    private boolean tabelaVazia() {
-        String sql = "SELECT COUNT(*) FROM seguro";
-        try (Connection con = new ConnectionFactory().getConnection();
-             Statement stmt = con.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-
-            rs.next();
-            return rs.getInt(1) == 0;
-
-        } catch (Exception e) {
-            throw new EstruturaBancoException("Erro ao verificar tabela de seguros");
         }
     }
 

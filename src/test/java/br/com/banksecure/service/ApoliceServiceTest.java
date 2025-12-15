@@ -79,13 +79,13 @@ public class ApoliceServiceTest {
 
     @Test
     void deveLancarErroAoRegistrarVendaComCamposNull(){
-        assertThrows(DadosInvalidosException.class, () -> service.registrarVenda(null, 1L,1L));
+        assertThrows(DadosInvalidosException.class, () -> service.registrarVenda(null, null,null, null, null ));
         verifyNoInteractions(apoliceDAO);
     }
 
     @Test
     void deveLancarErroAoRegistrarVendaComCamposNegativos(){
-        assertThrows(DadosInvalidosException.class, () -> service.registrarVenda(-3L, 1L,1L));
+        assertThrows(DadosInvalidosException.class, () -> service.registrarVenda(-3L, 1L,1L,  LocalDate.now(), LocalDate.of(2026,12, 21) ));
         verifyNoInteractions(apoliceDAO);
     }
 

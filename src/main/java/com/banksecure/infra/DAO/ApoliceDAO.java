@@ -19,16 +19,48 @@ public class ApoliceDAO {
 
     public void iniciaTabela() {
         this.createTable();
+        if (tabelaVazia()) {
+            popularRegistro();
+        }
     }
 
     public void popularRegistro() {
         try {
-            Apolice apolice = new Apolice(1L,1L,1L,new BigDecimal("17000"), LocalDate.now(), LocalDate.now().plusDays(30),false);
-            this.save(apolice);
+            Apolice apolice1 = new Apolice(1L,1L,1L,new BigDecimal("17000"), LocalDate.now(), LocalDate.now().plusDays(30),false);
+            this.save(apolice1);
+
+            Apolice apolice2 = new Apolice(2L,2L,2L,new BigDecimal("18000"), LocalDate.now(), LocalDate.now().plusYears(1),false);
+            this.save(apolice2);
+
+            Apolice apolice3 = new Apolice(3L,3L,1L,new BigDecimal("16500"), LocalDate.now(), LocalDate.now().plusDays(30),false);
+            this.save(apolice3);
+
+            Apolice apolice4 = new Apolice(4L,1L,2L,new BigDecimal("17250"), LocalDate.now(), LocalDate.now().plusYears(1),false);
+            this.save(apolice4);
+
+            Apolice apolice5 = new Apolice(5L,2L,1L,new BigDecimal("16000"), LocalDate.now(), LocalDate.now().plusYears(1),false);
+            this.save(apolice5);
+
+            Apolice apolice6 = new Apolice(6L,3L,2L,new BigDecimal("17500"), LocalDate.now(), LocalDate.now().plusYears(1),false);
+            this.save(apolice6);
 
         } catch (Exception e) {
             e.printStackTrace();
             throw new EstruturaBancoException("Erro ao popular tabela apolice");
+        }
+    }
+
+    private boolean tabelaVazia() {
+        String sql = "SELECT COUNT(*) FROM apolice";
+        try (Connection con = new ConnectionFactory().getConnection();
+             Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            rs.next();
+            return rs.getInt(1) == 0;
+
+        } catch (Exception e) {
+            throw new EstruturaBancoException("Erro ao verificar tabela de apolices");
         }
     }
 

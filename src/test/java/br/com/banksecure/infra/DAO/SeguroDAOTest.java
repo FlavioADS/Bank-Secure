@@ -5,6 +5,8 @@ import com.banksecure.enums.TipoDeSeguroEnum;
 import com.banksecure.exception.BancoVazioException;
 import com.banksecure.exception.DadosInvalidosException;
 import com.banksecure.infra.DAO.SeguroDAO;
+import com.banksecure.infra.db.DatabaseCleaner;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -13,7 +15,7 @@ import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SeguroDAOtest {
+public class SeguroDAOTest {
 
     @Mock
     private SeguroDAO seguroDAO;
@@ -22,6 +24,11 @@ public class SeguroDAOtest {
     public void setup(){
         seguroDAO = new SeguroDAO();
         seguroDAO.iniciaTabelas();
+    }
+
+    @AfterAll
+    public static void limparBanco(){
+        DatabaseCleaner.limparTabelas();
     }
 
     @Test

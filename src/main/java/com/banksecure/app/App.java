@@ -23,9 +23,16 @@ public class App {
         Scanner sc = new Scanner(System.in);
 
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+        funcionarioDAO.inicializaTabelas();
+
         ClienteDAO clienteDAO = new ClienteDAO();
+        clienteDAO.iniciaTabela();
+
         SeguroDAO seguroDAO = new SeguroDAO();
+        seguroDAO.iniciaTabelas();
+
         ApoliceDAO apoliceDAO = new ApoliceDAO();
+        apoliceDAO.iniciaTabela();
 
         Cliente cliente = new Cliente();
         SeguroService seguroService = new SeguroService();
@@ -35,11 +42,6 @@ public class App {
         CotacaoService cotacaoService = new CotacaoService();
 
         Dashboard dashboard = new Dashboard();
-
-        funcionarioDAO.inicializaTabelas();
-        seguroDAO.iniciaTabelas();
-        clienteDAO.iniciaTabela();
-        apoliceDAO.iniciaTabela();
 
         int opc = 0;
 

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Apolice.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">banksecure</a> &gt; <a href="index.source.html" class="el_package">com.banksecure.domain</a> &gt; <span class="el_source">Apolice.java</span></div><h1>Apolice.java</h1><pre class="source lang-java linenums">package com.banksecure.domain;
+
+import com.banksecure.enums.TipoDeSeguroEnum;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+public class Apolice {
+
+    private Long id;
+    private Long cliente_id;
+    private Long seguro_id;
+    private Long funcionario_id;
+    private BigDecimal valorFinal;
+    private LocalDate dataInicio;
+    private LocalDate dataFim;
+    private boolean renovada;
+    private String nomeCliente;
+    private TipoDeSeguroEnum nomeSeguro;
+    private String nomeFuncionario;
+
+<span class="fc" id="L23">    public Apolice(Long id, Long cliente_id, Long seguro_id, Long funcionario_id, BigDecimal valorFinal, LocalDate dataInicio, LocalDate dataFim, boolean renovada) {</span>
+<span class="fc" id="L24">        this.id = id;</span>
+<span class="fc" id="L25">        this.cliente_id = cliente_id;</span>
+<span class="fc" id="L26">        this.seguro_id = seguro_id;</span>
+<span class="fc" id="L27">        this.funcionario_id = funcionario_id;</span>
+<span class="fc" id="L28">        this.valorFinal = valorFinal;</span>
+<span class="fc" id="L29">        this.dataInicio = dataInicio;</span>
+<span class="fc" id="L30">        this.dataFim = dataFim;</span>
+<span class="fc" id="L31">        this.renovada = renovada;</span>
+<span class="fc" id="L32">    }</span>
+
+<span class="fc" id="L34">    public Apolice(Long cliente_id, Long seguro_id, Long funcionario_id, BigDecimal valorFinal, LocalDate dataInicio, LocalDate dataFim, boolean renovada) {</span>
+<span class="fc" id="L35">        this.cliente_id = cliente_id;</span>
+<span class="fc" id="L36">        this.seguro_id = seguro_id;</span>
+<span class="fc" id="L37">        this.funcionario_id = funcionario_id;</span>
+<span class="fc" id="L38">        this.valorFinal = valorFinal;</span>
+<span class="fc" id="L39">        this.dataInicio = dataInicio;</span>
+<span class="fc" id="L40">        this.dataFim = dataFim;</span>
+<span class="fc" id="L41">        this.renovada = renovada;</span>
+<span class="fc" id="L42">    }</span>
+
+<span class="nc" id="L44">    public Apolice() {</span>
+<span class="nc" id="L45">    }</span>
+
+    public boolean isRenovada() {
+<span class="fc" id="L48">        return renovada;</span>
+    }
+
+    public Long getId() {
+<span class="fc" id="L52">        return id;</span>
+    }
+
+    public void setId(Long id) {
+<span class="fc" id="L56">        this.id = id;</span>
+<span class="fc" id="L57">    }</span>
+
+    public Long getCliente_id() {
+<span class="fc" id="L60">        return cliente_id;</span>
+    }
+
+    public Long getSeguro_id() {
+<span class="fc" id="L64">        return seguro_id;</span>
+    }
+
+    public Long getFuncionario_id() {
+<span class="fc" id="L68">        return funcionario_id;</span>
+    }
+
+    public BigDecimal getValorFinal() {
+<span class="fc" id="L72">        return valorFinal;</span>
+    }
+
+    public LocalDate getDataInicio() {
+<span class="fc" id="L76">        return dataInicio;</span>
+    }
+
+    public LocalDate getDataFim() {
+<span class="fc" id="L80">        return dataFim;</span>
+    }
+
+    public String getNomeFuncionario() {
+<span class="fc" id="L84">        return nomeFuncionario;</span>
+    }
+
+    public void setNomeFuncionario(String nomeFuncionario) {
+<span class="fc" id="L88">        this.nomeFuncionario = nomeFuncionario;</span>
+<span class="fc" id="L89">    }</span>
+
+    public TipoDeSeguroEnum getNomeSeguro() {
+<span class="fc" id="L92">        return nomeSeguro;</span>
+    }
+
+    public void setNomeSeguro(TipoDeSeguroEnum nomeSeguro) {
+<span class="fc" id="L96">        this.nomeSeguro = nomeSeguro;</span>
+<span class="fc" id="L97">    }</span>
+
+    public String getNomeCliente() {
+<span class="fc" id="L100">        return nomeCliente;</span>
+    }
+
+    public void setNomeCliente(String nomeCliente) {
+<span class="fc" id="L104">        this.nomeCliente = nomeCliente;</span>
+<span class="fc" id="L105">    }</span>
+
+    public void setCliente_id(Long cliente_id) {
+<span class="nc" id="L108">        this.cliente_id = cliente_id;</span>
+<span class="nc" id="L109">    }</span>
+    public void setSeguro_id(Long seguro_id) {
+<span class="nc" id="L111">        this.seguro_id = seguro_id;</span>
+<span class="nc" id="L112">    }</span>
+    public void setFuncionario_id(Long funcionario_id) {
+<span class="nc" id="L114">        this.funcionario_id = funcionario_id;</span>
+<span class="nc" id="L115">    }</span>
+    public void setValorFinal(BigDecimal valorFinal) {
+<span class="nc" id="L117">        this.valorFinal = valorFinal;</span>
+<span class="nc" id="L118">    }</span>
+    public void setDataInicio(LocalDate dataInicio) {
+<span class="nc" id="L120">        this.dataInicio = dataInicio;</span>
+<span class="nc" id="L121">    }</span>
+    public void setDataFim(LocalDate dataFim) {
+<span class="nc" id="L123">        this.dataFim = dataFim;</span>
+<span class="nc" id="L124">    }</span>
+
+
+    @Override
+<span class="fc" id="L128">    public String toString() {return mostrarDadosDaApolice();}</span>
+
+    public String mostrarDadosDaApolice(){
+<span class="fc" id="L131">        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;dd/MM/yyyy&quot;);</span>
+<span class="fc" id="L132">        StringBuilder dados = new StringBuilder();</span>
+<span class="fc" id="L133">        dados.append(&quot;================== Dados da apolice ===================\n&quot;);</span>
+<span class="fc" id="L134">        dados.append(&quot;Apolice ID: &quot; + id + &quot;\n&quot;);</span>
+<span class="fc" id="L135">        dados.append(&quot;Cliente: &quot; + getNomeCliente() + &quot;\n&quot;);</span>
+<span class="fc" id="L136">        dados.append(&quot;Seguro: &quot; + getNomeSeguro() + &quot;\n&quot;);</span>
+<span class="fc" id="L137">        dados.append(&quot;Funcionario: &quot; + getNomeFuncionario()+ &quot;\n&quot;);</span>
+<span class="fc" id="L138">        dados.append(&quot;Valor Final: &quot; + valorFinal + &quot;\n&quot;);</span>
+<span class="fc" id="L139">        dados.append(&quot;Data de Inicio da apolice: &quot;)</span>
+<span class="fc" id="L140">                .append(dataInicio.format(formatter))</span>
+<span class="fc" id="L141">                .append(&quot;\n&quot;);</span>
+<span class="fc" id="L142">        dados.append(&quot;Data de fim da apolice: &quot;)</span>
+<span class="fc" id="L143">                .append(dataFim.format(formatter))</span>
+<span class="fc" id="L144">                .append(&quot;\n&quot;);</span>
+<span class="fc" id="L145">        dados.append(&quot;Renovada: &quot;).append(renovada).append(&quot;\n&quot;);</span>
+
+<span class="fc" id="L147">        return dados.toString();</span>
+    }
+
+    public String renovarDadosDaApolice(){
+<span class="nc" id="L151">        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;dd/MM/yyyy&quot;);</span>
+<span class="nc" id="L152">        StringBuilder dados = new StringBuilder();</span>
+<span class="nc" id="L153">        dados.append(&quot;================== Dados da apolice ===================\n&quot;);</span>
+<span class="nc" id="L154">        dados.append(&quot;Apolice ID: &quot; + id + &quot;\n&quot;);</span>
+<span class="nc" id="L155">        dados.append(&quot;Renovada: &quot;).append(renovada).append(&quot;\n&quot;);</span>
+
+<span class="nc" id="L157">        return dados.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

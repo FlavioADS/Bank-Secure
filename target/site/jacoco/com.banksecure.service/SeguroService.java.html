@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SeguroService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">banksecure</a> &gt; <a href="index.source.html" class="el_package">com.banksecure.service</a> &gt; <span class="el_source">SeguroService.java</span></div><h1>SeguroService.java</h1><pre class="source lang-java linenums">package com.banksecure.service;
+
+import com.banksecure.domain.Seguro;
+import com.banksecure.exception.DadosInvalidosException;
+import com.banksecure.exception.EstruturaBancoException;
+
+import java.math.BigDecimal;
+
+<span class="fc" id="L9">public class SeguroService {</span>
+
+    public void validarSeguroDAO(Seguro seguro) {
+
+<span class="fc bfc" id="L13" title="All 2 branches covered.">        if(seguro.getTipo() == null ||</span>
+<span class="fc bfc" id="L14" title="All 2 branches covered.">                seguro.getDescricao()==null ||</span>
+<span class="fc bfc" id="L15" title="All 2 branches covered.">                seguro.getCobertura()==null ||</span>
+<span class="fc bfc" id="L16" title="All 2 branches covered.">                seguro.getValorBase()==null){</span>
+<span class="fc" id="L17">            throw new EstruturaBancoException(&quot;Registros fornecidos não coincidem com a tabela Seguro&quot;);</span>
+        }
+
+<span class="pc bpc" id="L20" title="1 of 2 branches missed.">        if(seguro.getTipo().name().trim().isEmpty() ||</span>
+<span class="fc bfc" id="L21" title="All 2 branches covered.">                seguro.getDescricao().trim().isEmpty() ||</span>
+<span class="fc bfc" id="L22" title="All 2 branches covered.">                seguro.getCobertura().compareTo(BigDecimal.ZERO)&lt;=0 ||</span>
+<span class="pc bpc" id="L23" title="1 of 2 branches missed.">                seguro.getValorBase().compareTo(BigDecimal.ZERO)&lt;=0){</span>
+<span class="fc" id="L24">            throw new DadosInvalidosException(&quot;Dados invalidos: campos não podem ser vazios ou negativos.&quot;);</span>
+        }
+<span class="fc" id="L26">    }</span>
+
+    public void validarDeleteSeguro(Seguro seguro) {
+
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        if (seguro == null) {</span>
+<span class="fc" id="L31">            throw new DadosInvalidosException(&quot;Seguro inválido para exclusão.&quot;);</span>
+        }
+
+<span class="fc bfc" id="L34" title="All 4 branches covered.">        if (seguro.getId() == null || seguro.getId() &lt;= 0) {</span>
+<span class="fc" id="L35">            throw new DadosInvalidosException(&quot;ID inválido para exclusão.&quot;);</span>
+        }
+
+<span class="pc bpc" id="L38" title="1 of 4 branches missed.">        if (seguro.getTipo() == null || seguro.getTipo().name().trim().isEmpty()) {</span>
+<span class="fc" id="L39">            throw new DadosInvalidosException(&quot;Título inválido para exclusão.&quot;);</span>
+        }
+
+<span class="pc bpc" id="L42" title="1 of 4 branches missed.">        if (seguro.getValorBase() == null || seguro.getValorBase().compareTo(BigDecimal.ZERO) &lt;= 0) {</span>
+<span class="fc" id="L43">            throw new DadosInvalidosException(&quot;Valor base inválido para exclusão.&quot;);</span>
+        }
+<span class="fc" id="L45">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

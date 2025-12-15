@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>App.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">banksecure</a> &gt; <a href="index.source.html" class="el_package">com.banksecure.app</a> &gt; <span class="el_source">App.java</span></div><h1>App.java</h1><pre class="source lang-java linenums">package com.banksecure.app;
+
+import com.banksecure.domain.Apolice;
+import com.banksecure.domain.Cliente;
+import com.banksecure.domain.Seguro;
+import com.banksecure.enums.TipoDeSeguroEnum;
+import com.banksecure.exception.DadosInvalidosException;
+import com.banksecure.infra.DAO.ApoliceDAO;
+import com.banksecure.infra.DAO.ClienteDAO;
+import com.banksecure.infra.DAO.FuncionarioDAO;
+import com.banksecure.infra.DAO.SeguroDAO;
+import com.banksecure.service.ApoliceService;
+import com.banksecure.service.CotacaoService;
+import com.banksecure.service.SeguroService;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
+
+<span class="nc" id="L20">public class App {</span>
+    public static void main(String[] args) {
+
+<span class="nc" id="L23">        Scanner sc = new Scanner(System.in);</span>
+
+<span class="nc" id="L25">        FuncionarioDAO funcionarioDAO = new FuncionarioDAO();</span>
+<span class="nc" id="L26">        funcionarioDAO.inicializaTabelas();</span>
+
+<span class="nc" id="L28">        ClienteDAO clienteDAO = new ClienteDAO();</span>
+<span class="nc" id="L29">        clienteDAO.iniciaTabela();</span>
+
+<span class="nc" id="L31">        SeguroDAO seguroDAO = new SeguroDAO();</span>
+<span class="nc" id="L32">        seguroDAO.iniciaTabelas();</span>
+
+<span class="nc" id="L34">        ApoliceDAO apoliceDAO = new ApoliceDAO();</span>
+<span class="nc" id="L35">        apoliceDAO.iniciaTabela();</span>
+
+<span class="nc" id="L37">        Cliente cliente = new Cliente();</span>
+<span class="nc" id="L38">        SeguroService seguroService = new SeguroService();</span>
+<span class="nc" id="L39">        Apolice apolice = new Apolice();</span>
+
+<span class="nc" id="L41">        ApoliceService apoliceService = new ApoliceService();</span>
+<span class="nc" id="L42">        CotacaoService cotacaoService = new CotacaoService();</span>
+
+<span class="nc" id="L44">        Dashboard dashboard = new Dashboard();</span>
+
+<span class="nc" id="L46">        int opc = 0;</span>
+
+<span class="nc" id="L48">        System.out.println(&quot;&quot;&quot;</span>
+██████╗  █████╗ ███╗   ██╗██╗  ██╗  ███████╗███████╗███████╗██╗   ██╗██████╗ ███████╗
+██╔══██╗██╔══██╗████╗  ██║██║ ██╔╝  ██╔════╝██╔════╝██╔════╝██║   ██║██╔══██╗██╔════╝
+██████╔╝███████║██╔██╗ ██║█████╔╝   ███████╗█████╗  ██      ██║   ██║██████╔╝█████╗
+██╔══██╗██╔══██║██║╚██╗██║██╔═██╗   ╚════██║██╔══╝  ██      ██║   ██║██╔══██╗██╔══╝
+██████ ║██║  ██║██║ ╚████║██║  ██╗  ███████║███████╗███████╗╚██████╔╝██║  ██║███████╗
+╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝  ╚══════╝╚══════╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝
+&quot;&quot;&quot;);
+
+        do {
+
+<span class="nc" id="L59">            System.out.println(&quot;\n=====================================================================================&quot;);</span>
+<span class="nc" id="L60">            System.out.println(&quot;1 - Login&quot;);</span>
+<span class="nc" id="L61">            System.out.println(&quot;2 - Visualizar Seguros&quot;);</span>
+<span class="nc" id="L62">            System.out.println(&quot;3 - Sair&quot;);</span>
+<span class="nc" id="L63">            System.out.println(&quot;\nSelecione a opção desejada&quot;);</span>
+
+            try {
+<span class="nc" id="L66">                opc = sc.nextInt();</span>
+<span class="nc" id="L67">                sc.nextLine();</span>
+<span class="nc" id="L68">            } catch (Exception e) {</span>
+<span class="nc" id="L69">                System.out.println(&quot;Opção inválida.&quot;);</span>
+<span class="nc" id="L70">                sc.nextLine();</span>
+<span class="nc" id="L71">                opc = 0;</span>
+<span class="nc" id="L72">            }</span>
+
+<span class="nc bnc" id="L74" title="All 4 branches missed.">            switch (opc) {</span>
+
+                case 1:
+                    boolean certo;
+                    do {
+<span class="nc" id="L79">                        certo = true;</span>
+                        try {
+<span class="nc" id="L81">                            System.out.println(&quot;\nDigite seu usuario: &quot;);</span>
+<span class="nc" id="L82">                            String usuario = sc.next();</span>
+<span class="nc" id="L83">                            System.out.println(&quot;Digite sua senha: &quot;);</span>
+<span class="nc" id="L84">                            String senha = sc.next();</span>
+
+<span class="nc bnc" id="L86" title="All 4 branches missed.">                            if ((usuario.equals(&quot;diflale&quot;) &amp;&amp; senha.equals(&quot;1234&quot;)) ||</span>
+<span class="nc bnc" id="L87" title="All 4 branches missed.">                                    (usuario.equals(&quot;jejairoy&quot;) &amp;&amp; senha.equals(&quot;4321&quot;))) {</span>
+
+<span class="nc" id="L89">                                System.out.println(&quot;Login realizado com sucesso!&quot;);</span>
+
+<span class="nc" id="L91">                                int opcFunc = 0;</span>
+                                do {
+<span class="nc" id="L93">                                    System.out.println(&quot;\n=====================================================================================&quot;);</span>
+<span class="nc" id="L94">                                    System.out.println(&quot;1 - Cadastrar Cliente&quot;);</span>
+<span class="nc" id="L95">                                    System.out.println(&quot;2 - Registrar Apólices&quot;);</span>
+<span class="nc" id="L96">                                    System.out.println(&quot;3 - Visualizar Cotação&quot;);</span>
+<span class="nc" id="L97">                                    System.out.println(&quot;4 - Dashboard&quot;);</span>
+<span class="nc" id="L98">                                    System.out.println(&quot;5 - Gestão de Sistema&quot;);</span>
+<span class="nc" id="L99">                                    System.out.println(&quot;6 - Listar Apólices&quot;);</span>
+<span class="nc" id="L100">                                    System.out.println(&quot;7 - Listar Clientes&quot;);</span>
+<span class="nc" id="L101">                                    System.out.println(&quot;8 - Renovação Apólices&quot;);</span>
+<span class="nc" id="L102">                                    System.out.println(&quot;9 - Voltar&quot;);</span>
+<span class="nc" id="L103">                                    System.out.println(&quot;\nSelecione a opção desejada&quot;);</span>
+
+                                    try {
+<span class="nc" id="L106">                                        opcFunc = sc.nextInt();</span>
+<span class="nc" id="L107">                                        sc.nextLine();</span>
+<span class="nc" id="L108">                                    } catch (Exception e) {</span>
+<span class="nc" id="L109">                                        System.out.println(&quot;Opção inválida.&quot;);</span>
+<span class="nc" id="L110">                                        sc.nextLine();</span>
+<span class="nc" id="L111">                                        opcFunc = 0;</span>
+<span class="nc" id="L112">                                    }</span>
+
+<span class="nc bnc" id="L114" title="All 9 branches missed.">                                    switch (opcFunc) {</span>
+
+                                        case 1:
+                                            try {
+<span class="nc" id="L118">                                                System.out.println(&quot;Nome:&quot;);</span>
+<span class="nc" id="L119">                                                String nome = sc.nextLine();</span>
+
+<span class="nc" id="L121">                                                System.out.println(&quot;CPF:&quot;);</span>
+<span class="nc" id="L122">                                                String cpf = sc.next();</span>
+<span class="nc" id="L123">                                                System.out.println(&quot;Data de nascimento (DD-MM-AAAA):&quot;);</span>
+<span class="nc" id="L124">                                                LocalDate dtNasc = LocalDate.parse(sc.next(),</span>
+<span class="nc" id="L125">                                                        DateTimeFormatter.ofPattern(&quot;dd-MM-yyyy&quot;));</span>
+
+<span class="nc" id="L127">                                                cliente.setNome(nome);</span>
+<span class="nc" id="L128">                                                cliente.setCpf(cpf);</span>
+<span class="nc" id="L129">                                                cliente.setDataNascimento(dtNasc);</span>
+<span class="nc" id="L130">                                                clienteDAO.save(cliente);</span>
+
+<span class="nc" id="L132">                                                System.out.println(&quot;Cliente cadastrado com sucesso!&quot;);</span>
+<span class="nc" id="L133">                                            } catch (DadosInvalidosException e) {</span>
+<span class="nc" id="L134">                                                System.out.println(e.getMessage());</span>
+<span class="nc" id="L135">                                            } catch (Exception e) {</span>
+<span class="nc" id="L136">                                                System.out.println(&quot;Erro inesperado.&quot;);</span>
+<span class="nc" id="L137">                                            }</span>
+<span class="nc" id="L138">                                            break;</span>
+
+                                        case 2:
+                                            try {
+<span class="nc" id="L142">                                                System.out.println(&quot;----Clientes disponiveis----\n&quot;);</span>
+<span class="nc" id="L143">                                                clienteDAO.getAll().forEach(System.out::println);</span>
+
+<span class="nc" id="L145">                                                System.out.println(&quot;ID do cliente: &quot;);</span>
+<span class="nc" id="L146">                                                Long clienteId = sc.nextLong();</span>
+
+<span class="nc" id="L148">                                                System.out.println(&quot;----Seguros disponiveis----\n&quot;);</span>
+<span class="nc" id="L149">                                                seguroDAO.getAll().forEach(System.out::println);</span>
+
+<span class="nc" id="L151">                                                System.out.println(&quot;ID do seguro: &quot;);</span>
+<span class="nc" id="L152">                                                Long seguroId = sc.nextLong();</span>
+
+<span class="nc" id="L154">                                                System.out.println(&quot;----Funcionarios Disponiveis----\n&quot;);</span>
+<span class="nc" id="L155">                                                funcionarioDAO.getAll().forEach(System.out::println);</span>
+
+<span class="nc" id="L157">                                                System.out.println(&quot;ID do funcionario: &quot;);</span>
+<span class="nc" id="L158">                                                Long funcionarioId = sc.nextLong();</span>
+
+<span class="nc" id="L160">                                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;dd-MM-yyyy&quot;);</span>
+
+<span class="nc" id="L162">                                                System.out.println(&quot;Data de inicio da apolice (DD-MM-AAAA): &quot;);</span>
+<span class="nc" id="L163">                                                LocalDate dataInicio = LocalDate.parse(sc.next(), formatter);</span>
+
+<span class="nc" id="L165">                                                System.out.println(&quot;Data de fim da apolice (DD-MM-AAAA): &quot;);</span>
+<span class="nc" id="L166">                                                LocalDate dataFim = LocalDate.parse(sc.next(), formatter);</span>
+
+<span class="nc" id="L168">                                                apolice.setCliente_id(clienteId);</span>
+<span class="nc" id="L169">                                                apolice.setFuncionario_id(funcionarioId);</span>
+<span class="nc" id="L170">                                                apolice.setSeguro_id(seguroId);</span>
+<span class="nc" id="L171">                                                apolice.setDataInicio(dataInicio);</span>
+<span class="nc" id="L172">                                                apolice.setDataFim(dataFim);</span>
+
+<span class="nc" id="L174">                                                apoliceService.registrarVenda(seguroId, clienteId, funcionarioId, dataInicio, dataFim);</span>
+
+<span class="nc" id="L176">                                                System.out.println(&quot;Apólice cadastrada com sucesso!&quot;);</span>
+<span class="nc" id="L177">                                                apoliceDAO.getAll().forEach(System.out::println);</span>
+
+<span class="nc" id="L179">                                            } catch (DadosInvalidosException e) {</span>
+<span class="nc" id="L180">                                                System.out.println(&quot;Erro ao cadastrar apólice: &quot; + e.getMessage());</span>
+<span class="nc" id="L181">                                            } catch (Exception e) {</span>
+<span class="nc" id="L182">                                                System.out.println(&quot;Erro inesperado. Tente novamente.&quot;);</span>
+<span class="nc" id="L183">                                            }</span>
+<span class="nc" id="L184">                                            break;</span>
+
+
+                                        case 3:
+                                            try {
+                                                do {
+<span class="nc" id="L190">                                                    System.out.println(&quot;Visualização das cotações&quot;);</span>
+
+<span class="nc" id="L192">                                                    System.out.println(&quot;\n---- Seguro de Vida ----&quot;);</span>
+
+<span class="nc" id="L194">                                                    BigDecimal valorBaseVida = cotacaoService.setTaxaPadrao(BigDecimal.valueOf(70));</span>
+
+<span class="nc" id="L196">                                                    BigDecimal vidaSemBonus = valorBaseVida;</span>
+<span class="nc" id="L197">                                                    BigDecimal vidaComBonus = valorBaseVida;</span>
+
+<span class="nc bnc" id="L199" title="All 2 branches missed.">                                                    if (cotacaoService.bonusIdade(LocalDate.parse(&quot;1950-05-12&quot;))) {</span>
+<span class="nc" id="L200">                                                        vidaComBonus = vidaComBonus.add(BigDecimal.valueOf(100));</span>
+                                                    }
+
+<span class="nc" id="L203">                                                    System.out.println(&quot;Valor SEM bônus: R$ &quot; + cotacaoService.taxaRisco(vidaSemBonus));</span>
+<span class="nc" id="L204">                                                    System.out.println(&quot;Valor COM bônus: R$ &quot; + cotacaoService.taxaRisco(vidaComBonus));</span>
+
+<span class="nc" id="L206">                                                    System.out.println(&quot;\n---- Seguro Residencial ----&quot;);</span>
+
+<span class="nc" id="L208">                                                    BigDecimal valorBaseResi = cotacaoService.setTaxaPadrao(BigDecimal.valueOf(55));</span>
+
+<span class="nc" id="L210">                                                    BigDecimal resiSemBonus = valorBaseResi;</span>
+<span class="nc" id="L211">                                                    BigDecimal resiComBonus = valorBaseResi;</span>
+
+<span class="nc bnc" id="L213" title="All 2 branches missed.">                                                    if (cotacaoService.bonusIdade(LocalDate.parse(&quot;1955-05-11&quot;))) {</span>
+<span class="nc" id="L214">                                                        resiComBonus = resiComBonus.add(BigDecimal.valueOf(100));</span>
+                                                    }
+
+<span class="nc" id="L217">                                                    System.out.println(&quot;Valor SEM bônus: R$ &quot; + cotacaoService.taxaRisco(resiSemBonus));</span>
+<span class="nc" id="L218">                                                    System.out.println(&quot;Valor COM bônus: R$ &quot; + cotacaoService.taxaRisco(resiComBonus));</span>
+
+
+
+<span class="nc" id="L222">                                                    System.out.println(&quot;\n---- Seguro de Automóvel ----&quot;);</span>
+
+<span class="nc" id="L224">                                                    BigDecimal valorBaseAuto = cotacaoService.setTaxaPadrao(BigDecimal.valueOf(100));</span>
+
+<span class="nc" id="L226">                                                    BigDecimal autoSemBonus = valorBaseAuto;</span>
+<span class="nc" id="L227">                                                    BigDecimal autoComBonus = valorBaseAuto;</span>
+
+<span class="nc bnc" id="L229" title="All 2 branches missed.">                                                    if (cotacaoService.bonusIdade(LocalDate.parse(&quot;1951-11-12&quot;))) {</span>
+<span class="nc" id="L230">                                                        autoComBonus = autoComBonus.add(BigDecimal.valueOf(100));</span>
+                                                    }
+
+<span class="nc" id="L233">                                                    System.out.println(&quot;Valor SEM bônus: R$ &quot; + cotacaoService.taxaRisco(autoSemBonus));</span>
+<span class="nc" id="L234">                                                    System.out.println(&quot;Valor COM bônus: R$ &quot; + cotacaoService.taxaRisco(autoComBonus));</span>
+                                                } while (false);
+
+<span class="nc" id="L237">                                            } catch (Exception e) {</span>
+<span class="nc" id="L238">                                                System.out.println(&quot;Erro ao exibir cotações.&quot;);</span>
+<span class="nc" id="L239">                                            }</span>
+<span class="nc" id="L240">                                            break;</span>
+
+
+                                        case 4:
+                                            try {
+<span class="nc" id="L245">                                                dashboard.exibirDashboard();</span>
+<span class="nc" id="L246">                                            } catch (Exception e) {</span>
+<span class="nc" id="L247">                                                System.out.println(&quot;Erro no dashboard.&quot;);</span>
+<span class="nc" id="L248">                                            }</span>
+<span class="nc" id="L249">                                            break;</span>
+
+                                        case 5:
+<span class="nc" id="L252">                                            int opcGestao = 0;</span>
+                                            do {
+                                                try {
+<span class="nc" id="L255">                                                    System.out.println(&quot;1 - Deletar Seguro&quot;);</span>
+<span class="nc" id="L256">                                                    System.out.println(&quot;2 - Alterar Seguro&quot;);</span>
+<span class="nc" id="L257">                                                    System.out.println(&quot;3 - Cadastrar Seguro&quot;);</span>
+<span class="nc" id="L258">                                                    System.out.println(&quot;4 - Voltar&quot;);</span>
+
+<span class="nc" id="L260">                                                    opcGestao = sc.nextInt();</span>
+<span class="nc" id="L261">                                                    sc.nextLine();</span>
+
+<span class="nc bnc" id="L263" title="All 4 branches missed.">                                                    switch (opcGestao) {</span>
+
+                                                        case 1:
+                                                            try {
+<span class="nc" id="L267">                                                                System.out.println(&quot;\n=====Deletar Seguro=====\n&quot;);</span>
+<span class="nc" id="L268">                                                                System.out.println(&quot;=====Seguros Disponíveis=====\n&quot;);</span>
+<span class="nc" id="L269">                                                                seguroDAO.getAll().forEach(System.out::println);</span>
+
+<span class="nc" id="L271">                                                                System.out.println(&quot;ID do seguro a ser deletado: &quot;);</span>
+<span class="nc" id="L272">                                                                Long idSeguroDel = sc.nextLong();</span>
+<span class="nc" id="L273">                                                                sc.nextLine();</span>
+
+<span class="nc" id="L275">                                                                Seguro seguroDel = seguroDAO.getById(idSeguroDel);</span>
+<span class="nc" id="L276">                                                                seguroService.validarDeleteSeguro(seguroDel);</span>
+<span class="nc" id="L277">                                                                seguroDAO.delete(seguroDel);</span>
+
+<span class="nc" id="L279">                                                            } catch (DadosInvalidosException e) {</span>
+<span class="nc" id="L280">                                                                System.out.println(&quot;Erro ao deletar seguro: &quot; + e.getMessage());</span>
+<span class="nc" id="L281">                                                            } catch (Exception e) {</span>
+<span class="nc" id="L282">                                                                System.out.println(&quot;Erro inesperado ao deletar seguro.&quot;);</span>
+<span class="nc" id="L283">                                                            }</span>
+<span class="nc" id="L284">                                                            break;</span>
+
+                                                        case 2:
+                                                            try {
+<span class="nc" id="L288">                                                                System.out.println(&quot;=====Alterar Seguro=====\n&quot;);</span>
+<span class="nc" id="L289">                                                                System.out.println(&quot;=====Seguros Disponíveis=====\n&quot;);</span>
+<span class="nc" id="L290">                                                                seguroDAO.getAll().forEach(System.out::println);</span>
+
+<span class="nc" id="L292">                                                                System.out.println(&quot;ID do seguro a ser alterado: &quot;);</span>
+<span class="nc" id="L293">                                                                Long idSeguroAlt = sc.nextLong();</span>
+<span class="nc" id="L294">                                                                sc.nextLine();</span>
+
+<span class="nc" id="L296">                                                                Seguro seguroAlt = seguroDAO.getById(idSeguroAlt);</span>
+
+<span class="nc" id="L298">                                                                System.out.println(&quot;Nova descrição: &quot;);</span>
+<span class="nc" id="L299">                                                                String novaDesc = sc.nextLine();</span>
+
+<span class="nc" id="L301">                                                                seguroAlt.setDescricao(novaDesc);</span>
+<span class="nc" id="L302">                                                                seguroDAO.update(seguroAlt);</span>
+
+<span class="nc" id="L304">                                                                System.out.println(&quot;Seguro alterado com sucesso!&quot;);</span>
+
+<span class="nc" id="L306">                                                            } catch (DadosInvalidosException e) {</span>
+<span class="nc" id="L307">                                                                System.out.println(&quot;Erro ao alterar seguro: &quot; + e.getMessage());</span>
+<span class="nc" id="L308">                                                            } catch (Exception e) {</span>
+<span class="nc" id="L309">                                                                System.out.println(&quot;Erro inesperado ao alterar seguro.&quot;);</span>
+<span class="nc" id="L310">                                                            }</span>
+<span class="nc" id="L311">                                                            break;</span>
+
+                                                        case 3:
+                                                            try {
+<span class="nc" id="L315">                                                                System.out.println(&quot;=====Cadastrar Seguro=====\n&quot;);</span>
+
+<span class="nc" id="L317">                                                                System.out.println(&quot;Tipo de seguro (SEGURO_VIDA, SEGURO_AUTO, SEGURO_RESIDENCIAL): &quot;);</span>
+<span class="nc" id="L318">                                                                String tipoSeguro = sc.nextLine().toUpperCase();</span>
+<span class="nc" id="L319">                                                                TipoDeSeguroEnum tipo = TipoDeSeguroEnum.valueOf(tipoSeguro);</span>
+
+<span class="nc" id="L321">                                                                System.out.println(&quot;Descrição: &quot;);</span>
+<span class="nc" id="L322">                                                                String descSeguro = sc.nextLine();</span>
+
+<span class="nc" id="L324">                                                                System.out.println(&quot;Cobertura (somente números): &quot;);</span>
+<span class="nc" id="L325">                                                                BigDecimal cobertura = sc.nextBigDecimal();</span>
+
+<span class="nc" id="L327">                                                                System.out.println(&quot;Valor prêmio base (somente números): &quot;);</span>
+<span class="nc" id="L328">                                                                BigDecimal valorBase = sc.nextBigDecimal();</span>
+<span class="nc" id="L329">                                                                sc.nextLine();</span>
+
+<span class="nc" id="L331">                                                                Seguro novoSeguro = new Seguro(tipo, descSeguro, cobertura, valorBase);</span>
+<span class="nc" id="L332">                                                                seguroDAO.save(novoSeguro);</span>
+
+<span class="nc" id="L334">                                                                System.out.println(&quot;Seguro cadastrado com sucesso!&quot;);</span>
+
+<span class="nc" id="L336">                                                            } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L337">                                                                System.out.println(&quot;Tipo de seguro inválido.&quot;);</span>
+<span class="nc" id="L338">                                                                sc.nextLine();</span>
+<span class="nc" id="L339">                                                            } catch (DadosInvalidosException e) {</span>
+<span class="nc" id="L340">                                                                System.out.println(&quot;Erro ao cadastrar seguro: &quot; + e.getMessage());</span>
+<span class="nc" id="L341">                                                            } catch (Exception e) {</span>
+<span class="nc" id="L342">                                                                System.out.println(&quot;Erro inesperado ao cadastrar seguro.&quot;);</span>
+<span class="nc" id="L343">                                                                sc.nextLine();</span>
+<span class="nc" id="L344">                                                            }</span>
+                                                            break;
+                                                    }
+<span class="nc" id="L347">                                                } catch (Exception e) {</span>
+<span class="nc" id="L348">                                                    System.out.println(&quot;Erro no menu de gestão.&quot;);</span>
+<span class="nc" id="L349">                                                    sc.nextLine();</span>
+<span class="nc" id="L350">                                                    opcGestao = 0;</span>
+<span class="nc" id="L351">                                                }</span>
+<span class="nc bnc" id="L352" title="All 2 branches missed.">                                            } while (opcGestao != 4);</span>
+<span class="nc" id="L353">                                            break;</span>
+
+                                        case 6:
+                                            try {
+<span class="nc" id="L357">                                                apoliceDAO.getAll().forEach(System.out::println);</span>
+<span class="nc" id="L358">                                            } catch (Exception e) {</span>
+<span class="nc" id="L359">                                                System.out.println(&quot;Erro ao listar apólices.&quot;);</span>
+<span class="nc" id="L360">                                            }</span>
+<span class="nc" id="L361">                                            break;</span>
+
+                                        case 7:
+                                            try {
+<span class="nc" id="L365">                                                clienteDAO.getAll().forEach(System.out::println);</span>
+<span class="nc" id="L366">                                            } catch (Exception e) {</span>
+<span class="nc" id="L367">                                                System.out.println(&quot;Erro ao listar clientes.&quot;);</span>
+<span class="nc" id="L368">                                            }</span>
+<span class="nc" id="L369">                                            break;</span>
+                                        case 8:
+                                            try {
+
+<span class="nc" id="L373">                                                apoliceService.apolicesParaRenovar();</span>
+
+<span class="nc" id="L375">                                                System.out.println(&quot;\nDeseja renovar alguma apólice? (1 - Sim / 2 - Não)&quot;);</span>
+<span class="nc" id="L376">                                                int escolhaRen = sc.nextInt();</span>
+
+<span class="nc bnc" id="L378" title="All 2 branches missed.">                                                if (escolhaRen == 1) {</span>
+<span class="nc" id="L379">                                                    System.out.println(&quot;Informe o ID da apólice a renovar: &quot;);</span>
+<span class="nc" id="L380">                                                    Long idRen = sc.nextLong();</span>
+
+                                                    try {
+<span class="nc" id="L383">                                                        apoliceService.renovarApolice(idRen);</span>
+
+<span class="nc" id="L385">                                                        System.out.println(&quot;Apólice renovada com sucesso!&quot;);</span>
+<span class="nc" id="L386">                                                        System.out.println(apoliceDAO.getById(idRen).renovarDadosDaApolice());</span>
+
+<span class="nc" id="L388">                                                        System.out.println(&quot;Apólices:&quot;);</span>
+<span class="nc" id="L389">                                                        apoliceService.mostrarApolices();</span>
+
+<span class="nc" id="L391">                                                    } catch (DadosInvalidosException e) {</span>
+<span class="nc" id="L392">                                                        System.out.println(&quot;Erro ao renovar apólice: &quot; + e.getMessage());</span>
+<span class="nc" id="L393">                                                    } catch (Exception e) {</span>
+<span class="nc" id="L394">                                                        System.out.println(&quot;Erro inesperado ao renovar apólice.&quot;);</span>
+<span class="nc" id="L395">                                                    }</span>
+                                                }
+
+<span class="nc" id="L398">                                            } catch (DadosInvalidosException e) {</span>
+<span class="nc" id="L399">                                                System.out.println(&quot;Aviso: &quot; + e.getMessage());</span>
+<span class="nc" id="L400">                                            } catch (Exception e) {</span>
+<span class="nc" id="L401">                                                System.out.println(&quot;Erro ao listar apólices a vencer.&quot;);</span>
+<span class="nc" id="L402">                                            }</span>
+                                            break;
+                                    }
+
+<span class="nc bnc" id="L406" title="All 2 branches missed.">                                } while (opcFunc != 9);</span>
+
+<span class="nc" id="L408">                            } else {</span>
+<span class="nc" id="L409">                                System.out.println(&quot;Usuário ou senha inválidos.&quot;);</span>
+<span class="nc" id="L410">                                certo = false;</span>
+                            }
+
+<span class="nc" id="L413">                        } catch (Exception e) {</span>
+<span class="nc" id="L414">                            System.out.println(&quot;Erro no login.&quot;);</span>
+<span class="nc" id="L415">                            sc.nextLine();</span>
+<span class="nc" id="L416">                            certo = false;</span>
+<span class="nc" id="L417">                        }</span>
+
+<span class="nc bnc" id="L419" title="All 2 branches missed.">                    } while (!certo);</span>
+<span class="nc" id="L420">                    break;</span>
+
+                case 2:
+<span class="nc" id="L423">                    System.out.println(&quot;Visualização de seguros&quot;);</span>
+<span class="nc" id="L424">                    seguroDAO.getAll().forEach(System.out::println);</span>
+<span class="nc" id="L425">                    break;</span>
+
+                case 3:
+<span class="nc" id="L428">                    System.out.println(&quot;Encerrando sistema...&quot;);</span>
+<span class="nc" id="L429">                    break;</span>
+
+                default:
+<span class="nc" id="L432">                    System.out.println(&quot;Opção inválida.&quot;);</span>
+            }
+
+<span class="nc bnc" id="L435" title="All 2 branches missed.">        } while (opc != 3);</span>
+<span class="nc" id="L436">    }</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

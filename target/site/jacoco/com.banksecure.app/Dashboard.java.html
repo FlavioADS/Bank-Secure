@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Dashboard.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">banksecure</a> &gt; <a href="index.source.html" class="el_package">com.banksecure.app</a> &gt; <span class="el_source">Dashboard.java</span></div><h1>Dashboard.java</h1><pre class="source lang-java linenums">package com.banksecure.app;
+
+import com.banksecure.domain.Apolice;
+import com.banksecure.infra.DAO.ApoliceDAO;
+import com.banksecure.infra.DAO.ClienteDAO;
+import com.banksecure.infra.DAO.FuncionarioDAO;
+import com.banksecure.infra.DAO.SeguroDAO;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+<span class="nc" id="L12">public class Dashboard {</span>
+
+    private int qtdApolicesVida;
+    private int qtdApolicesAuto;
+    private int qtdApolicesResid;
+    private int qtdFuncionario1;
+    private int qtdFuncionario2;
+    private BigDecimal valorTotalVida;
+    private BigDecimal valorTotalAuto;
+    private BigDecimal valorTotalResid;
+
+<span class="nc" id="L23">    public int getQtdApolicesVida() {return qtdApolicesVida;}</span>
+<span class="nc" id="L24">    public int getQtdApolicesAuto() {return qtdApolicesAuto;}</span>
+<span class="nc" id="L25">    public int getQtdApolicesResid() {return qtdApolicesResid;}</span>
+<span class="nc" id="L26">    public BigDecimal getValorTotalVida() {return valorTotalVida;}</span>
+<span class="nc" id="L27">    public BigDecimal getValorTotalAuto() {return valorTotalAuto;}</span>
+<span class="nc" id="L28">    public BigDecimal getValorTotalResid() {return valorTotalResid;}</span>
+<span class="nc" id="L29">    public int getQtdFuncionario1() {return qtdFuncionario1;}</span>
+<span class="nc" id="L30">    public int getQtdFuncionario2() {return qtdFuncionario2;}</span>
+
+    public void inicializarBanco() {
+<span class="nc" id="L33">        ClienteDAO clienteDAO = new ClienteDAO();</span>
+<span class="nc" id="L34">        clienteDAO.iniciaTabela();</span>
+
+<span class="nc" id="L36">        FuncionarioDAO funcionarioDAO = new FuncionarioDAO();</span>
+<span class="nc" id="L37">        funcionarioDAO.inicializaTabelas();</span>
+
+<span class="nc" id="L39">        SeguroDAO seguroDAO = new SeguroDAO();</span>
+<span class="nc" id="L40">        seguroDAO.iniciaTabelas();</span>
+
+<span class="nc" id="L42">        ApoliceDAO apoliceDAO = new ApoliceDAO();</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        if (apoliceDAO.getAll().isEmpty()) {</span>
+<span class="nc" id="L44">            apoliceDAO.popularRegistro();</span>
+        }
+<span class="nc" id="L46">    }</span>
+
+    public void exibirDashSeguros() {
+<span class="nc" id="L49">        qtdApolicesVida = 0;</span>
+<span class="nc" id="L50">        qtdApolicesAuto = 0;</span>
+<span class="nc" id="L51">        qtdApolicesResid = 0;</span>
+<span class="nc" id="L52">        valorTotalVida = BigDecimal.ZERO;</span>
+<span class="nc" id="L53">        valorTotalResid = BigDecimal.ZERO;</span>
+<span class="nc" id="L54">        valorTotalAuto = BigDecimal.ZERO;</span>
+
+<span class="nc" id="L56">        inicializarBanco();</span>
+
+<span class="nc" id="L58">        ApoliceDAO apoliceDAO = new ApoliceDAO();</span>
+<span class="nc" id="L59">        List&lt;Apolice&gt; apolicesVendidas = apoliceDAO.getAll();</span>
+
+
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        for (Apolice apolice : apolicesVendidas) {</span>
+<span class="nc bnc" id="L63" title="All 4 branches missed.">            switch (apolice.getSeguro_id().intValue()) {</span>
+<span class="nc" id="L64">                case 1 -&gt; { qtdApolicesVida++; valorTotalVida = valorTotalVida.add(apolice.getValorFinal()); }</span>
+<span class="nc" id="L65">                case 2 -&gt; { qtdApolicesResid++; valorTotalResid = valorTotalResid.add(apolice.getValorFinal()); }</span>
+<span class="nc" id="L66">                case 3 -&gt; { qtdApolicesAuto++; valorTotalAuto = valorTotalAuto.add(apolice.getValorFinal()); }</span>
+            }
+<span class="nc" id="L68">        }</span>
+
+<span class="nc" id="L70">        System.out.println(&quot;\n======================== Vendas por Seguro =========================&quot;);</span>
+<span class="nc" id="L71">        System.out.printf(&quot;Tipo: Vida        | Apolices: %d | Total Arrecadado: R$ %.2f%n&quot;, qtdApolicesVida, valorTotalVida);</span>
+<span class="nc" id="L72">        System.out.printf(&quot;Tipo: Residencial | Apolices: %d | Total Arrecadado: R$ %.2f%n&quot;, qtdApolicesResid, valorTotalResid);</span>
+<span class="nc" id="L73">        System.out.printf(&quot;Tipo: Automovel   | Apolices: %d | Total Arrecadado: R$ %.2f%n&quot;, qtdApolicesAuto, valorTotalAuto);</span>
+<span class="nc" id="L74">    }</span>
+
+    public void exibirDashFuncionarios(){
+<span class="nc" id="L77">        qtdFuncionario1 = 0;</span>
+<span class="nc" id="L78">        qtdFuncionario2 = 0;</span>
+<span class="nc" id="L79">        BigDecimal totalFuncionario1 = BigDecimal.ZERO;</span>
+<span class="nc" id="L80">        BigDecimal totalFuncionario2 = BigDecimal.ZERO;</span>
+
+<span class="nc" id="L82">        inicializarBanco();</span>
+
+<span class="nc" id="L84">        ApoliceDAO apoliceDAO = new ApoliceDAO();</span>
+<span class="nc" id="L85">        List&lt;Apolice&gt; apolicesVendidas = apoliceDAO.getAll();</span>
+
+<span class="nc bnc" id="L87" title="All 2 branches missed.">        for (Apolice apolice : apolicesVendidas) {</span>
+<span class="nc bnc" id="L88" title="All 3 branches missed.">            switch (apolice.getFuncionario_id().intValue()) {</span>
+<span class="nc" id="L89">                case 1 -&gt; {qtdFuncionario1++;totalFuncionario1 = totalFuncionario1.add(apolice.getValorFinal());}</span>
+<span class="nc" id="L90">                case 2 -&gt; {qtdFuncionario2++;totalFuncionario2 = totalFuncionario2.add(apolice.getValorFinal());}</span>
+            }
+<span class="nc" id="L92">        }</span>
+
+<span class="nc" id="L94">        System.out.println(&quot;\n====================== Vendas por Funcionario ======================&quot;);</span>
+<span class="nc" id="L95">        System.out.printf(&quot;Func(diflale)  | Apolices: %d | Total Arrecadado: R$ %.2f%n&quot;, qtdFuncionario1, totalFuncionario1);</span>
+<span class="nc" id="L96">        System.out.printf(&quot;Func(jejairoy) | Apolices: %d | Total Arrecadado: R$ %.2f%n&quot;, qtdFuncionario2, totalFuncionario2);</span>
+<span class="nc" id="L97">    }</span>
+
+    public void exibeGraficoDeBarrasSeguros() {
+<span class="nc" id="L100">        int[] valores = {qtdApolicesVida, qtdApolicesResid, qtdApolicesAuto};</span>
+<span class="nc" id="L101">        String[] textos = {&quot;Vid&quot;, &quot;Res&quot;,  &quot;Aut&quot;};</span>
+
+<span class="nc" id="L103">        System.out.println(&quot;\n=================== Grafico de Barras - Seguros ====================&quot;);</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">        for (int i = 0; i &lt; valores.length; i++) {</span>
+<span class="nc" id="L105">            System.out.print(textos[i] + &quot; | &quot;);</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">            for (int j = 0; j &lt; valores[i]; j++) {</span>
+<span class="nc" id="L107">                System.out.print(&quot;**&quot;);</span>
+            }
+<span class="nc" id="L109">            System.out.println(&quot; (&quot; + valores[i] + &quot;)&quot;);</span>
+        }
+<span class="nc" id="L111">    }</span>
+
+    public void exibeGraficoDeBarrasFuncionario() {
+<span class="nc" id="L114">        int[] valores = {qtdFuncionario1, qtdFuncionario2};</span>
+<span class="nc" id="L115">        String[] nomes = {&quot;Func(diflale)&quot;, &quot;Func(jejairoy)&quot;};</span>
+
+<span class="nc" id="L117">        System.out.println(&quot;\n================ Grafico de Barras - Funcionarios ==================&quot;);</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">        for (int i = 0; i &lt; valores.length; i++) {</span>
+<span class="nc" id="L119">            System.out.print(nomes[i] + &quot; | &quot;);</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">            for (int j = 0; j &lt; valores[i]; j++) {</span>
+<span class="nc" id="L121">                System.out.print(&quot;**&quot;);</span>
+            }
+<span class="nc" id="L123">            System.out.println(&quot; (&quot; + valores[i] + &quot;)&quot;);</span>
+        }
+<span class="nc" id="L125">    }</span>
+
+    public void exibirDashboard() {
+<span class="nc" id="L128">        exibirDashSeguros();</span>
+<span class="nc" id="L129">        exibirDashFuncionarios();</span>
+<span class="nc" id="L130">        exibeGraficoDeBarrasSeguros();</span>
+<span class="nc" id="L131">        exibeGraficoDeBarrasFuncionario();</span>
+<span class="nc" id="L132">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

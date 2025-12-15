@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApoliceService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">banksecure</a> &gt; <a href="index.source.html" class="el_package">com.banksecure.service</a> &gt; <span class="el_source">ApoliceService.java</span></div><h1>ApoliceService.java</h1><pre class="source lang-java linenums">package com.banksecure.service;
+
+import com.banksecure.domain.Apolice;
+import com.banksecure.domain.Cliente;
+import com.banksecure.domain.Funcionario;
+import com.banksecure.domain.Seguro;
+import com.banksecure.exception.DadosInvalidosException;
+import com.banksecure.infra.DAO.ApoliceDAO;
+import com.banksecure.infra.DAO.ClienteDAO;
+import com.banksecure.infra.DAO.FuncionarioDAO;
+import com.banksecure.infra.DAO.SeguroDAO;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
+
+<span class="fc" id="L17">public class ApoliceService {</span>
+
+    private ApoliceDAO apoliceDAO;
+
+    public void validarApoliceDAO(Apolice apolice) {
+
+<span class="fc bfc" id="L23" title="All 2 branches covered.">        if (apolice == null) {</span>
+<span class="fc" id="L24">            throw new IllegalArgumentException(&quot;Apolice vazia!&quot;);</span>
+        }
+
+<span class="fc bfc" id="L27" title="All 2 branches covered.">        if (apolice.getCliente_id() == null ||</span>
+<span class="pc bpc" id="L28" title="1 of 2 branches missed.">                apolice.getSeguro_id() == null ||</span>
+<span class="pc bpc" id="L29" title="1 of 2 branches missed.">                apolice.getFuncionario_id() == null ||</span>
+<span class="pc bpc" id="L30" title="1 of 2 branches missed.">                apolice.getValorFinal() == null ||</span>
+<span class="pc bpc" id="L31" title="1 of 2 branches missed.">                apolice.getDataInicio() == null ||</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">                apolice.getDataFim() == null) {</span>
+
+<span class="fc" id="L34">            throw new DadosInvalidosException(&quot;Dados da apólice incompleto&quot;);</span>
+        }
+
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">        if (apolice.getValorFinal().compareTo(BigDecimal.ZERO) == -1){</span>
+<span class="nc" id="L38">            throw new DadosInvalidosException(&quot;Valor final da apólice inválido&quot;);</span>
+        }
+
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        if (apolice.getDataInicio().isBefore(LocalDate.now()) ||</span>
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">                apolice.getDataFim().isBefore(apolice.getDataInicio())) {</span>
+<span class="nc" id="L43">            throw new DadosInvalidosException(&quot;Data da apólice inválida&quot;);</span>
+        }
+<span class="fc" id="L45">    }</span>
+
+    public void registrarVenda(Long idSeguro, Long idCliente, Long idFuncionario, LocalDate dataInicio, LocalDate dataFim) {
+<span class="pc bpc" id="L48" title="2 of 6 branches missed.">        if (idSeguro == null ||  idCliente == null || idFuncionario == null) {</span>
+<span class="fc" id="L49">            throw new DadosInvalidosException(&quot;Dados incompletos para registrar venda!&quot;);</span>
+        }
+
+<span class="pc bpc" id="L52" title="5 of 6 branches missed.">        if (idSeguro &lt;= 0 ||  idCliente &lt;= 0 || idFuncionario &lt;= 0) {</span>
+<span class="fc" id="L53">            throw new DadosInvalidosException(&quot;IDs invalidos para registrar venda!&quot;);</span>
+        }
+
+<span class="nc" id="L56">        apoliceDAO = new ApoliceDAO();</span>
+<span class="nc" id="L57">        SeguroDAO seguroDAO = new SeguroDAO();</span>
+<span class="nc" id="L58">        ClienteDAO clienteDAO = new ClienteDAO();</span>
+<span class="nc" id="L59">        CotacaoService  cotacaoService = new CotacaoService();</span>
+
+<span class="nc" id="L61">        Seguro seguro = seguroDAO.getById(idSeguro);</span>
+<span class="nc" id="L62">        Cliente cliente = clienteDAO.getById(idCliente);</span>
+
+
+<span class="nc" id="L65">        BigDecimal valorComTaxa = cotacaoService.setTaxaPadrao(seguro.getValorBase());</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        if (cotacaoService.bonusIdade(cliente.getDataNascimento())){</span>
+<span class="nc" id="L67">            valorComTaxa = valorComTaxa.add(BigDecimal.valueOf(100));</span>
+        }
+
+<span class="nc" id="L70">        BigDecimal valorFinal = cotacaoService.taxaRisco(valorComTaxa);</span>
+
+<span class="nc" id="L72">        Apolice apolice = new Apolice(idCliente, idSeguro, idFuncionario, valorFinal, dataInicio, dataFim, false);</span>
+<span class="nc" id="L73">        apoliceDAO.save(apolice);</span>
+<span class="nc" id="L74">    }</span>
+
+    public void renovarApolice(Long idApolice){
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">        if (idApolice == null) {</span>
+<span class="fc" id="L78">            throw new DadosInvalidosException(&quot;Apolice não encontrada para renovação!&quot;);</span>
+        }
+
+<span class="nc" id="L81">        apoliceDAO = new ApoliceDAO();</span>
+<span class="nc" id="L82">        Apolice apolice = apoliceDAO.getById(idApolice);</span>
+
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        if (apolice.isRenovada()){</span>
+<span class="nc" id="L85">            throw new DadosInvalidosException(&quot;Apolice já foi renovada!&quot;);</span>
+        }
+
+<span class="nc" id="L88">        LocalDate novaDataFim = apolice.getDataFim().plusYears(1);</span>
+
+<span class="nc" id="L90">        apoliceDAO.renovarApolice(apolice, apolice.getValorFinal(), novaDataFim);</span>
+<span class="nc" id="L91">    }</span>
+
+    public void apolicesParaRenovar(){
+<span class="nc" id="L94">        apoliceDAO = new ApoliceDAO();</span>
+<span class="nc" id="L95">        List&lt;Apolice&gt; apolices = apoliceDAO.getByDueDate();</span>
+
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        if (apolices.isEmpty()){</span>
+<span class="nc" id="L98">            throw new DadosInvalidosException(&quot;Não existe apolice para renovar!&quot;);</span>
+        }
+
+<span class="nc" id="L101">        System.out.println(&quot;Apolices a vencer nos próximos 30 dias&quot;);</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">        for (Apolice ap:apolices){</span>
+<span class="nc" id="L103">            System.out.println(ap.mostrarDadosDaApolice());</span>
+<span class="nc" id="L104">        }</span>
+<span class="nc" id="L105">    }</span>
+
+
+    public void mostrarApolices(){
+<span class="nc" id="L109">        apoliceDAO = new ApoliceDAO();</span>
+<span class="nc" id="L110">        List&lt;Apolice&gt; apolices = apoliceDAO.getAll();</span>
+
+<span class="nc bnc" id="L112" title="All 2 branches missed.">        if (apolices.isEmpty()){</span>
+<span class="nc" id="L113">            throw new DadosInvalidosException(&quot;Nenhuma apólice encontrada&quot;);</span>
+        }
+
+<span class="nc bnc" id="L116" title="All 2 branches missed.">        for (Apolice ap:apolices){</span>
+<span class="nc" id="L117">            System.out.println(ap.mostrarDadosDaApolice());</span>
+<span class="nc" id="L118">        }</span>
+<span class="nc" id="L119">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

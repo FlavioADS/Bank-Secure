@@ -6,6 +6,8 @@ import com.banksecure.infra.DAO.ApoliceDAO;
 import com.banksecure.infra.DAO.ClienteDAO;
 import com.banksecure.infra.DAO.FuncionarioDAO;
 import com.banksecure.infra.DAO.SeguroDAO;
+import com.banksecure.infra.db.DatabaseCleaner;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -16,7 +18,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class ApoliceDAOtest {
+public class ApoliceDAOTest {
 
     @Mock
     ApoliceDAO apoliceDAO;
@@ -32,10 +34,15 @@ public class ApoliceDAOtest {
         apoliceDAO = new ApoliceDAO();
     }
 
+    @AfterAll
+    public static void limparBanco(){
+        DatabaseCleaner.limparTabelas();
+    }
+
     @Test
     public void deveIniciarUmaApolice(){
         apoliceDAO = new ApoliceDAO();
-        apoliceDAO.popularRegistro();
+        apoliceDAO.iniciaTabela();
     }
 
     @Test
@@ -68,7 +75,7 @@ public class ApoliceDAOtest {
 
     @Test
     void deveSerPossivelRenovarUmaApolice(){
-       Apolice apoliceRenovar = new Apolice(2L, 2L, 2L, new BigDecimal("1000000"),LocalDate.now(),
+       Apolice apoliceRenovar = new Apolice(1L, 1L, 1L, new BigDecimal("1000000"),LocalDate.now(),
                LocalDate.now().plusDays(30),
                false);
        apoliceDAO.save(apoliceRenovar);
