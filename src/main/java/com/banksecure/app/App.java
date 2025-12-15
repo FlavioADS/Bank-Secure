@@ -44,6 +44,7 @@ public class App {
         clienteDAO.iniciaTabela();
         apoliceDAO.iniciaTabela();
 
+
         int opc = 0;
 
         System.out.println("""
@@ -189,29 +190,51 @@ public class App {
                                             try {
                                                 int opcDash;
                                                 do {
-                                                    System.out.println("\n===================Visualização das cotações=========================");
+                                                    System.out.println("Visualização das cotações");
 
-                                                    BigDecimal valorTaxa = cotacaoService.setTaxaPadrao(BigDecimal.valueOf(70));
-                                                    if (cotacaoService.bonusIdade(LocalDate.parse("2000-05-12"))) {
-                                                        valorTaxa = valorTaxa.add(BigDecimal.valueOf(100));
-                                                        System.out.println("Bônus de idade aplicado!");
+                                                    System.out.println("\n---- Seguro de Vida ----");
+
+                                                    BigDecimal valorBaseVida = cotacaoService.setTaxaPadrao(BigDecimal.valueOf(70));
+
+                                                    BigDecimal vidaSemBonus = valorBaseVida;
+                                                    BigDecimal vidaComBonus = valorBaseVida;
+
+                                                    if (cotacaoService.bonusIdade(LocalDate.parse("1950-05-12"))) {
+                                                        vidaComBonus = vidaComBonus.add(BigDecimal.valueOf(100));
                                                     }
-                                                    System.out.println("Seguro de Vida: R$" + cotacaoService.taxaRisco(valorTaxa));
 
-                                                    BigDecimal valorTaxaResi = cotacaoService.setTaxaPadrao(BigDecimal.valueOf(55));
-                                                    if (cotacaoService.bonusIdade(LocalDate.parse("1970-05-11"))) {
-                                                        valorTaxaResi = valorTaxaResi.add(BigDecimal.valueOf(100));
-                                                        System.out.println("Bônus de idade aplicado!");
+                                                    System.out.println("Valor SEM bônus: R$ " + cotacaoService.taxaRisco(vidaSemBonus));
+                                                    System.out.println("Valor COM bônus: R$ " + cotacaoService.taxaRisco(vidaComBonus));
+
+                                                    System.out.println("\n---- Seguro Residencial ----");
+
+                                                    BigDecimal valorBaseResi = cotacaoService.setTaxaPadrao(BigDecimal.valueOf(55));
+
+                                                    BigDecimal resiSemBonus = valorBaseResi;
+                                                    BigDecimal resiComBonus = valorBaseResi;
+
+                                                    if (cotacaoService.bonusIdade(LocalDate.parse("1955-05-11"))) {
+                                                        resiComBonus = resiComBonus.add(BigDecimal.valueOf(100));
                                                     }
-                                                    System.out.println("Seguro Residencial: R$" + cotacaoService.taxaRisco(valorTaxaResi));
 
-                                                    BigDecimal valorTaxaAuto = cotacaoService.setTaxaPadrao(BigDecimal.valueOf(100));
+                                                    System.out.println("Valor SEM bônus: R$ " + cotacaoService.taxaRisco(resiSemBonus));
+                                                    System.out.println("Valor COM bônus: R$ " + cotacaoService.taxaRisco(resiComBonus));
+
+
+
+                                                    System.out.println("\n---- Seguro de Automóvel ----");
+
+                                                    BigDecimal valorBaseAuto = cotacaoService.setTaxaPadrao(BigDecimal.valueOf(100));
+
+                                                    BigDecimal autoSemBonus = valorBaseAuto;
+                                                    BigDecimal autoComBonus = valorBaseAuto;
+
                                                     if (cotacaoService.bonusIdade(LocalDate.parse("1951-11-12"))) {
-                                                        valorTaxaAuto = valorTaxaAuto.add(BigDecimal.valueOf(100));
-                                                        System.out.println("Bônus de idade aplicado!");
+                                                        autoComBonus = autoComBonus.add(BigDecimal.valueOf(100));
                                                     }
-                                                    System.out.println("Seguro Automóvel: R$" + cotacaoService.taxaRisco(valorTaxaAuto));
 
+                                                    System.out.println("Valor SEM bônus: R$ " + cotacaoService.taxaRisco(autoSemBonus));
+                                                    System.out.println("Valor COM bônus: R$ " + cotacaoService.taxaRisco(autoComBonus));
                                                 } while (false);
 
                                             } catch (Exception e) {

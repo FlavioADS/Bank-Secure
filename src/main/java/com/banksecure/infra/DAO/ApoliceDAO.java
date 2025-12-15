@@ -25,21 +25,7 @@ public class ApoliceDAO {
 
     public void popularRegistro() {
         try {
-
-            Apolice apolice = new Apolice(1L,1L,1L, new BigDecimal("200000"), LocalDate.now(), LocalDate.now().plusYears(1),false);
-            Apolice apolice2 = new Apolice(2L,2L,2L, new BigDecimal("15000"), LocalDate.now(), LocalDate.now().plusYears(1),false);
-            Apolice apolice3 = new Apolice(2L,3L,2L, new BigDecimal("17000"), LocalDate.now(), LocalDate.now().plusYears(1),false);
-            Apolice apolice4 = new Apolice(1L,1L,2L, new BigDecimal("17000"), LocalDate.now(), LocalDate.now().plusYears(1),false);
-            Apolice apolice5 = new Apolice(1L,1L,2L, new BigDecimal("17000"), LocalDate.now(), LocalDate.now().plusYears(1),false);
-            Apolice apolice6 = new Apolice(2L,3L,1L, new BigDecimal("17000"), LocalDate.now(), LocalDate.now().plusYears(1),false);
             Apolice apolice7 = new Apolice(1L,1L,1L,new BigDecimal("17000"), LocalDate.now(), LocalDate.now().plusDays(30),false);
-
-            this.save(apolice);
-            this.save(apolice2);
-            this.save(apolice3);
-            this.save(apolice4);
-            this.save(apolice5);
-            this.save(apolice6);
             this.save(apolice7);
 
         } catch (Exception e) {
