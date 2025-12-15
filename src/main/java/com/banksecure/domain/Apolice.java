@@ -4,6 +4,7 @@ import com.banksecure.enums.TipoDeSeguroEnum;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Apolice {
 
@@ -140,6 +141,7 @@ public class Apolice {
     }
 
     public String mostrarDadosDaApolice(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         StringBuilder dados = new StringBuilder();
         dados.append("================== Dados da apolice ===================\n");
         dados.append("Apolice ID: " + id + "\n");
@@ -147,8 +149,23 @@ public class Apolice {
         dados.append("Seguro: " + getNomeSeguro() + "\n");
         dados.append("Funcionario: " + getNomeFuncionario()+ "\n");
         dados.append("Valor Final: " + valorFinal + "\n");
-        dados.append("Data de Inicio da apolice: " + dataInicio + "\n");
-        dados.append("Data de fim da apolice: " + dataFim + "\n");
+        dados.append("Data de Inicio da apolice: ")
+                .append(dataInicio.format(formatter))
+                .append("\n");
+        dados.append("Data de fim da apolice: ")
+                .append(dataFim.format(formatter))
+                .append("\n");
+        dados.append("Renovada: ").append(renovada).append("\n");
+
+        return dados.toString();
+    }
+
+    public String renovarDadosDaApolice(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        StringBuilder dados = new StringBuilder();
+        dados.append("================== Dados da apolice ===================\n");
+        dados.append("Apolice ID: " + id + "\n");
+        dados.append("Renovada: ").append(renovada).append("\n");
 
         return dados.toString();
     }

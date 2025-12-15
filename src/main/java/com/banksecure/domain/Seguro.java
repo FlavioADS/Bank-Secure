@@ -42,7 +42,7 @@ public class Seguro {
         StringBuilder dados = new StringBuilder();
         dados.append("================== Dados do Seguro ===================\n");
         dados.append("Id: " + id + "\n");
-        dados.append("Tipo: " + tipo + "\n");
+        dados.append("Titulo: " + tipo + "\n");
         dados.append("Descrição: " + descricao + "\n");
         dados.append("Cobertura: " + cobertura + "\n");
         dados.append("Valor Prêmio base: " + valorBase + "\n");

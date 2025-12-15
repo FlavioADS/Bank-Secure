@@ -4,10 +4,11 @@
     public class ConnectionFactory {
     public Connection getConnection(){
         try {
-            return DriverManager.getConnection("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1");
+            return DriverManager.getConnection("jdbc:h2:file:./data/banksecure");
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
            }
         }
     }
+

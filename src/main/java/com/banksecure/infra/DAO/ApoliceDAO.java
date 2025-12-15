@@ -16,11 +16,11 @@ import java.util.List;
 public class ApoliceDAO {
 
     private ApoliceService apoliceService = new ApoliceService();
+    private Apolice apolice = new Apolice();
 
     public void iniciaTabela() {
         this.createTable();
         this.apoliceService = new ApoliceService();
-
     }
 
     public void popularRegistro() {

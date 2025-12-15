@@ -46,7 +46,7 @@ public class Funcionario {
 
     public String mostrarDadosDoFuncionario(){
         StringBuilder dados = new StringBuilder();
-        dados.append("================== Dados do funcionario ===================");
+        dados.append("================== Dados do funcionario ===================\n");
         dados.append("id: " + id + "\n");
         dados.append("Usuario: " + usuario + "\n");
         dados.append("Senha: " + senha + "\n");

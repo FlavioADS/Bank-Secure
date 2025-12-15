@@ -16,8 +16,6 @@ public class ClienteDAO {
 
     public void iniciaTabela(){
         this.createTable();
-
-
     }
 
     public void popularRegistros(){

@@ -62,7 +62,6 @@ public class ApoliceService {
         Cliente cliente = clienteDAO.getById(idCliente);
 
 
-
         BigDecimal valorComTaxa = cotacaoService.setTaxaPadrao(seguro.getValorBase());
         if (cotacaoService.bonusIdade(cliente.getDataNascimento())){
             valorComTaxa = valorComTaxa.add(BigDecimal.valueOf(100));
@@ -86,7 +85,8 @@ public class ApoliceService {
             throw new DadosInvalidosException("Apolice já foi renovada!");
         }
 
-        LocalDate novaDataFim = LocalDate.now().plusYears(1);
+        LocalDate novaDataFim = apolice.getDataFim().plusYears(1);
+
         apoliceDAO.renovarApolice(apolice, apolice.getValorFinal(), novaDataFim);
     }
 
@@ -103,6 +103,7 @@ public class ApoliceService {
             System.out.println(ap.mostrarDadosDaApolice());
         }
     }
+
 
     public void mostrarApolices(){
         apoliceDAO = new ApoliceDAO();
