@@ -5,3 +5,4 @@ public enum TipoDeSeguroEnum {
     SEGURO_AUTO,
     SEGURO_RESIDENCIAL;
 }
+
