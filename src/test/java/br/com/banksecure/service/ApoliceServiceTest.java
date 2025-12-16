@@ -7,7 +7,7 @@ import com.banksecure.service.ApoliceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
+import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -28,7 +28,7 @@ public class ApoliceServiceTest {
 
     @BeforeEach
     void setup() {
-        apoliceDAO = Mockito.mock(ApoliceDAO.class);
+        apoliceDAO = mock(ApoliceDAO.class);
         service = new ApoliceService();
     }
 
@@ -78,14 +78,47 @@ public class ApoliceServiceTest {
     }
 
     @Test
+    void deveLancarErroQuandoValorFinalForNegativo() {
+        Apolice apoliceInvalida = new Apolice(1L,1L,1L,new BigDecimal(-10),LocalDate.now(),LocalDate.now().plusYears(1),false);
+
+        assertThrows(DadosInvalidosException.class, () -> service.validarApoliceDAO(apoliceInvalida));
+        verifyNoInteractions(apoliceDAO);
+    }
+
+    @Test
+    void deveLancarErroQuandoDataFimIgualDataInicio() {
+        Apolice apoliceInvalida = new Apolice(1L,1L,1L,new BigDecimal(20000),LocalDate.now(),LocalDate.now(),false);
+
+        assertThrows(DadosInvalidosException.class, () -> service.validarApoliceDAO(apoliceInvalida));
+        verifyNoInteractions(apoliceDAO);
+    }
+
+    @Test
+    void deveLancarErroComDataFimInvalida(){
+        Apolice apoliceInvalida = new Apolice(1L,1L,1L,new BigDecimal(20000),LocalDate.now(),LocalDate.now().minusDays(1),false);
+
+        assertThrows(DadosInvalidosException.class, () -> service.validarApoliceDAO(apoliceInvalida));
+        verifyNoInteractions(apoliceDAO);
+    }
+
+    @Test
+    void deveLancarErroQuandoDataInicioInvalida() {
+        Apolice apoliceInvalida = new Apolice(1L,1L,1L,new BigDecimal(20000),LocalDate.now().minusDays(1),LocalDate.now(),false);
+
+        assertThrows(DadosInvalidosException.class, () -> service.validarApoliceDAO(apoliceInvalida));
+        verifyNoInteractions(apoliceDAO);
+
+    }
+
+    @Test
     void deveLancarErroAoRegistrarVendaComCamposNull(){
-        assertThrows(DadosInvalidosException.class, () -> service.registrarVenda(null, null,null, null, null ));
+        assertThrows(DadosInvalidosException.class, () -> service.registrarVenda(null, 1L,1L,LocalDate.now(), LocalDate.now().plusYears(1)));
         verifyNoInteractions(apoliceDAO);
     }
 
     @Test
     void deveLancarErroAoRegistrarVendaComCamposNegativos(){
-        assertThrows(DadosInvalidosException.class, () -> service.registrarVenda(-3L, 1L,1L,  LocalDate.now(), LocalDate.of(2026,12, 21) ));
+        assertThrows(DadosInvalidosException.class, () -> service.registrarVenda(-3L, 1L,1L, LocalDate.now(), LocalDate.now().plusYears(1)));
         verifyNoInteractions(apoliceDAO);
     }
 
@@ -93,5 +126,82 @@ public class ApoliceServiceTest {
     void deveLancarErroAoRenovarApoliceComIdNulo(){
         assertThrows(DadosInvalidosException.class, () -> service.renovarApolice(null));
         verifyNoInteractions(apoliceDAO);
+    }
+
+    @Test
+    void deveRetornasTodasAsApolices(){
+        Apolice apoliceMockada = new Apolice(
+                1L, 1L, 1L, new BigDecimal("1500.00"),
+                LocalDate.now().plusDays(1),
+                LocalDate.now().plusYears(1),
+                false
+        );
+        List<Apolice> apolicesEsperadas = Collections.singletonList(apoliceMockada);
+
+        try (MockedConstruction<ApoliceDAO> apoliceMockConstruction = Mockito.mockConstruction(ApoliceDAO.class, (mock, context) -> {
+
+            when(mock.getAll()).thenReturn(apolicesEsperadas);
+
+        })) {
+            assertDoesNotThrow(() -> service.mostrarApolices(), "O serviço não deve lançar exceção quando há apólices.");
+            ApoliceDAO constructedMock = apoliceMockConstruction.constructed().get(0);
+            verify(constructedMock, times(1)).getAll();
+
+        }
+    }
+
+    @Test
+    void deveRetornarTodasAsApolicesRenovar(){
+        Apolice apoliceMockada = new Apolice(
+                1L, 1L, 1L, new BigDecimal("1500.00"),
+                LocalDate.now(),
+                LocalDate.now().plusDays(30),
+                false
+        );
+        List<Apolice> apolicesEsperadas = Collections.singletonList(apoliceMockada);
+
+        try (MockedConstruction<ApoliceDAO> apoliceMockConstruction = Mockito.mockConstruction(ApoliceDAO.class, (mock, context) -> {
+
+            when(mock.getByDueDate()).thenReturn(apolicesEsperadas);
+
+        })) {
+            assertDoesNotThrow(() -> service.apolicesParaRenovar(), "O serviço não deve lançar exceção quando há apólices.");
+            ApoliceDAO constructedMock = apoliceMockConstruction.constructed().get(0);
+            verify(constructedMock, times(1)).getByDueDate();
+
+        }
+    }
+
+    @Test
+    void deveRetornarErroSeNaoTiverApolice(){
+
+        List apolicesEsperadas = Collections.EMPTY_LIST;
+
+        try (MockedConstruction<ApoliceDAO> apoliceMockConstruction = Mockito.mockConstruction(ApoliceDAO.class, (mock, context) -> {
+
+            when(mock.getAll()).thenReturn(apolicesEsperadas);
+
+        })) {
+            assertThrows(DadosInvalidosException.class, () -> service.mostrarApolices());
+            ApoliceDAO constructedMock = apoliceMockConstruction.constructed().get(0);
+            verify(constructedMock, times(1)).getAll();
+
+        }
+    }
+
+    @Test
+    void deveRetornarErroSeNaoTiverApoliceRenovar(){
+        List apolicesEsperadas = Collections.EMPTY_LIST;
+
+        try (MockedConstruction<ApoliceDAO> apoliceMockConstruction = Mockito.mockConstruction(ApoliceDAO.class, (mock, context) -> {
+
+            when(mock.getByDueDate()).thenReturn(apolicesEsperadas);
+
+        })) {
+            assertThrows(DadosInvalidosException.class, () -> service.apolicesParaRenovar());
+            ApoliceDAO constructedMock = apoliceMockConstruction.constructed().get(0);
+            verify(constructedMock, times(1)).getByDueDate();
+
+        }
     }
 }

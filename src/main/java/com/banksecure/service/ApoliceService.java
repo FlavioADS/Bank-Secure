@@ -39,7 +39,7 @@ public class ApoliceService {
         }
 
         if (apolice.getDataInicio().isBefore(LocalDate.now()) ||
-                apolice.getDataFim().isBefore(apolice.getDataInicio())) {
+                apolice.getDataFim().isBefore(apolice.getDataInicio()) || apolice.getDataFim().isEqual(LocalDate.now())) {
             throw new DadosInvalidosException("Data da apólice inválida");
         }
     }
@@ -80,10 +80,6 @@ public class ApoliceService {
 
         apoliceDAO = new ApoliceDAO();
         Apolice apolice = apoliceDAO.getById(idApolice);
-
-        if (apolice.isRenovada()){
-            throw new DadosInvalidosException("Apolice já foi renovada!");
-        }
 
         LocalDate novaDataFim = apolice.getDataFim().plusYears(1);
 

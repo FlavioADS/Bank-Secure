@@ -26,31 +26,46 @@ import java.util.List;
 
     public void popularRegistro() {
         try {
-<span class="fc" id="L29">            Apolice apolice = new Apolice(1L,1L,1L,new BigDecimal(&quot;17000&quot;), LocalDate.now(), LocalDate.now().plusDays(30),false);</span>
-<span class="fc" id="L30">            this.save(apolice);</span>
+<span class="fc" id="L29">            Apolice apolice1 = new Apolice(1L,1L,1L,new BigDecimal(&quot;17000&quot;), LocalDate.now(), LocalDate.now().plusDays(30),false);</span>
+<span class="fc" id="L30">            this.save(apolice1);</span>
 
-<span class="nc" id="L32">        } catch (Exception e) {</span>
-<span class="nc" id="L33">            e.printStackTrace();</span>
-<span class="nc" id="L34">            throw new EstruturaBancoException(&quot;Erro ao popular tabela apolice&quot;);</span>
-<span class="fc" id="L35">        }</span>
-<span class="fc" id="L36">    }</span>
+<span class="fc" id="L32">            Apolice apolice2 = new Apolice(2L,2L,2L,new BigDecimal(&quot;18000&quot;), LocalDate.now(), LocalDate.now().plusYears(1),false);</span>
+<span class="fc" id="L33">            this.save(apolice2);</span>
 
-    private boolean tabelaVazia() {
-<span class="fc" id="L39">        String sql = &quot;SELECT COUNT(*) FROM apolice&quot;;</span>
-<span class="fc" id="L40">        try (Connection con = new ConnectionFactory().getConnection();</span>
-<span class="fc" id="L41">             Statement stmt = con.createStatement();</span>
-<span class="fc" id="L42">             ResultSet rs = stmt.executeQuery(sql)) {</span>
+<span class="fc" id="L35">            Apolice apolice3 = new Apolice(3L,3L,1L,new BigDecimal(&quot;16500&quot;), LocalDate.now(), LocalDate.now().plusDays(30),false);</span>
+<span class="fc" id="L36">            this.save(apolice3);</span>
 
-<span class="fc" id="L44">            rs.next();</span>
-<span class="pc bpc" id="L45" title="1 of 2 branches missed.">            return rs.getInt(1) == 0;</span>
+<span class="fc" id="L38">            Apolice apolice4 = new Apolice(4L,1L,2L,new BigDecimal(&quot;17250&quot;), LocalDate.now(), LocalDate.now().plusYears(1),false);</span>
+<span class="fc" id="L39">            this.save(apolice4);</span>
+
+<span class="fc" id="L41">            Apolice apolice5 = new Apolice(5L,2L,1L,new BigDecimal(&quot;16000&quot;), LocalDate.now(), LocalDate.now().plusYears(1),false);</span>
+<span class="fc" id="L42">            this.save(apolice5);</span>
+
+<span class="fc" id="L44">            Apolice apolice6 = new Apolice(6L,3L,2L,new BigDecimal(&quot;17500&quot;), LocalDate.now(), LocalDate.now().plusYears(1),false);</span>
+<span class="fc" id="L45">            this.save(apolice6);</span>
 
 <span class="nc" id="L47">        } catch (Exception e) {</span>
-<span class="nc" id="L48">            throw new EstruturaBancoException(&quot;Erro ao verificar tabela de apolices&quot;);</span>
+<span class="nc" id="L48">            e.printStackTrace();</span>
+<span class="nc" id="L49">            throw new EstruturaBancoException(&quot;Erro ao popular tabela apolice&quot;);</span>
+<span class="fc" id="L50">        }</span>
+<span class="fc" id="L51">    }</span>
+
+    private boolean tabelaVazia() {
+<span class="fc" id="L54">        String sql = &quot;SELECT COUNT(*) FROM apolice&quot;;</span>
+<span class="fc" id="L55">        try (Connection con = new ConnectionFactory().getConnection();</span>
+<span class="fc" id="L56">             Statement stmt = con.createStatement();</span>
+<span class="fc" id="L57">             ResultSet rs = stmt.executeQuery(sql)) {</span>
+
+<span class="fc" id="L59">            rs.next();</span>
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">            return rs.getInt(1) == 0;</span>
+
+<span class="nc" id="L62">        } catch (Exception e) {</span>
+<span class="nc" id="L63">            throw new EstruturaBancoException(&quot;Erro ao verificar tabela de apolices&quot;);</span>
         }
     }
 
     public void createTable() {
-<span class="fc" id="L53">            String sqlTabela = &quot;&quot;&quot;</span>
+<span class="fc" id="L68">            String sqlTabela = &quot;&quot;&quot;</span>
                     CREATE TABLE IF NOT EXISTS apolice(
                     id INT AUTO_INCREMENT PRIMARY KEY,
                     cliente_id INT NOT NULL,
@@ -66,186 +81,186 @@ import java.util.List;
                     );
                     &quot;&quot;&quot;;
 
-<span class="fc" id="L69">        try(Connection con = new ConnectionFactory().getConnection();</span>
-<span class="fc" id="L70">            Statement smtm = con.createStatement()){</span>
-<span class="fc" id="L71">            smtm.execute(sqlTabela);</span>
-<span class="nc" id="L72">        }catch (Exception e){</span>
-<span class="nc" id="L73">            e.printStackTrace();</span>
-<span class="nc" id="L74">            throw new RuntimeException(&quot;Erro ao criar tabela apolice&quot;, e);</span>
-<span class="fc" id="L75">        }</span>
-<span class="fc" id="L76">    }</span>
+<span class="fc" id="L84">        try(Connection con = new ConnectionFactory().getConnection();</span>
+<span class="fc" id="L85">            Statement smtm = con.createStatement()){</span>
+<span class="fc" id="L86">            smtm.execute(sqlTabela);</span>
+<span class="nc" id="L87">        }catch (Exception e){</span>
+<span class="nc" id="L88">            e.printStackTrace();</span>
+<span class="nc" id="L89">            throw new RuntimeException(&quot;Erro ao criar tabela apolice&quot;, e);</span>
+<span class="fc" id="L90">        }</span>
+<span class="fc" id="L91">    }</span>
 
     public void save(Apolice apolice) {
 
-<span class="fc" id="L80">        apoliceService.validarApoliceDAO(apolice);</span>
+<span class="fc" id="L95">        apoliceService.validarApoliceDAO(apolice);</span>
 
-<span class="fc" id="L82">        String sqlInsert = &quot;INSERT INTO apolice (cliente_id, seguro_id, funcionario_id, valorFinal, dataInicio, dataFim, renovada) VALUES (?, ?, ?, ?, ?, ?, ?)&quot;;</span>
+<span class="fc" id="L97">        String sqlInsert = &quot;INSERT INTO apolice (cliente_id, seguro_id, funcionario_id, valorFinal, dataInicio, dataFim, renovada) VALUES (?, ?, ?, ?, ?, ?, ?)&quot;;</span>
 
-<span class="fc" id="L84">        try(Connection con = new ConnectionFactory().getConnection();</span>
-<span class="fc" id="L85">            PreparedStatement prepared = con.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)){</span>
+<span class="fc" id="L99">        try(Connection con = new ConnectionFactory().getConnection();</span>
+<span class="fc" id="L100">            PreparedStatement prepared = con.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)){</span>
 
-<span class="fc" id="L87">            prepared.setLong(1, apolice.getCliente_id());</span>
-<span class="fc" id="L88">            prepared.setLong(2, apolice.getSeguro_id());</span>
-<span class="fc" id="L89">            prepared.setLong(3, apolice.getFuncionario_id());</span>
-<span class="fc" id="L90">            prepared.setBigDecimal(4, apolice.getValorFinal());</span>
-<span class="fc" id="L91">            prepared.setDate(5, Date.valueOf(apolice.getDataInicio()));</span>
-<span class="fc" id="L92">            prepared.setDate(6, Date.valueOf(apolice.getDataFim()));</span>
-<span class="fc" id="L93">            prepared.setBoolean(7,apolice.isRenovada());</span>
-<span class="fc" id="L94">            prepared.execute();</span>
-<span class="fc" id="L95">            try (ResultSet rs = prepared.getGeneratedKeys()) {</span>
-<span class="pc bpc" id="L96" title="1 of 2 branches missed.">                if (rs.next()) {</span>
-<span class="fc" id="L97">                    apolice.setId(rs.getLong(1));</span>
+<span class="fc" id="L102">            prepared.setLong(1, apolice.getCliente_id());</span>
+<span class="fc" id="L103">            prepared.setLong(2, apolice.getSeguro_id());</span>
+<span class="fc" id="L104">            prepared.setLong(3, apolice.getFuncionario_id());</span>
+<span class="fc" id="L105">            prepared.setBigDecimal(4, apolice.getValorFinal());</span>
+<span class="fc" id="L106">            prepared.setDate(5, Date.valueOf(apolice.getDataInicio()));</span>
+<span class="fc" id="L107">            prepared.setDate(6, Date.valueOf(apolice.getDataFim()));</span>
+<span class="fc" id="L108">            prepared.setBoolean(7,apolice.isRenovada());</span>
+<span class="fc" id="L109">            prepared.execute();</span>
+<span class="fc" id="L110">            try (ResultSet rs = prepared.getGeneratedKeys()) {</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">                if (rs.next()) {</span>
+<span class="fc" id="L112">                    apolice.setId(rs.getLong(1));</span>
                 }
             }
 
-<span class="nc" id="L101">        }catch (SQLException e){</span>
-<span class="nc" id="L102">            throw new DadosInvalidosException(&quot;Erro ao salvar apolice no banco de dados&quot;);</span>
-<span class="fc" id="L103">        }</span>
-<span class="fc" id="L104">    }</span>
+<span class="nc" id="L116">        }catch (SQLException e){</span>
+<span class="nc" id="L117">            throw new DadosInvalidosException(&quot;Erro ao salvar apolice no banco de dados&quot;);</span>
+<span class="fc" id="L118">        }</span>
+<span class="fc" id="L119">    }</span>
 
     public List&lt;Apolice&gt; getAll(){
 
-<span class="fc" id="L108">        String sqlSelect = &quot;SELECT * FROM apolice INNER JOIN clientes ON apolice.cliente_id = clientes.id INNER JOIN seguro ON apolice.seguro_id=seguro.id INNER JOIN funcionarios ON apolice.funcionario_id = funcionarios.id&quot;;</span>
+<span class="fc" id="L123">        String sqlSelect = &quot;SELECT * FROM apolice INNER JOIN clientes ON apolice.cliente_id = clientes.id INNER JOIN seguro ON apolice.seguro_id=seguro.id INNER JOIN funcionarios ON apolice.funcionario_id = funcionarios.id&quot;;</span>
 
-<span class="fc" id="L110">        try (Connection con = new ConnectionFactory().getConnection();</span>
-<span class="fc" id="L111">             Statement stmt = con.createStatement();</span>
-<span class="fc" id="L112">             ResultSet rs = stmt.executeQuery(sqlSelect)){</span>
-<span class="fc" id="L113">            List&lt;Apolice&gt; apolices = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L125">        try (Connection con = new ConnectionFactory().getConnection();</span>
+<span class="fc" id="L126">             Statement stmt = con.createStatement();</span>
+<span class="fc" id="L127">             ResultSet rs = stmt.executeQuery(sqlSelect)){</span>
+<span class="fc" id="L128">            List&lt;Apolice&gt; apolices = new ArrayList&lt;&gt;();</span>
 
-<span class="fc bfc" id="L115" title="All 2 branches covered.">            while (rs.next()) {</span>
-<span class="fc" id="L116">                apolices.add(</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L131">                apolices.add(</span>
                         new Apolice(
-<span class="fc" id="L118">                                rs.getLong(&quot;id&quot;),</span>
-<span class="fc" id="L119">                                rs.getLong(&quot;cliente_id&quot;),</span>
-<span class="fc" id="L120">                                rs.getLong(&quot;seguro_id&quot;),</span>
-<span class="fc" id="L121">                                rs.getLong(&quot;funcionario_id&quot;),</span>
-<span class="fc" id="L122">                                rs.getBigDecimal(&quot;valorFinal&quot;),</span>
-<span class="fc" id="L123">                                rs.getDate(&quot;dataInicio&quot;).toLocalDate(),</span>
-<span class="fc" id="L124">                                rs.getDate(&quot;dataFim&quot;).toLocalDate(),</span>
-<span class="fc" id="L125">                                rs.getBoolean(&quot;renovada&quot;)));</span>
+<span class="fc" id="L133">                                rs.getLong(&quot;id&quot;),</span>
+<span class="fc" id="L134">                                rs.getLong(&quot;cliente_id&quot;),</span>
+<span class="fc" id="L135">                                rs.getLong(&quot;seguro_id&quot;),</span>
+<span class="fc" id="L136">                                rs.getLong(&quot;funcionario_id&quot;),</span>
+<span class="fc" id="L137">                                rs.getBigDecimal(&quot;valorFinal&quot;),</span>
+<span class="fc" id="L138">                                rs.getDate(&quot;dataInicio&quot;).toLocalDate(),</span>
+<span class="fc" id="L139">                                rs.getDate(&quot;dataFim&quot;).toLocalDate(),</span>
+<span class="fc" id="L140">                                rs.getBoolean(&quot;renovada&quot;)));</span>
 
-<span class="fc" id="L127">                        apolices.get(apolices.size() -1).setNomeCliente(rs.getString(&quot;clientes.nome&quot;));</span>
-<span class="fc" id="L128">                        apolices.get(apolices.size() -1).setNomeSeguro(TipoDeSeguroEnum.valueOf(rs.getString(&quot;seguro.tipo&quot;)));</span>
-<span class="fc" id="L129">                        apolices.get(apolices.size() -1).setNomeFuncionario(rs.getString(&quot;funcionarios.usuario&quot;));</span>
+<span class="fc" id="L142">                        apolices.get(apolices.size() -1).setNomeCliente(rs.getString(&quot;clientes.nome&quot;));</span>
+<span class="fc" id="L143">                        apolices.get(apolices.size() -1).setNomeSeguro(TipoDeSeguroEnum.valueOf(rs.getString(&quot;seguro.tipo&quot;)));</span>
+<span class="fc" id="L144">                        apolices.get(apolices.size() -1).setNomeFuncionario(rs.getString(&quot;funcionarios.usuario&quot;));</span>
             }
 
-<span class="fc" id="L132">            return apolices;</span>
+<span class="fc" id="L147">            return apolices;</span>
 
-<span class="nc" id="L134">        }catch (SQLException e){</span>
-<span class="nc" id="L135">            throw new EstruturaBancoException(&quot;Erro ao buscar apólices no banco de dados&quot;);</span>
+<span class="nc" id="L149">        }catch (SQLException e){</span>
+<span class="nc" id="L150">            throw new EstruturaBancoException(&quot;Erro ao buscar apólices no banco de dados&quot;);</span>
         }
     }
 
     public void renovarApolice(Apolice apoliceExistente, BigDecimal novoValorFinal, LocalDate novaDataFim){
-<span class="fc" id="L140">        Apolice novaApolice = new Apolice(</span>
-<span class="fc" id="L141">                apoliceExistente.getCliente_id(),</span>
-<span class="fc" id="L142">                apoliceExistente.getSeguro_id(),</span>
-<span class="fc" id="L143">                apoliceExistente.getFuncionario_id(),</span>
+<span class="fc" id="L155">        Apolice novaApolice = new Apolice(</span>
+<span class="fc" id="L156">                apoliceExistente.getCliente_id(),</span>
+<span class="fc" id="L157">                apoliceExistente.getSeguro_id(),</span>
+<span class="fc" id="L158">                apoliceExistente.getFuncionario_id(),</span>
                 novoValorFinal,
-<span class="fc" id="L145">                LocalDate.now(),</span>
+<span class="fc" id="L160">                LocalDate.now(),</span>
                 novaDataFim,
                 false
         );
 
-<span class="fc" id="L150">        this.save(novaApolice);</span>
-<span class="fc" id="L151">        update(apoliceExistente.getId());</span>
-<span class="fc" id="L152">    }</span>
+<span class="fc" id="L165">        this.save(novaApolice);</span>
+<span class="fc" id="L166">        update(apoliceExistente.getId());</span>
+<span class="fc" id="L167">    }</span>
 
     public List&lt;Apolice&gt; getByDueDate(){
 
-<span class="fc" id="L156">        String sql =</span>
+<span class="fc" id="L171">        String sql =</span>
                 &quot;SELECT * FROM apolice &quot; +
                         &quot;INNER JOIN clientes ON apolice.cliente_id = clientes.id &quot; +
                         &quot;INNER JOIN seguro ON apolice.seguro_id = seguro.id &quot; +
                         &quot;INNER JOIN funcionarios ON apolice.funcionario_id = funcionarios.id &quot; +
                         &quot;WHERE dataFim BETWEEN ? AND ? AND renovada = FALSE&quot;;
 
-<span class="fc" id="L163">        LocalDate hoje = LocalDate.now();</span>
-<span class="fc" id="L164">        LocalDate dataVencimento = hoje.plusDays(30);</span>
+<span class="fc" id="L178">        LocalDate hoje = LocalDate.now();</span>
+<span class="fc" id="L179">        LocalDate dataVencimento = hoje.plusDays(30);</span>
 
         try (
-<span class="fc" id="L167">                Connection con = new ConnectionFactory().getConnection();</span>
-<span class="fc" id="L168">                PreparedStatement stmt = con.prepareStatement(sql)</span>
+<span class="fc" id="L182">                Connection con = new ConnectionFactory().getConnection();</span>
+<span class="fc" id="L183">                PreparedStatement stmt = con.prepareStatement(sql)</span>
         ) {
 
-<span class="fc" id="L171">            stmt.setDate(1, Date.valueOf(hoje));</span>
-<span class="fc" id="L172">            stmt.setDate(2, Date.valueOf(dataVencimento));</span>
+<span class="fc" id="L186">            stmt.setDate(1, Date.valueOf(hoje));</span>
+<span class="fc" id="L187">            stmt.setDate(2, Date.valueOf(dataVencimento));</span>
 
-<span class="fc" id="L174">            try (ResultSet rs = stmt.executeQuery()) {</span>
-<span class="fc" id="L175">                List&lt;Apolice&gt; apolices = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L189">            try (ResultSet rs = stmt.executeQuery()) {</span>
+<span class="fc" id="L190">                List&lt;Apolice&gt; apolices = new ArrayList&lt;&gt;();</span>
 
-<span class="fc bfc" id="L177" title="All 2 branches covered.">                while (rs.next()) {</span>
-<span class="fc" id="L178">                    apolices.add(new Apolice(</span>
-<span class="fc" id="L179">                            rs.getLong(&quot;id&quot;),</span>
-<span class="fc" id="L180">                            rs.getLong(&quot;cliente_id&quot;),</span>
-<span class="fc" id="L181">                            rs.getLong(&quot;seguro_id&quot;),</span>
-<span class="fc" id="L182">                            rs.getLong(&quot;funcionario_id&quot;),</span>
-<span class="fc" id="L183">                            rs.getBigDecimal(&quot;valorFinal&quot;),</span>
-<span class="fc" id="L184">                            rs.getDate(&quot;dataInicio&quot;).toLocalDate(),</span>
-<span class="fc" id="L185">                            rs.getDate(&quot;dataFim&quot;).toLocalDate(),</span>
-<span class="fc" id="L186">                            rs.getBoolean(&quot;renovada&quot;)</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">                while (rs.next()) {</span>
+<span class="fc" id="L193">                    apolices.add(new Apolice(</span>
+<span class="fc" id="L194">                            rs.getLong(&quot;id&quot;),</span>
+<span class="fc" id="L195">                            rs.getLong(&quot;cliente_id&quot;),</span>
+<span class="fc" id="L196">                            rs.getLong(&quot;seguro_id&quot;),</span>
+<span class="fc" id="L197">                            rs.getLong(&quot;funcionario_id&quot;),</span>
+<span class="fc" id="L198">                            rs.getBigDecimal(&quot;valorFinal&quot;),</span>
+<span class="fc" id="L199">                            rs.getDate(&quot;dataInicio&quot;).toLocalDate(),</span>
+<span class="fc" id="L200">                            rs.getDate(&quot;dataFim&quot;).toLocalDate(),</span>
+<span class="fc" id="L201">                            rs.getBoolean(&quot;renovada&quot;)</span>
                     ));
 
-<span class="fc" id="L189">                    apolices.get(apolices.size() - 1)</span>
-<span class="fc" id="L190">                            .setNomeCliente(rs.getString(&quot;clientes.nome&quot;));</span>
-<span class="fc" id="L191">                    apolices.get(apolices.size() - 1)</span>
-<span class="fc" id="L192">                            .setNomeSeguro(</span>
-<span class="fc" id="L193">                                    TipoDeSeguroEnum.valueOf(rs.getString(&quot;seguro.tipo&quot;))</span>
+<span class="fc" id="L204">                    apolices.get(apolices.size() - 1)</span>
+<span class="fc" id="L205">                            .setNomeCliente(rs.getString(&quot;clientes.nome&quot;));</span>
+<span class="fc" id="L206">                    apolices.get(apolices.size() - 1)</span>
+<span class="fc" id="L207">                            .setNomeSeguro(</span>
+<span class="fc" id="L208">                                    TipoDeSeguroEnum.valueOf(rs.getString(&quot;seguro.tipo&quot;))</span>
                             );
-<span class="fc" id="L195">                    apolices.get(apolices.size() - 1)</span>
-<span class="fc" id="L196">                            .setNomeFuncionario(</span>
-<span class="fc" id="L197">                                    rs.getString(&quot;funcionarios.usuario&quot;)</span>
+<span class="fc" id="L210">                    apolices.get(apolices.size() - 1)</span>
+<span class="fc" id="L211">                            .setNomeFuncionario(</span>
+<span class="fc" id="L212">                                    rs.getString(&quot;funcionarios.usuario&quot;)</span>
                             );
                 }
-<span class="fc" id="L200">                return apolices;</span>
+<span class="fc" id="L215">                return apolices;</span>
             }
 
-<span class="nc" id="L203">        } catch (SQLException e) {</span>
-<span class="nc" id="L204">            throw new EstruturaBancoException(</span>
+<span class="nc" id="L218">        } catch (SQLException e) {</span>
+<span class="nc" id="L219">            throw new EstruturaBancoException(</span>
                     &quot;Erro ao buscar apolices com vencimento em 30 dias no banco de dados&quot;
             );
         }
     }
 
     public Apolice getById(Long id){
-<span class="nc" id="L211">        String sqlSelect = &quot;SELECT * FROM apolice WHERE id = ?&quot;;</span>
+<span class="fc" id="L226">        String sqlSelect = &quot;SELECT * FROM apolice WHERE id = ?&quot;;</span>
 
-<span class="nc" id="L213">        try (Connection con = new ConnectionFactory().getConnection();</span>
-<span class="nc" id="L214">        PreparedStatement stmt = con.prepareStatement(sqlSelect)) {</span>
+<span class="fc" id="L228">        try (Connection con = new ConnectionFactory().getConnection();</span>
+<span class="fc" id="L229">        PreparedStatement stmt = con.prepareStatement(sqlSelect)) {</span>
 
-<span class="nc" id="L216">            stmt.setLong(1, id);</span>
-<span class="nc" id="L217">            try (ResultSet rs = stmt.executeQuery()) {</span>
-<span class="nc bnc" id="L218" title="All 2 branches missed.">                if (rs.next()) {</span>
-<span class="nc" id="L219">                    return new Apolice(</span>
-<span class="nc" id="L220">                            rs.getLong(&quot;id&quot;),</span>
-<span class="nc" id="L221">                            rs.getLong(&quot;cliente_id&quot;),</span>
-<span class="nc" id="L222">                            rs.getLong(&quot;seguro_id&quot;),</span>
-<span class="nc" id="L223">                            rs.getLong(&quot;funcionario_id&quot;),</span>
-<span class="nc" id="L224">                            rs.getBigDecimal(&quot;valorFinal&quot;),</span>
-<span class="nc" id="L225">                            rs.getDate(&quot;dataInicio&quot;).toLocalDate(),</span>
-<span class="nc" id="L226">                            rs.getDate(&quot;dataFim&quot;).toLocalDate(),</span>
-<span class="nc" id="L227">                            rs.getBoolean(&quot;renovada&quot;)</span>
+<span class="fc" id="L231">            stmt.setLong(1, id);</span>
+<span class="fc" id="L232">            try (ResultSet rs = stmt.executeQuery()) {</span>
+<span class="pc bpc" id="L233" title="1 of 2 branches missed.">                if (rs.next()) {</span>
+<span class="fc" id="L234">                    return new Apolice(</span>
+<span class="fc" id="L235">                            rs.getLong(&quot;id&quot;),</span>
+<span class="fc" id="L236">                            rs.getLong(&quot;cliente_id&quot;),</span>
+<span class="fc" id="L237">                            rs.getLong(&quot;seguro_id&quot;),</span>
+<span class="fc" id="L238">                            rs.getLong(&quot;funcionario_id&quot;),</span>
+<span class="fc" id="L239">                            rs.getBigDecimal(&quot;valorFinal&quot;),</span>
+<span class="fc" id="L240">                            rs.getDate(&quot;dataInicio&quot;).toLocalDate(),</span>
+<span class="fc" id="L241">                            rs.getDate(&quot;dataFim&quot;).toLocalDate(),</span>
+<span class="fc" id="L242">                            rs.getBoolean(&quot;renovada&quot;)</span>
                     );
                 }else {
-<span class="nc" id="L230">                    throw new EstruturaBancoException(&quot;Apolice não encontrada: id=&quot; + id);</span>
+<span class="nc" id="L245">                    throw new EstruturaBancoException(&quot;Apolice não encontrada: id=&quot; + id);</span>
                 }
             }
 
-<span class="nc" id="L234">        }catch (SQLException e){</span>
-<span class="nc" id="L235">            throw new EstruturaBancoException(&quot;Erro ao buscar apolices no banco de dados&quot;);</span>
+<span class="nc" id="L249">        }catch (SQLException e){</span>
+<span class="nc" id="L250">            throw new EstruturaBancoException(&quot;Erro ao buscar apolices no banco de dados&quot;);</span>
         }
     }
 
     private void update(Long id){
-<span class="fc" id="L240">        String sqlUpdate = &quot;UPDATE apolice SET renovada = TRUE WHERE id = ?&quot;;</span>
-<span class="fc" id="L241">        try (Connection con = new ConnectionFactory().getConnection();</span>
-<span class="fc" id="L242">        PreparedStatement stmt = con.prepareStatement(sqlUpdate)){</span>
+<span class="fc" id="L255">        String sqlUpdate = &quot;UPDATE apolice SET renovada = TRUE WHERE id = ?&quot;;</span>
+<span class="fc" id="L256">        try (Connection con = new ConnectionFactory().getConnection();</span>
+<span class="fc" id="L257">        PreparedStatement stmt = con.prepareStatement(sqlUpdate)){</span>
 
-<span class="fc" id="L244">            stmt.setLong(1, id);</span>
-<span class="fc" id="L245">            stmt.executeUpdate();</span>
-<span class="nc" id="L246">        }catch (SQLException e){</span>
-<span class="nc" id="L247">            throw new DadosInvalidosException(&quot;Erro ao atualizar apolices no banco de dados&quot;);</span>
-<span class="fc" id="L248">        }</span>
-<span class="fc" id="L249">    }</span>
+<span class="fc" id="L259">            stmt.setLong(1, id);</span>
+<span class="fc" id="L260">            stmt.executeUpdate();</span>
+<span class="nc" id="L261">        }catch (SQLException e){</span>
+<span class="nc" id="L262">            throw new DadosInvalidosException(&quot;Erro ao atualizar apolices no banco de dados&quot;);</span>
+<span class="fc" id="L263">        }</span>
+<span class="fc" id="L264">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

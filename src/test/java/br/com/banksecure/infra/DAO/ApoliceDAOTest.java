@@ -82,4 +82,13 @@ public class ApoliceDAOTest {
 
        apoliceDAO.renovarApolice(apoliceRenovar, new BigDecimal("2000000"),  LocalDate.now().plusYears(1));
     }
+
+    @Test
+    void deveRetornarApoliceFiltradaPeloId(){
+        Apolice apolice = new Apolice(1L,1L,1L,new BigDecimal(2300000),LocalDate.now(),LocalDate.now().plusYears(1),false);
+        apoliceDAO.save(apolice);
+
+        apoliceDAO.getById(1L);
+        assertEquals(1L,apolice.getSeguro_id());
+    }
 }

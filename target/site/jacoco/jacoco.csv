@@ -4,9 +4,9 @@ banksecure,com.banksecure.exception,EstruturaBancoException,0,4,0,0,0,2,0,1,0,1
 banksecure,com.banksecure.exception,DadosInvalidosException,5,4,0,0,2,2,1,1,1,1
 banksecure,com.banksecure.exception,BancoVazioException,0,4,0,0,0,2,0,1,0,1
 banksecure,com.banksecure.infra.DAO,SeguroDAO,118,296,4,12,34,74,5,13,1,9
-banksecure,com.banksecure.infra.DAO,ApoliceDAO,118,406,5,7,34,101,5,12,1,10
+banksecure,com.banksecure.infra.DAO,ApoliceDAO,60,574,4,8,19,126,4,13,0,11
 banksecure,com.banksecure.infra.DAO,FuncionarioDAO,168,82,13,1,44,26,10,5,3,5
-banksecure,com.banksecure.infra.DAO,ClienteDAO,55,264,3,13,17,72,3,14,0,9
+banksecure,com.banksecure.infra.DAO,ClienteDAO,55,329,3,13,17,82,3,14,0,9
 banksecure,com.banksecure.app,App,815,0,41,0,263,0,28,0,2,0
 banksecure,com.banksecure.app,Dashboard,425,0,21,0,78,0,27,0,15,0
 banksecure,com.banksecure.infra.db,DatabaseCleaner,3,58,0,0,1,16,1,1,1,1
@@ -15,7 +15,7 @@ banksecure,com.banksecure.domain,Cliente,0,104,0,0,0,32,0,13,0,13
 banksecure,com.banksecure.domain,Apolice,56,180,0,0,20,55,8,19,8,19
 banksecure,com.banksecure.domain,Funcionario,7,61,0,0,4,19,2,8,2,8
 banksecure,com.banksecure.domain,Seguro,12,135,0,0,6,39,3,12,3,12
-banksecure,com.banksecure.service,ApoliceService,180,79,28,18,39,20,22,7,2,4
+banksecure,com.banksecure.service,ApoliceService,93,163,15,31,18,39,12,17,0,6
 banksecure,com.banksecure.service,ClienteService,0,116,8,24,0,22,8,11,0,3
 banksecure,com.banksecure.service,CotacaoService,18,20,1,1,4,6,3,2,2,2
 banksecure,com.banksecure.service,SeguroService,0,96,4,26,0,21,4,14,0,3
