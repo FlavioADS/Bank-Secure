@@ -91,15 +91,17 @@ public class App {
                                 int opcFunc = 0;
                                 do {
                                     System.out.println("\n=====================================================================================");
-                                    System.out.println("1 - Cadastrar Cliente");
-                                    System.out.println("2 - Registrar Apólices");
-                                    System.out.println("3 - Visualizar Cotação");
-                                    System.out.println("4 - Dashboard");
-                                    System.out.println("5 - Gestão de Sistema");
-                                    System.out.println("6 - Listar Apólices");
-                                    System.out.println("7 - Listar Clientes");
-                                    System.out.println("8 - Renovação Apólices");
-                                    System.out.println("9 - Voltar");
+
+                                    System.out.println("1 - Dashboard");
+                                    System.out.println("2 - Gestão de Sistema");
+                                    System.out.println("3 - Cadastrar Cliente");
+                                    System.out.println("4 - Registrar Apólices");
+                                    System.out.println("5 - Renovação Apólices");
+                                    System.out.println("6 - Visualizar Cotação");
+                                    System.out.println("7 - Listar Apólices");
+                                    System.out.println("8 - Listar Clientes");
+                                    System.out.println("9 - visualizar seguros");
+                                    System.out.println("10 - Voltar");
                                     System.out.println("\nSelecione a opção desejada");
 
                                     try {
@@ -115,140 +117,13 @@ public class App {
 
                                         case 1:
                                             try {
-                                                System.out.println("Nome:");
-                                                String nome = sc.nextLine();
-
-                                                System.out.println("CPF:");
-                                                String cpf = sc.next();
-                                                System.out.println("Data de nascimento (DD-MM-AAAA):");
-                                                LocalDate dtNasc = LocalDate.parse(sc.next(),
-                                                        DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-
-                                                cliente.setNome(nome);
-                                                cliente.setCpf(cpf);
-                                                cliente.setDataNascimento(dtNasc);
-                                                clienteDAO.save(cliente);
-
-                                                System.out.println("Cliente cadastrado com sucesso!");
-                                            } catch (DadosInvalidosException e) {
-                                                System.out.println(e.getMessage());
-                                            } catch (Exception e) {
-                                                System.out.println("Erro inesperado.");
-                                            }
-                                            break;
-
-                                        case 2:
-                                            try {
-                                                System.out.println("----Clientes disponiveis----\n");
-                                                clienteDAO.getAll().forEach(System.out::println);
-
-                                                System.out.println("ID do cliente: ");
-                                                Long clienteId = sc.nextLong();
-
-                                                System.out.println("----Seguros disponiveis----\n");
-                                                seguroDAO.getAll().forEach(System.out::println);
-
-                                                System.out.println("ID do seguro: ");
-                                                Long seguroId = sc.nextLong();
-
-                                                System.out.println("----Funcionarios Disponiveis----\n");
-                                                funcionarioDAO.getAll().forEach(System.out::println);
-
-                                                System.out.println("ID do funcionario: ");
-                                                Long funcionarioId = sc.nextLong();
-
-                                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
-                                                System.out.println("Data de inicio da apolice (DD-MM-AAAA): ");
-                                                LocalDate dataInicio = LocalDate.parse(sc.next(), formatter);
-
-                                                System.out.println("Data de fim da apolice (DD-MM-AAAA): ");
-                                                LocalDate dataFim = LocalDate.parse(sc.next(), formatter);
-
-                                                apolice.setCliente_id(clienteId);
-                                                apolice.setFuncionario_id(funcionarioId);
-                                                apolice.setSeguro_id(seguroId);
-                                                apolice.setDataInicio(dataInicio);
-                                                apolice.setDataFim(dataFim);
-
-                                                apoliceService.registrarVenda(seguroId, clienteId, funcionarioId, dataInicio, dataFim);
-
-                                                System.out.println("Apólice cadastrada com sucesso!");
-                                                apoliceDAO.getAll().forEach(System.out::println);
-
-                                            } catch (DadosInvalidosException e) {
-                                                System.out.println("Erro ao cadastrar apólice: " + e.getMessage());
-                                            } catch (Exception e) {
-                                                System.out.println("Erro inesperado. Tente novamente.");
-                                            }
-                                            break;
-
-
-                                        case 3:
-                                            try {
-                                                do {
-                                                    System.out.println("Visualização das cotações");
-
-                                                    System.out.println("\n---- Seguro de Vida ----");
-
-                                                    BigDecimal valorBaseVida = cotacaoService.setTaxaPadrao(BigDecimal.valueOf(70));
-
-                                                    BigDecimal vidaSemBonus = valorBaseVida;
-                                                    BigDecimal vidaComBonus = valorBaseVida;
-
-                                                    if (cotacaoService.bonusIdade(LocalDate.parse("1950-05-12"))) {
-                                                        vidaComBonus = vidaComBonus.add(BigDecimal.valueOf(100));
-                                                    }
-
-                                                    System.out.println("Valor SEM bônus: R$ " + cotacaoService.taxaRisco(vidaSemBonus));
-                                                    System.out.println("Valor COM bônus: R$ " + cotacaoService.taxaRisco(vidaComBonus));
-
-                                                    System.out.println("\n---- Seguro Residencial ----");
-
-                                                    BigDecimal valorBaseResi = cotacaoService.setTaxaPadrao(BigDecimal.valueOf(55));
-
-                                                    BigDecimal resiSemBonus = valorBaseResi;
-                                                    BigDecimal resiComBonus = valorBaseResi;
-
-                                                    if (cotacaoService.bonusIdade(LocalDate.parse("1955-05-11"))) {
-                                                        resiComBonus = resiComBonus.add(BigDecimal.valueOf(100));
-                                                    }
-
-                                                    System.out.println("Valor SEM bônus: R$ " + cotacaoService.taxaRisco(resiSemBonus));
-                                                    System.out.println("Valor COM bônus: R$ " + cotacaoService.taxaRisco(resiComBonus));
-
-
-
-                                                    System.out.println("\n---- Seguro de Automóvel ----");
-
-                                                    BigDecimal valorBaseAuto = cotacaoService.setTaxaPadrao(BigDecimal.valueOf(100));
-
-                                                    BigDecimal autoSemBonus = valorBaseAuto;
-                                                    BigDecimal autoComBonus = valorBaseAuto;
-
-                                                    if (cotacaoService.bonusIdade(LocalDate.parse("1951-11-12"))) {
-                                                        autoComBonus = autoComBonus.add(BigDecimal.valueOf(100));
-                                                    }
-
-                                                    System.out.println("Valor SEM bônus: R$ " + cotacaoService.taxaRisco(autoSemBonus));
-                                                    System.out.println("Valor COM bônus: R$ " + cotacaoService.taxaRisco(autoComBonus));
-                                                } while (false);
-
-                                            } catch (Exception e) {
-                                                System.out.println("Erro ao exibir cotações.");
-                                            }
-                                            break;
-
-
-                                        case 4:
-                                            try {
                                                 dashboard.exibirDashboard();
                                             } catch (Exception e) {
                                                 System.out.println("Erro no dashboard.");
                                             }
                                             break;
 
-                                        case 5:
+                                        case 2:
                                             int opcGestao = 0;
                                             do {
                                                 try {
@@ -314,7 +189,7 @@ public class App {
                                                             try {
                                                                 System.out.println("=====Cadastrar Seguro=====\n");
 
-                                                                System.out.println("Tipo de seguro (SEGURO_VIDA, SEGURO_AUTO, SEGURO_RESIDENCIAL): ");
+                                                                System.out.println("Tipo de seguro (SEGURO_VIDA, SEGURO_AUTO, SEGURO_RESIDENCIAL, SEGURO_CELULAR): ");
                                                                 String tipoSeguro = sc.nextLine().toUpperCase();
                                                                 TipoDeSeguroEnum tipo = TipoDeSeguroEnum.valueOf(tipoSeguro);
 
@@ -352,22 +227,77 @@ public class App {
                                             } while (opcGestao != 4);
                                             break;
 
-                                        case 6:
+                                        case 3:
                                             try {
-                                                apoliceDAO.getAll().forEach(System.out::println);
+                                                System.out.println("Nome:");
+                                                String nome = sc.nextLine();
+
+                                                System.out.println("CPF:");
+                                                String cpf = sc.next();
+                                                System.out.println("Data de nascimento (DD-MM-AAAA):");
+                                                LocalDate dtNasc = LocalDate.parse(sc.next(),
+                                                        DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+
+                                                cliente.setNome(nome);
+                                                cliente.setCpf(cpf);
+                                                cliente.setDataNascimento(dtNasc);
+                                                clienteDAO.save(cliente);
+
+                                                System.out.println("Cliente cadastrado com sucesso!");
+                                            } catch (DadosInvalidosException e) {
+                                                System.out.println(e.getMessage());
                                             } catch (Exception e) {
-                                                System.out.println("Erro ao listar apólices.");
+                                                System.out.println("Erro inesperado.");
                                             }
                                             break;
 
-                                        case 7:
+                                        case 4:
                                             try {
+                                                System.out.println("----Clientes disponiveis----\n");
                                                 clienteDAO.getAll().forEach(System.out::println);
+
+                                                System.out.println("ID do cliente: ");
+                                                Long clienteId = sc.nextLong();
+
+                                                System.out.println("----Seguros disponiveis----\n");
+                                                seguroDAO.getAll().forEach(System.out::println);
+
+                                                System.out.println("ID do seguro: ");
+                                                Long seguroId = sc.nextLong();
+
+                                                System.out.println("----Funcionarios Disponiveis----\n");
+                                                funcionarioDAO.getAll().forEach(System.out::println);
+
+                                                System.out.println("ID do funcionario: ");
+                                                Long funcionarioId = sc.nextLong();
+
+                                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+                                                System.out.println("Data de inicio da apolice (DD-MM-AAAA): ");
+                                                LocalDate dataInicio = LocalDate.parse(sc.next(), formatter);
+
+                                                System.out.println("Data de fim da apolice (DD-MM-AAAA): ");
+                                                LocalDate dataFim = LocalDate.parse(sc.next(), formatter);
+
+                                                apolice.setCliente_id(clienteId);
+                                                apolice.setFuncionario_id(funcionarioId);
+                                                apolice.setSeguro_id(seguroId);
+                                                apolice.setDataInicio(dataInicio);
+                                                apolice.setDataFim(dataFim);
+
+                                                apoliceService.registrarVenda(seguroId, clienteId, funcionarioId, dataInicio, dataFim);
+
+                                                System.out.println("Apólice cadastrada com sucesso!");
+                                                apoliceDAO.getAll().forEach(System.out::println);
+
+                                            } catch (DadosInvalidosException e) {
+                                                System.out.println("Erro ao cadastrar apólice: " + e.getMessage());
                                             } catch (Exception e) {
-                                                System.out.println("Erro ao listar clientes.");
+                                                System.out.println("Erro inesperado. Tente novamente.");
                                             }
                                             break;
-                                        case 8:
+
+                                        case 5:
                                             try {
 
                                                 apoliceService.apolicesParaRenovar();
@@ -401,9 +331,83 @@ public class App {
                                                 System.out.println("Erro ao listar apólices a vencer.");
                                             }
                                             break;
+
+                                        case 6:
+                                            try {
+                                                do {
+                                                    System.out.println("Visualização das cotações");
+
+                                                    System.out.println("\n---- Seguro de Vida ----");
+
+                                                    BigDecimal valorBaseVida = cotacaoService.setTaxaPadrao(BigDecimal.valueOf(70));
+
+                                                    BigDecimal vidaSemBonus = valorBaseVida;
+                                                    BigDecimal vidaComBonus = valorBaseVida;
+
+                                                    if (cotacaoService.bonusIdade(LocalDate.parse("1950-05-12"))) {
+                                                        vidaComBonus = vidaComBonus.add(BigDecimal.valueOf(100));
+                                                    }
+
+                                                    System.out.println("Valor SEM bônus: R$ " + cotacaoService.taxaRisco(vidaSemBonus));
+                                                    System.out.println("Valor COM bônus: R$ " + cotacaoService.taxaRisco(vidaComBonus));
+
+                                                    System.out.println("\n---- Seguro Residencial ----");
+
+                                                    BigDecimal valorBaseResi = cotacaoService.setTaxaPadrao(BigDecimal.valueOf(55));
+
+                                                    BigDecimal resiSemBonus = valorBaseResi;
+                                                    BigDecimal resiComBonus = valorBaseResi;
+
+                                                    if (cotacaoService.bonusIdade(LocalDate.parse("1955-05-11"))) {
+                                                        resiComBonus = resiComBonus.add(BigDecimal.valueOf(100));
+                                                    }
+
+                                                    System.out.println("Valor SEM bônus: R$ " + cotacaoService.taxaRisco(resiSemBonus));
+                                                    System.out.println("Valor COM bônus: R$ " + cotacaoService.taxaRisco(resiComBonus));
+
+
+
+                                                    System.out.println("\n---- Seguro de Automóvel ----");
+
+                                                    BigDecimal valorBaseAuto = cotacaoService.setTaxaPadrao(BigDecimal.valueOf(100));
+
+                                                    BigDecimal autoSemBonus = valorBaseAuto;
+                                                    BigDecimal autoComBonus = valorBaseAuto;
+
+                                                    if (cotacaoService.bonusIdade(LocalDate.parse("1951-11-12"))) {
+                                                        autoComBonus = autoComBonus.add(BigDecimal.valueOf(100));
+                                                    }
+
+                                                    System.out.println("Valor SEM bônus: R$ " + cotacaoService.taxaRisco(autoSemBonus));
+                                                    System.out.println("Valor COM bônus: R$ " + cotacaoService.taxaRisco(autoComBonus));
+                                                } while (false);
+
+                                            } catch (Exception e) {
+                                                System.out.println("Erro ao exibir cotações.");
+                                            }
+                                            break;
+
+                                        case 7:
+                                            try {
+                                                apoliceDAO.getAll().forEach(System.out::println);
+                                            } catch (Exception e) {
+                                                System.out.println("Erro ao listar apólices.");
+                                            }
+                                            break;
+                                        case 8:
+                                            try {
+                                                clienteDAO.getAll().forEach(System.out::println);
+                                            } catch (Exception e) {
+                                                System.out.println("Erro ao listar clientes.");
+                                            }
+                                            break;
+                                        case 9:
+                                            System.out.println("Visualização de seguros");
+                                            seguroDAO.getAll().forEach(System.out::println);
+                                            break;
                                     }
 
-                                } while (opcFunc != 9);
+                                } while (opcFunc != 10);
 
                             } else {
                                 System.out.println("Usuário ou senha inválidos.");

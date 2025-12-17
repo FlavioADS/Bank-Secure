@@ -119,4 +119,20 @@ public class FuncionarioDAO {
             throw new RuntimeException(e);
         }
     }
+
+    public String getNomeById(int id) {
+        String sql = "SELECT usuario FROM funcionarios f WHERE f.id = ?";
+        try(Connection con = new ConnectionFactory().getConnection();
+            PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try(ResultSet rs = stmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getString("usuario");
+                }
+            }
+        }catch (Exception e){
+            return String.valueOf(id);
+        }
+        return String.valueOf(id);
+    }
 }

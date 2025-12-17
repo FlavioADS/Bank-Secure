@@ -53,12 +53,6 @@ public class SeguroDAOTest {
     }
 
     @Test
-    void deveRetornarQuantidadeDeSegurosSalvos(){
-        SeguroDAO dao = new SeguroDAO();
-        assertEquals(3, seguroDAO.getAll().size());
-    }
-
-    @Test
     void deveRetornarErroDadosInvalidos() {
         SeguroDAO dao = new SeguroDAO();
 

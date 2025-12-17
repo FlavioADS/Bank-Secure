@@ -43,10 +43,17 @@ public class SeguroDAO {
                   new BigDecimal("20000"),
                   new BigDecimal("100")
             );
+                Seguro seguro4 = new Seguro(
+                        TipoDeSeguroEnum.SEGURO_CELULAR,
+                        "Protege o celular contra roubos, furtos e acidentes.",
+                        new BigDecimal("15000"),
+                        new BigDecimal("125")
+            );
 
             this.save(seguro1);
             this.save(seguro2);
             this.save(seguro3);
+            this.save(seguro4);
 
             } catch (Exception e) {
                 throw new EstruturaBancoException("Erro ao popular tabela de seguros");
@@ -212,5 +219,19 @@ public class SeguroDAO {
         }
     }
 
-
+    public String getNomeById(int id) {
+        String sql = "SELECT tipo FROM seguro WHERE id = ?";
+        try(Connection con = new ConnectionFactory().getConnection();
+            PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try(ResultSet rs = stmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getString("tipo");
+                }
+            }
+        }catch (Exception e){
+            return String.valueOf(id);
+        }
+        return String.valueOf(id);
+    }
 }

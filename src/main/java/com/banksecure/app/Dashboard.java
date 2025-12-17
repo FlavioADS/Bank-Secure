@@ -1,35 +1,31 @@
 package com.banksecure.app;
 
 import com.banksecure.domain.Apolice;
+import com.banksecure.domain.Funcionario;
+import com.banksecure.domain.Seguro;
 import com.banksecure.infra.DAO.ApoliceDAO;
 import com.banksecure.infra.DAO.ClienteDAO;
 import com.banksecure.infra.DAO.FuncionarioDAO;
 import com.banksecure.infra.DAO.SeguroDAO;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Dashboard {
 
-    private int qtdApolicesVida;
-    private int qtdApolicesAuto;
-    private int qtdApolicesResid;
-    private int qtdFuncionario1;
-    private int qtdFuncionario2;
-    private BigDecimal valorTotalVida;
-    private BigDecimal valorTotalAuto;
-    private BigDecimal valorTotalResid;
+    private Map<Integer, Integer> qtdApolicesPorSeguro = new HashMap<>();
+    private Map<Integer, BigDecimal> valorTotalPorSeguro = new HashMap<>();
+    private Map<Integer, Integer> qtdApolicesPorFuncionario = new HashMap<>();
+    private Map<Integer, BigDecimal> valorTotalPorFuncionario = new HashMap<>();
 
-    public int getQtdApolicesVida() {return qtdApolicesVida;}
-    public int getQtdApolicesAuto() {return qtdApolicesAuto;}
-    public int getQtdApolicesResid() {return qtdApolicesResid;}
-    public BigDecimal getValorTotalVida() {return valorTotalVida;}
-    public BigDecimal getValorTotalAuto() {return valorTotalAuto;}
-    public BigDecimal getValorTotalResid() {return valorTotalResid;}
-    public int getQtdFuncionario1() {return qtdFuncionario1;}
-    public int getQtdFuncionario2() {return qtdFuncionario2;}
+    public Map<Integer, Integer> getQtdApolicesPorSeguro() {return qtdApolicesPorSeguro;}
+    public Map<Integer, BigDecimal> getValorTotalPorSeguro() {return valorTotalPorSeguro;}
+    public Map<Integer, Integer> getQtdApolicesPorFuncionario() {return qtdApolicesPorFuncionario;}
+    public Map<Integer, BigDecimal> getValorTotalPorFuncionario() {return valorTotalPorFuncionario;}
 
-    public void inicializarBanco() {
+    public void inicializaBanco() {
         ClienteDAO clienteDAO = new ClienteDAO();
         clienteDAO.iniciaTabela();
 
@@ -46,88 +42,94 @@ public class Dashboard {
     }
 
     public void exibirDashSeguros() {
-        qtdApolicesVida = 0;
-        qtdApolicesAuto = 0;
-        qtdApolicesResid = 0;
-        valorTotalVida = BigDecimal.ZERO;
-        valorTotalResid = BigDecimal.ZERO;
-        valorTotalAuto = BigDecimal.ZERO;
-
-        inicializarBanco();
-
+        qtdApolicesPorSeguro.clear();
+        valorTotalPorSeguro.clear();
+        inicializaBanco();
         ApoliceDAO apoliceDAO = new ApoliceDAO();
         List<Apolice> apolicesVendidas = apoliceDAO.getAll();
 
-
         for (Apolice apolice : apolicesVendidas) {
-            switch (apolice.getSeguro_id().intValue()) {
-                case 1 -> { qtdApolicesVida++; valorTotalVida = valorTotalVida.add(apolice.getValorFinal()); }
-                case 2 -> { qtdApolicesResid++; valorTotalResid = valorTotalResid.add(apolice.getValorFinal()); }
-                case 3 -> { qtdApolicesAuto++; valorTotalAuto = valorTotalAuto.add(apolice.getValorFinal()); }
-            }
+            int seguroId = apolice.getSeguro_id().intValue();
+
+            qtdApolicesPorSeguro.put(seguroId, qtdApolicesPorSeguro.getOrDefault(seguroId, 0) + 1);
+            BigDecimal valorAtual = valorTotalPorSeguro
+                    .getOrDefault(seguroId, BigDecimal.ZERO);
+
+            valorTotalPorSeguro.put(
+                    seguroId,
+                    valorAtual.add(apolice.getValorFinal())
+            );
+
         }
 
-        System.out.println("\n======================== Vendas por Seguro =========================");
-        System.out.printf("Tipo: Vida        | Apolices: %d | Total Arrecadado: R$ %.2f%n", qtdApolicesVida, valorTotalVida);
-        System.out.printf("Tipo: Residencial | Apolices: %d | Total Arrecadado: R$ %.2f%n", qtdApolicesResid, valorTotalResid);
-        System.out.printf("Tipo: Automovel   | Apolices: %d | Total Arrecadado: R$ %.2f%n", qtdApolicesAuto, valorTotalAuto);
+        SeguroDAO seguroDAO= new SeguroDAO();
+        System.out.println("\n=========================== vendas por Seguro ===========================");
+        for (Map.Entry<Integer, Integer> entry : qtdApolicesPorSeguro.entrySet()) {
+            int seguroId = entry.getKey();
+            int qtd = entry.getValue();
+            BigDecimal valorTotal = valorTotalPorSeguro.get(seguroId);
+            String nomeSeguro = seguroDAO.getNomeById(seguroId);
+            System.out.printf("Tipo: %s  | Apolices: %d | Total Arrecadado: R$ %.2f%n", nomeSeguro, qtd, valorTotal.doubleValue());
+
+        }
     }
 
-    public void exibirDashFuncionarios(){
-        qtdFuncionario1 = 0;
-        qtdFuncionario2 = 0;
-        BigDecimal totalFuncionario1 = BigDecimal.ZERO;
-        BigDecimal totalFuncionario2 = BigDecimal.ZERO;
-
-        inicializarBanco();
-
+    public void exibirDashFuncionario() {
+        qtdApolicesPorFuncionario.clear();
+        valorTotalPorFuncionario.clear();
+        inicializaBanco();
         ApoliceDAO apoliceDAO = new ApoliceDAO();
         List<Apolice> apolicesVendidas = apoliceDAO.getAll();
 
         for (Apolice apolice : apolicesVendidas) {
-            switch (apolice.getFuncionario_id().intValue()) {
-                case 1 -> {qtdFuncionario1++;totalFuncionario1 = totalFuncionario1.add(apolice.getValorFinal());}
-                case 2 -> {qtdFuncionario2++;totalFuncionario2 = totalFuncionario2.add(apolice.getValorFinal());}
-            }
+            int funcionarioId = apolice.getFuncionario_id().intValue();
+            qtdApolicesPorFuncionario.put(funcionarioId, qtdApolicesPorFuncionario.getOrDefault(funcionarioId, 0) + 1);
+            valorTotalPorFuncionario.put(funcionarioId, valorTotalPorFuncionario.getOrDefault(funcionarioId, BigDecimal.ZERO).add(apolice.getValorFinal()));
         }
 
-        System.out.println("\n====================== Vendas por Funcionario ======================");
-        System.out.printf("Func(diflale)  | Apolices: %d | Total Arrecadado: R$ %.2f%n", qtdFuncionario1, totalFuncionario1);
-        System.out.printf("Func(jejairoy) | Apolices: %d | Total Arrecadado: R$ %.2f%n", qtdFuncionario2, totalFuncionario2);
+        FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+        System.out.println("\n======================== Vendas por Funcionário =========================");
+        for (Map.Entry<Integer, Integer> entry : qtdApolicesPorFuncionario.entrySet()) {
+            int funcionarioId = entry.getKey();
+            int qtd = entry.getValue();
+            BigDecimal valorTotal = valorTotalPorFuncionario.get(funcionarioId);
+            String nomeFuncionario = funcionarioDAO.getNomeById(funcionarioId);
+            System.out.printf("Funcionario(%s)   | Apolices: %d     | Total Arrecadado: R$ %.2f%n", nomeFuncionario, qtd, valorTotal.doubleValue());
+        }
     }
 
     public void exibeGraficoDeBarrasSeguros() {
-        int[] valores = {qtdApolicesVida, qtdApolicesResid, qtdApolicesAuto};
-        String[] textos = {"Vid", "Res",  "Aut"};
+        SeguroDAO seguroDAO = new SeguroDAO();
+        System.out.println("\n======================= Gráfico de Barras - Seguros =====================");
+        for (Map.Entry<Integer, Integer> entry : qtdApolicesPorSeguro.entrySet()) {
+            String nome = seguroDAO.getNomeById(entry.getKey());
+            System.out.print(nome + " | ");
 
-        System.out.println("\n=================== Grafico de Barras - Seguros ====================");
-        for (int i = 0; i < valores.length; i++) {
-            System.out.print(textos[i] + " | ");
-            for (int j = 0; j < valores[i]; j++) {
-                System.out.print("**");
+            for (int i = 0; i < entry.getValue(); i++) {
+                System.out.print("*");
             }
-            System.out.println(" (" + valores[i] + ")");
+            System.out.println(" (" + entry.getValue() + ")");
         }
     }
 
-    public void exibeGraficoDeBarrasFuncionario() {
-        int[] valores = {qtdFuncionario1, qtdFuncionario2};
-        String[] nomes = {"Func(diflale)", "Func(jejairoy)"};
+    public void exibirGraficoFuncionario() {
+        FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+        System.out.println("\n==================== Gráfico de Barras - Funcionários ===================");
 
-        System.out.println("\n================ Grafico de Barras - Funcionarios ==================");
-        for (int i = 0; i < valores.length; i++) {
-            System.out.print(nomes[i] + " | ");
-            for (int j = 0; j < valores[i]; j++) {
-                System.out.print("**");
+        for (Map.Entry<Integer, Integer> entry : qtdApolicesPorFuncionario.entrySet()) {
+            String nome = funcionarioDAO.getNomeById(entry.getKey());
+            System.out.print("Funcionario(" + nome + ") | ");
+            for (int i = 0; i < entry.getValue(); i++) {
+                System.out.print("*");
             }
-            System.out.println(" (" + valores[i] + ")");
+            System.out.println(" (" + entry.getValue() + ")");
         }
     }
 
     public void exibirDashboard() {
         exibirDashSeguros();
-        exibirDashFuncionarios();
+        exibirDashFuncionario();
         exibeGraficoDeBarrasSeguros();
-        exibeGraficoDeBarrasFuncionario();
+        exibirGraficoFuncionario();
     }
 }
